@@ -1,0 +1,79 @@
+com.zentro.app-jetified-ucrop-2.2.6-native-0 C:\Users\HP\.gradle\caches\transforms-3\00248d91a4b680931ff4246e91e08e59\transformed\jetified-ucrop-2.2.6-native\res
+com.zentro.app-jetified-lifecycle-viewmodel-ktx-2.6.1-1 C:\Users\HP\.gradle\caches\transforms-3\01d3b700c53900913ab9c637e346174f\transformed\jetified-lifecycle-viewmodel-ktx-2.6.1\res
+com.zentro.app-lifecycle-runtime-2.6.1-2 C:\Users\HP\.gradle\caches\transforms-3\097b641ee2d9f1befd375e614d303ce7\transformed\lifecycle-runtime-2.6.1\res
+com.zentro.app-jetified-fragment-ktx-1.6.1-3 C:\Users\HP\.gradle\caches\transforms-3\0ab2817d52998f27b365b45312519199\transformed\jetified-fragment-ktx-1.6.1\res
+com.zentro.app-appcompat-1.6.1-4 C:\Users\HP\.gradle\caches\transforms-3\13243535f7843ef8e92fc0673f916a11\transformed\appcompat-1.6.1\res
+com.zentro.app-jetified-emoji2-views-helper-1.2.0-5 C:\Users\HP\.gradle\caches\transforms-3\15ff71671c5844a0c65471205a3a2769\transformed\jetified-emoji2-views-helper-1.2.0\res
+com.zentro.app-jetified-startup-runtime-1.1.1-6 C:\Users\HP\.gradle\caches\transforms-3\1e8f9caa7e4489a8ddd47af40be798ae\transformed\jetified-startup-runtime-1.1.1\res
+com.zentro.app-jetified-appcompat-resources-1.6.1-7 C:\Users\HP\.gradle\caches\transforms-3\23a464986fe59fdfd7706f1cce6c7ce9\transformed\jetified-appcompat-resources-1.6.1\res
+com.zentro.app-transition-1.2.0-8 C:\Users\HP\.gradle\caches\transforms-3\29e4bc7370222827c2a6f2573016dcc5\transformed\transition-1.2.0\res
+com.zentro.app-jetified-play-services-maps-18.0.0-9 C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\res
+com.zentro.app-jetified-lifecycle-livedata-core-ktx-2.6.1-10 C:\Users\HP\.gradle\caches\transforms-3\2dd83046f0ba28dd45faccd8dc435b04\transformed\jetified-lifecycle-livedata-core-ktx-2.6.1\res
+com.zentro.app-recyclerview-1.1.0-11 C:\Users\HP\.gradle\caches\transforms-3\2eed137c3cf33ee04b896a8560a203b0\transformed\recyclerview-1.1.0\res
+com.zentro.app-jetified-flipper-0.182.0-12 C:\Users\HP\.gradle\caches\transforms-3\39245edad959d42acb2e1931071d33bf\transformed\jetified-flipper-0.182.0\res
+com.zentro.app-jetified-lifecycle-viewmodel-savedstate-2.6.1-13 C:\Users\HP\.gradle\caches\transforms-3\3a1337484f163bca87492cd587ea3538\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\res
+com.zentro.app-jetified-profileinstaller-1.3.0-14 C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\res
+com.zentro.app-browser-1.0.0-15 C:\Users\HP\.gradle\caches\transforms-3\49820cc90dc59c8d6b5decbec43fbc5e\transformed\browser-1.0.0\res
+com.zentro.app-jetified-lifecycle-process-2.6.1-16 C:\Users\HP\.gradle\caches\transforms-3\4ba1ece4dc5188ffe04e5567e5dcf6b3\transformed\jetified-lifecycle-process-2.6.1\res
+com.zentro.app-sqlite-2.2.0-17 C:\Users\HP\.gradle\caches\transforms-3\4f15f3531af190cf9ef5a1c25dce8050\transformed\sqlite-2.2.0\res
+com.zentro.app-lifecycle-livedata-core-2.6.1-18 C:\Users\HP\.gradle\caches\transforms-3\5c596d11305aaa2a9612eb1a4f5904e9\transformed\lifecycle-livedata-core-2.6.1\res
+com.zentro.app-jetified-lifecycle-service-2.6.1-19 C:\Users\HP\.gradle\caches\transforms-3\665439358bbed9c881b319771dde17fb\transformed\jetified-lifecycle-service-2.6.1\res
+com.zentro.app-work-runtime-2.7.1-20 C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\res
+com.zentro.app-jetified-facebook-messenger-18.0.2-21 C:\Users\HP\.gradle\caches\transforms-3\6c2bd51a774f2a44e378f3d4d3e26802\transformed\jetified-facebook-messenger-18.0.2\res
+com.zentro.app-media-1.0.0-22 C:\Users\HP\.gradle\caches\transforms-3\6e881727b71266ae1a74a95283b4e7fa\transformed\media-1.0.0\res
+com.zentro.app-cardview-1.0.0-23 C:\Users\HP\.gradle\caches\transforms-3\6f531ed0ff2d3a122be1a69478da5776\transformed\cardview-1.0.0\res
+com.zentro.app-core-1.10.1-24 C:\Users\HP\.gradle\caches\transforms-3\6ffb4870abc3a9ece970e0ea19a1b471\transformed\core-1.10.1\res
+com.zentro.app-jetified-savedstate-ktx-1.2.1-25 C:\Users\HP\.gradle\caches\transforms-3\72265c0dcebd82635a76fae338c94b4d\transformed\jetified-savedstate-ktx-1.2.1\res
+com.zentro.app-jetified-activity-1.7.2-26 C:\Users\HP\.gradle\caches\transforms-3\743c729c1a3a98c064e6475a03d65318\transformed\jetified-activity-1.7.2\res
+com.zentro.app-jetified-savedstate-1.2.1-27 C:\Users\HP\.gradle\caches\transforms-3\78520c164799cff0abb0561d551c60e8\transformed\jetified-savedstate-1.2.1\res
+com.zentro.app-lifecycle-viewmodel-2.6.1-28 C:\Users\HP\.gradle\caches\transforms-3\78eb03e935ee08c9ec8fb2b92ab83861\transformed\lifecycle-viewmodel-2.6.1\res
+com.zentro.app-jetified-facebook-share-18.0.2-29 C:\Users\HP\.gradle\caches\transforms-3\79bfa1d104fbca4639125a2817e889e0\transformed\jetified-facebook-share-18.0.2\res
+com.zentro.app-jetified-autofill-1.1.0-30 C:\Users\HP\.gradle\caches\transforms-3\7bebc38a0d4238da74b02f85df8bc6a9\transformed\jetified-autofill-1.1.0\res
+com.zentro.app-lifecycle-livedata-2.6.1-31 C:\Users\HP\.gradle\caches\transforms-3\7e75b7c91943c22dc6d4ae73d70b7d36\transformed\lifecycle-livedata-2.6.1\res
+com.zentro.app-jetified-core-ktx-1.10.1-32 C:\Users\HP\.gradle\caches\transforms-3\7effceda379302204bf9d8d64d600cd5\transformed\jetified-core-ktx-1.10.1\res
+com.zentro.app-jetified-facebook-common-18.0.2-33 C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\res
+com.zentro.app-jetified-annotation-experimental-1.3.0-34 C:\Users\HP\.gradle\caches\transforms-3\8e755542d12f88599c4cb3c17f679f6c\transformed\jetified-annotation-experimental-1.3.0\res
+com.zentro.app-material-1.9.0-35 C:\Users\HP\.gradle\caches\transforms-3\9e1985843a4076c8f6b9228a032e8043\transformed\material-1.9.0\res
+com.zentro.app-constraintlayout-2.0.1-36 C:\Users\HP\.gradle\caches\transforms-3\aa75a722e6feea94a0ed18fe26df580e\transformed\constraintlayout-2.0.1\res
+com.zentro.app-jetified-android-maps-utils-3.4.0-37 C:\Users\HP\.gradle\caches\transforms-3\add578dcb1412cecc1b3da2b93cdcb89\transformed\jetified-android-maps-utils-3.4.0\res
+com.zentro.app-jetified-tracing-1.1.0-38 C:\Users\HP\.gradle\caches\transforms-3\b217dd234c59312cb128a402e2f90a36\transformed\jetified-tracing-1.1.0\res
+com.zentro.app-jetified-activity-ktx-1.7.2-39 C:\Users\HP\.gradle\caches\transforms-3\bbfb51476aabe218ef28efc226bc7f0e\transformed\jetified-activity-ktx-1.7.2\res
+com.zentro.app-sqlite-framework-2.2.0-40 C:\Users\HP\.gradle\caches\transforms-3\c309fd1718f024cf046f9ddc4fed6173\transformed\sqlite-framework-2.2.0\res
+com.zentro.app-jetified-drawee-2.6.0-41 C:\Users\HP\.gradle\caches\transforms-3\c35d34a1e226ca9791c5a9a39d482610\transformed\jetified-drawee-2.6.0\res
+com.zentro.app-drawerlayout-1.1.1-42 C:\Users\HP\.gradle\caches\transforms-3\caaae04867904bbd02421ee7169fcd2d\transformed\drawerlayout-1.1.1\res
+com.zentro.app-jetified-play-services-basement-18.1.0-43 C:\Users\HP\.gradle\caches\transforms-3\d1ba91be5f8049ada654fc6a7cf3aa46\transformed\jetified-play-services-basement-18.1.0\res
+com.zentro.app-jetified-viewpager2-1.0.0-44 C:\Users\HP\.gradle\caches\transforms-3\d60f0f38376ecdd04478d715c87a923c\transformed\jetified-viewpager2-1.0.0\res
+com.zentro.app-jetified-lifecycle-runtime-ktx-2.6.1-45 C:\Users\HP\.gradle\caches\transforms-3\dcacb388a5bf6581b639196df6588802\transformed\jetified-lifecycle-runtime-ktx-2.6.1\res
+com.zentro.app-fragment-1.6.1-46 C:\Users\HP\.gradle\caches\transforms-3\dd488de9cd5d3f3392b3be957ecd0cf0\transformed\fragment-1.6.1\res
+com.zentro.app-jetified-react-android-0.72.17-debug-47 C:\Users\HP\.gradle\caches\transforms-3\dec3d3d96c063f3d269716f9a67d65f7\transformed\jetified-react-android-0.72.17-debug\res
+com.zentro.app-jetified-facebook-core-18.0.2-48 C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\res
+com.zentro.app-swiperefreshlayout-1.1.0-49 C:\Users\HP\.gradle\caches\transforms-3\f322a9c2faddb5b1447b32d63ece79eb\transformed\swiperefreshlayout-1.1.0\res
+com.zentro.app-coordinatorlayout-1.2.0-50 C:\Users\HP\.gradle\caches\transforms-3\f52c02bcc85304624e8e74e2fe05a7ed\transformed\coordinatorlayout-1.2.0\res
+com.zentro.app-jetified-emoji2-1.2.0-51 C:\Users\HP\.gradle\caches\transforms-3\f7d376185d7134247a60ab00333e0834\transformed\jetified-emoji2-1.2.0\res
+com.zentro.app-core-runtime-2.2.0-52 C:\Users\HP\.gradle\caches\transforms-3\f86f875f43121ac3bfe6074be3edd9cf\transformed\core-runtime-2.2.0\res
+com.zentro.app-jetified-facebook-login-18.0.2-53 C:\Users\HP\.gradle\caches\transforms-3\fbab2d6f0a7b0ec9b2dfe52ceea1cef2\transformed\jetified-facebook-login-18.0.2\res
+com.zentro.app-jetified-play-services-base-18.1.0-54 C:\Users\HP\.gradle\caches\transforms-3\fcd6d3874f0c7cf40e19425baedf43bb\transformed\jetified-play-services-base-18.1.0\res
+com.zentro.app-pngs-55 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\build\generated\res\pngs\debug
+com.zentro.app-resValues-56 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\build\generated\res\resValues\debug
+com.zentro.app-rs-57 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\build\generated\res\rs\debug
+com.zentro.app-mergeDebugResources-58 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir
+com.zentro.app-mergeDebugResources-59 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\build\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+com.zentro.app-merged_res-60 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\build\intermediates\merged_res\debug
+com.zentro.app-debug-61 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\debug\res
+com.zentro.app-main-62 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\res
+com.zentro.app-packaged_res-63 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-64 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\@react-native-community\geolocation\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-65 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\@react-native-community\slider\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-66 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\@react-native-masked-view\masked-view\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-67 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-fbsdk-next\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-68 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-geolocation-service\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-69 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-gesture-handler\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-70 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-71 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-72 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-maps\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-73 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-pager-view\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-74 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-reanimated\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-75 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-76 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-77 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-svg\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-78 D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-vector-icons\android\build\intermediates\packaged_res\debug

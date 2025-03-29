@@ -1,0 +1,606 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.zentro"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="33" />
+10
+11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+11-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:5:5-77
+11-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:5:22-75
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:3:5-67
+12-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:3:22-64
+13    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+13-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:4:5-79
+13-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:4:22-76
+14    <uses-permission android:name="android.permission.Manifest.permission.CAMERA" />
+14-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:5:5-85
+14-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:5:22-82
+15    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+15-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:6:5-76
+15-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:6:22-73
+16    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+16-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:7:5-75
+16-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:7:22-72
+17    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+17-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:8:5-79
+17-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:8:22-77
+18    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+18-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:9:5-81
+18-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:9:22-78
+19    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+19-->[com.facebook.flipper:flipper:0.182.0] C:\Users\HP\.gradle\caches\transforms-3\39245edad959d42acb2e1931071d33bf\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:5-76
+19-->[com.facebook.flipper:flipper:0.182.0] C:\Users\HP\.gradle\caches\transforms-3\39245edad959d42acb2e1931071d33bf\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:22-73
+20
+21    <queries>
+21-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-11:15
+22        <intent>
+22-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-10:18
+23            <action android:name="android.media.action.IMAGE_CAPTURE" />
+23-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-73
+23-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:21-70
+24        </intent>
+25
+26        <package android:name="com.facebook.katana" /> <!-- Needs to be explicitly declared on Android R+ -->
+26-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:16:9-55
+26-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:16:18-52
+27        <package android:name="com.google.android.apps.maps" />
+27-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:33:9-64
+27-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:33:18-61
+28    </queries>
+29
+30    <uses-permission android:name="com.google.android.gms.permission.AD_ID" /> <!-- Support for Google Privacy Sandbox adservices API -->
+30-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:14:5-79
+30-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:14:22-76
+31    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" />
+31-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:16:5-88
+31-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:16:22-85
+32    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
+32-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:17:5-82
+32-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:17:22-79
+33    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_CUSTOM_AUDIENCE" /> <!-- Include required permissions for Google Maps API to run. -->
+33-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:18:5-92
+33-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:18:22-89
+34    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+34-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:23:5-79
+34-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:23:22-76
+35
+36    <uses-feature
+36-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:26:5-28:35
+37        android:glEsVersion="0x00020000"
+37-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:27:9-41
+38        android:required="true" />
+38-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:28:9-32
+39
+40    <uses-permission android:name="android.permission.WAKE_LOCK" />
+40-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:25:5-68
+40-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:25:22-65
+41    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+41-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:27:5-81
+41-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:27:22-78
+42    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+42-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:28:5-77
+42-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:28:22-74
+43
+44    <permission
+44-->[androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\6ffb4870abc3a9ece970e0ea19a1b471\transformed\core-1.10.1\AndroidManifest.xml:22:5-24:47
+45        android:name="com.zentro.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+45-->[androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\6ffb4870abc3a9ece970e0ea19a1b471\transformed\core-1.10.1\AndroidManifest.xml:23:9-81
+46        android:protectionLevel="signature" />
+46-->[androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\6ffb4870abc3a9ece970e0ea19a1b471\transformed\core-1.10.1\AndroidManifest.xml:24:9-44
+47
+48    <uses-permission android:name="com.zentro.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+48-->[androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\6ffb4870abc3a9ece970e0ea19a1b471\transformed\core-1.10.1\AndroidManifest.xml:26:5-97
+48-->[androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\6ffb4870abc3a9ece970e0ea19a1b471\transformed\core-1.10.1\AndroidManifest.xml:26:22-94
+49    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+49-->[com.android.installreferrer:installreferrer:1.0] C:\Users\HP\.gradle\caches\transforms-3\4e1924f4608db8fd12ff01cc8eedce30\transformed\jetified-installreferrer-1.0\AndroidManifest.xml:9:5-110
+49-->[com.android.installreferrer:installreferrer:1.0] C:\Users\HP\.gradle\caches\transforms-3\4e1924f4608db8fd12ff01cc8eedce30\transformed\jetified-installreferrer-1.0\AndroidManifest.xml:9:22-107
+50
+51    <application
+51-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:10:5-43:19
+52        android:name="com.zentro.MainApplication"
+52-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:12:7-38
+53        android:allowBackup="false"
+53-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:16:7-34
+54        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+54-->[androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\6ffb4870abc3a9ece970e0ea19a1b471\transformed\core-1.10.1\AndroidManifest.xml:28:18-86
+55        android:debuggable="true"
+56        android:icon="@mipmap/ic_launcher"
+56-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:14:7-41
+57        android:label="@string/app_name"
+57-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:13:7-39
+58        android:requestLegacyExternalStorage="true"
+58-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:11:7-50
+59        android:roundIcon="@mipmap/ic_launcher_round"
+59-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:15:7-52
+60        android:supportsRtl="true"
+60-->[com.facebook.android:facebook-android-sdk:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\0965a5555428c82d66d157a9e2038c77\transformed\jetified-facebook-android-sdk-18.0.2\AndroidManifest.xml:14:18-44
+61        android:theme="@style/AppTheme"
+61-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:17:7-38
+62        android:usesCleartextTraffic="true" >
+62-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:8:9-44
+63        <activity
+63-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:39:6-83
+64            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+64-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:39:16-80
+65            android:exported="false" />
+65-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:11:84-108
+66        <activity
+66-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:18:7-29:18
+67            android:name="com.zentro.MainActivity"
+67-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:19:9-37
+68            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+68-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:21:9-118
+69            android:exported="true"
+69-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:24:9-32
+70            android:label="@string/app_name"
+70-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:20:9-41
+71            android:launchMode="singleTask"
+71-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:22:9-40
+72            android:windowSoftInputMode="adjustResize" >
+72-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:23:9-51
+73            <intent-filter>
+73-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:25:9-28:25
+74                <action android:name="android.intent.action.MAIN" />
+74-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:26:13-65
+74-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:26:21-62
+75
+76                <category android:name="android.intent.category.LAUNCHER" />
+76-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:27:13-73
+76-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:27:23-70
+77            </intent-filter>
+78        </activity>
+79        <!--
+80 <meta-data
+81            android:name="vn.map4d.map.ACCESS_KEY"
+82            android:value="df99a90453534be26dd169f18d2e9b5d"/>
+83        -->
+84        <meta-data
+84-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:33:5-35:63
+85            android:name="com.google.android.geo.API_KEY"
+85-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:34:6-51
+86            android:value="AIzaSyCXHsPT450-AosY7dvzi5gUT_geYSpI34o" />
+86-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:35:6-61
+87        <meta-data
+87-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:37:6-104
+88            android:name="com.facebook.sdk.ApplicationId"
+88-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:37:17-62
+89            android:value="@string/facebook_app_id" />
+89-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:37:63-102
+90        <meta-data
+90-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:38:6-108
+91            android:name="com.facebook.sdk.ClientToken"
+91-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:38:17-60
+92            android:value="@string/facebook_client_token" />
+92-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:38:61-106
+93
+94        <provider
+94-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:40:6-42:31
+95            android:name="com.facebook.FacebookContentProvider"
+95-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:41:5-56
+96            android:authorities="com.facebook.app.FacebookContentProvider625209123157341"
+96-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:40:16-93
+97            android:exported="true" />
+97-->D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:42:5-28
+98        <provider
+98-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:16:9-24:20
+99            android:name="com.reactnative.ivpusic.imagepicker.IvpusicImagePickerFileProvider"
+99-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-94
+100            android:authorities="com.zentro.provider"
+100-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:18:13-60
+101            android:exported="false"
+101-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:19:13-37
+102            android:grantUriPermissions="true" >
+102-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:20:13-47
+103            <meta-data
+103-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-23:78
+104                android:name="android.support.FILE_PROVIDER_PATHS"
+104-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:17-67
+105                android:resource="@xml/ivpusic_imagepicker_provider_paths" />
+105-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:17-75
+106        </provider>
+107
+108        <activity
+108-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:26:9-28:72
+109            android:name="com.yalantis.ucrop.UCropActivity"
+109-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:13-60
+110            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+110-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:13-69
+111
+112        <provider
+112-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
+113            android:name="com.imagepicker.ImagePickerProvider"
+113-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-63
+114            android:authorities="com.zentro.imagepickerprovider"
+114-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-71
+115            android:exported="false"
+115-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
+116            android:grantUriPermissions="true" >
+116-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
+117            <meta-data
+117-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-23:78
+118                android:name="android.support.FILE_PROVIDER_PATHS"
+118-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:17-67
+119                android:resource="@xml/imagepicker_provider_paths" />
+119-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New2 FE\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:17-75
+120        </provider>
+121
+122        <activity
+122-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:20:9-23:66
+123            android:name="com.facebook.FacebookActivity"
+123-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:21:13-57
+124            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+124-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:22:13-96
+125            android:theme="@style/com_facebook_activity_theme" />
+125-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:23:13-63
+126        <activity android:name="com.facebook.CustomTabMainActivity" />
+126-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:24:9-71
+126-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:24:19-68
+127        <activity
+127-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:25:9-39:20
+128            android:name="com.facebook.CustomTabActivity"
+128-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:26:13-58
+129            android:exported="true" >
+129-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:27:13-36
+130            <intent-filter>
+130-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:29:13-38:29
+131                <action android:name="android.intent.action.VIEW" />
+131-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:30:17-69
+131-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:30:25-66
+132
+133                <category android:name="android.intent.category.DEFAULT" />
+133-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:32:17-76
+133-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:32:27-73
+134                <category android:name="android.intent.category.BROWSABLE" />
+134-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:33:17-78
+134-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:33:27-75
+135
+136                <data
+136-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:35:17-37:50
+137                    android:host="cct.com.zentro"
+137-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:36:21-56
+138                    android:scheme="fbconnect" />
+138-->[com.facebook.android:facebook-common:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\8574a8202c9d6839b3bbcd622801db8a\transformed\jetified-facebook-common-18.0.2\AndroidManifest.xml:37:21-47
+139            </intent-filter>
+140        </activity>
+141        <!--
+142         The initialization ContentProvider will call FacebookSdk.sdkInitialize automatically
+143         with the application context. This config is merged in with the host app's manifest,
+144         but there can only be one provider with the same authority activated at any given
+145         point; so if the end user has two or more different apps that use Facebook SDK, only the
+146         first one will be able to use the provider. To work around this problem, we use the
+147         following placeholder in the authority to identify each host application as if it was
+148         a completely different provider.
+149        -->
+150        <provider
+150-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:31:9-34:40
+151            android:name="com.facebook.internal.FacebookInitProvider"
+151-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:32:13-70
+152            android:authorities="com.zentro.FacebookInitProvider"
+152-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:33:13-72
+153            android:exported="false" />
+153-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:34:13-37
+154
+155        <receiver
+155-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:36:9-42:20
+156            android:name="com.facebook.CurrentAccessTokenExpirationBroadcastReceiver"
+156-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:37:13-86
+157            android:exported="false" >
+157-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:38:13-37
+158            <intent-filter>
+158-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:39:13-41:29
+159                <action android:name="com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED" />
+159-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:40:17-95
+159-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:40:25-92
+160            </intent-filter>
+161        </receiver>
+162        <receiver
+162-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:43:9-49:20
+163            android:name="com.facebook.AuthenticationTokenManager$CurrentAuthenticationTokenChangedBroadcastReceiver"
+163-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:44:13-118
+164            android:exported="false" >
+164-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:45:13-37
+165            <intent-filter>
+165-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:46:13-48:29
+166                <action android:name="com.facebook.sdk.ACTION_CURRENT_AUTHENTICATION_TOKEN_CHANGED" />
+166-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:47:17-103
+166-->[com.facebook.android:facebook-core:18.0.2] C:\Users\HP\.gradle\caches\transforms-3\e756256bde432cc329b2280d803c374e\transformed\jetified-facebook-core-18.0.2\AndroidManifest.xml:47:25-100
+167            </intent-filter>
+168        </receiver> <!-- Needs to be explicitly declared on P+ -->
+169        <uses-library
+169-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:39:9-41:40
+170            android:name="org.apache.http.legacy"
+170-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:40:13-50
+171            android:required="false" />
+171-->[com.google.android.gms:play-services-maps:18.0.0] C:\Users\HP\.gradle\caches\transforms-3\2cc6f197c639df272bca8cc888b683e9\transformed\jetified-play-services-maps-18.0.0\AndroidManifest.xml:41:13-37
+172
+173        <activity
+173-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\HP\.gradle\caches\transforms-3\fcd6d3874f0c7cf40e19425baedf43bb\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:9-22:45
+174            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+174-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\HP\.gradle\caches\transforms-3\fcd6d3874f0c7cf40e19425baedf43bb\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:20:19-85
+175            android:exported="false"
+175-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\HP\.gradle\caches\transforms-3\fcd6d3874f0c7cf40e19425baedf43bb\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:22:19-43
+176            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+176-->[com.google.android.gms:play-services-base:18.1.0] C:\Users\HP\.gradle\caches\transforms-3\fcd6d3874f0c7cf40e19425baedf43bb\transformed\jetified-play-services-base-18.1.0\AndroidManifest.xml:21:19-78
+177
+178        <meta-data
+178-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\HP\.gradle\caches\transforms-3\d1ba91be5f8049ada654fc6a7cf3aa46\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
+179            android:name="com.google.android.gms.version"
+179-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\HP\.gradle\caches\transforms-3\d1ba91be5f8049ada654fc6a7cf3aa46\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:22:13-58
+180            android:value="@integer/google_play_services_version" />
+180-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\HP\.gradle\caches\transforms-3\d1ba91be5f8049ada654fc6a7cf3aa46\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:23:13-66
+181
+182        <provider
+182-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:31:9-39:20
+183            android:name="androidx.startup.InitializationProvider"
+183-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:32:13-67
+184            android:authorities="com.zentro.androidx-startup"
+184-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:33:13-68
+185            android:exported="false" >
+185-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:34:13-37
+186            <meta-data
+186-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:36:13-38:52
+187                android:name="androidx.work.WorkManagerInitializer"
+187-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:37:17-68
+188                android:value="androidx.startup" />
+188-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:38:17-49
+189            <meta-data
+189-->[androidx.emoji2:emoji2:1.2.0] C:\Users\HP\.gradle\caches\transforms-3\f7d376185d7134247a60ab00333e0834\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+190                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+190-->[androidx.emoji2:emoji2:1.2.0] C:\Users\HP\.gradle\caches\transforms-3\f7d376185d7134247a60ab00333e0834\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+191                android:value="androidx.startup" />
+191-->[androidx.emoji2:emoji2:1.2.0] C:\Users\HP\.gradle\caches\transforms-3\f7d376185d7134247a60ab00333e0834\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+192            <meta-data
+192-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\4ba1ece4dc5188ffe04e5567e5dcf6b3\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+193                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+193-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\4ba1ece4dc5188ffe04e5567e5dcf6b3\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+194                android:value="androidx.startup" />
+194-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\4ba1ece4dc5188ffe04e5567e5dcf6b3\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+195            <meta-data
+195-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+196                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+196-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+197                android:value="androidx.startup" />
+197-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+198        </provider>
+199
+200        <service
+200-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:41:9-46:35
+201            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+201-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:42:13-88
+202            android:directBootAware="false"
+202-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:43:13-44
+203            android:enabled="@bool/enable_system_alarm_service_default"
+203-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:44:13-72
+204            android:exported="false" />
+204-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:45:13-37
+205        <service
+205-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:47:9-53:35
+206            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+206-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:48:13-84
+207            android:directBootAware="false"
+207-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:49:13-44
+208            android:enabled="@bool/enable_system_job_service_default"
+208-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:50:13-70
+209            android:exported="true"
+209-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:51:13-36
+210            android:permission="android.permission.BIND_JOB_SERVICE" />
+210-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:52:13-69
+211        <service
+211-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:54:9-59:35
+212            android:name="androidx.work.impl.foreground.SystemForegroundService"
+212-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:55:13-81
+213            android:directBootAware="false"
+213-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:56:13-44
+214            android:enabled="@bool/enable_system_foreground_service_default"
+214-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:57:13-77
+215            android:exported="false" />
+215-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:58:13-37
+216
+217        <receiver
+217-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:61:9-66:35
+218            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+218-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:62:13-88
+219            android:directBootAware="false"
+219-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:63:13-44
+220            android:enabled="true"
+220-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:64:13-35
+221            android:exported="false" />
+221-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:65:13-37
+222        <receiver
+222-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:67:9-77:20
+223            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+223-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:68:13-106
+224            android:directBootAware="false"
+224-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:69:13-44
+225            android:enabled="false"
+225-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:70:13-36
+226            android:exported="false" >
+226-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:71:13-37
+227            <intent-filter>
+227-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:73:13-76:29
+228                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+228-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:74:17-87
+228-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:74:25-84
+229                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+229-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:75:17-90
+229-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:75:25-87
+230            </intent-filter>
+231        </receiver>
+232        <receiver
+232-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:78:9-88:20
+233            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+233-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:79:13-104
+234            android:directBootAware="false"
+234-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:80:13-44
+235            android:enabled="false"
+235-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:81:13-36
+236            android:exported="false" >
+236-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:82:13-37
+237            <intent-filter>
+237-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:84:13-87:29
+238                <action android:name="android.intent.action.BATTERY_OKAY" />
+238-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:85:17-77
+238-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:85:25-74
+239                <action android:name="android.intent.action.BATTERY_LOW" />
+239-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:86:17-76
+239-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:86:25-73
+240            </intent-filter>
+241        </receiver>
+242        <receiver
+242-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:89:9-99:20
+243            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+243-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:90:13-104
+244            android:directBootAware="false"
+244-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:91:13-44
+245            android:enabled="false"
+245-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:92:13-36
+246            android:exported="false" >
+246-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:93:13-37
+247            <intent-filter>
+247-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:95:13-98:29
+248                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+248-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:96:17-83
+248-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:96:25-80
+249                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+249-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:97:17-82
+249-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:97:25-79
+250            </intent-filter>
+251        </receiver>
+252        <receiver
+252-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:100:9-109:20
+253            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+253-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:101:13-103
+254            android:directBootAware="false"
+254-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:102:13-44
+255            android:enabled="false"
+255-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:103:13-36
+256            android:exported="false" >
+256-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:104:13-37
+257            <intent-filter>
+257-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:106:13-108:29
+258                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+258-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:107:17-79
+258-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:107:25-76
+259            </intent-filter>
+260        </receiver>
+261        <receiver
+261-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:110:9-121:20
+262            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+262-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:111:13-88
+263            android:directBootAware="false"
+263-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:112:13-44
+264            android:enabled="false"
+264-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:113:13-36
+265            android:exported="false" >
+265-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:114:13-37
+266            <intent-filter>
+266-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:116:13-120:29
+267                <action android:name="android.intent.action.BOOT_COMPLETED" />
+267-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:117:17-79
+267-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:117:25-76
+268                <action android:name="android.intent.action.TIME_SET" />
+268-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:118:17-73
+268-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:118:25-70
+269                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+269-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:119:17-81
+269-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:119:25-78
+270            </intent-filter>
+271        </receiver>
+272        <receiver
+272-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:122:9-131:20
+273            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+273-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:123:13-99
+274            android:directBootAware="false"
+274-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:124:13-44
+275            android:enabled="@bool/enable_system_alarm_service_default"
+275-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:125:13-72
+276            android:exported="false" >
+276-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:126:13-37
+277            <intent-filter>
+277-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:128:13-130:29
+278                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+278-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:129:17-98
+278-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:129:25-95
+279            </intent-filter>
+280        </receiver>
+281        <receiver
+281-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:132:9-142:20
+282            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+282-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:133:13-78
+283            android:directBootAware="false"
+283-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:134:13-44
+284            android:enabled="true"
+284-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:135:13-35
+285            android:exported="true"
+285-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:136:13-36
+286            android:permission="android.permission.DUMP" >
+286-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:137:13-57
+287            <intent-filter>
+287-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:139:13-141:29
+288                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+288-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:140:17-88
+288-->[androidx.work:work-runtime:2.7.1] C:\Users\HP\.gradle\caches\transforms-3\6a7bbee17011c8a8f7a94b0d22ecd92f\transformed\work-runtime-2.7.1\AndroidManifest.xml:140:25-85
+289            </intent-filter>
+290        </receiver>
+291
+292        <service
+292-->[androidx.room:room-runtime:2.2.5] C:\Users\HP\.gradle\caches\transforms-3\1398f1f6827d8274824e770510aa26c5\transformed\room-runtime-2.2.5\AndroidManifest.xml:25:9-28:40
+293            android:name="androidx.room.MultiInstanceInvalidationService"
+293-->[androidx.room:room-runtime:2.2.5] C:\Users\HP\.gradle\caches\transforms-3\1398f1f6827d8274824e770510aa26c5\transformed\room-runtime-2.2.5\AndroidManifest.xml:26:13-74
+294            android:directBootAware="true"
+294-->[androidx.room:room-runtime:2.2.5] C:\Users\HP\.gradle\caches\transforms-3\1398f1f6827d8274824e770510aa26c5\transformed\room-runtime-2.2.5\AndroidManifest.xml:27:13-43
+295            android:exported="false" />
+295-->[androidx.room:room-runtime:2.2.5] C:\Users\HP\.gradle\caches\transforms-3\1398f1f6827d8274824e770510aa26c5\transformed\room-runtime-2.2.5\AndroidManifest.xml:28:13-37
+296
+297        <receiver
+297-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+298            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+298-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+299            android:directBootAware="false"
+299-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+300            android:enabled="true"
+300-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+301            android:exported="true"
+301-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+302            android:permission="android.permission.DUMP" >
+302-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+303            <intent-filter>
+303-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+304                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+304-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+304-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+305            </intent-filter>
+306            <intent-filter>
+306-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+307                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+307-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+307-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+308            </intent-filter>
+309            <intent-filter>
+309-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+310                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+310-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+310-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+311            </intent-filter>
+312            <intent-filter>
+312-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+313                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+313-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+313-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\HP\.gradle\caches\transforms-3\429696a70a1e67d0f4388542bba0d709\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+314            </intent-filter>
+315        </receiver>
+316
+317        <meta-data
+317-->[com.facebook.soloader:soloader:0.10.5] C:\Users\HP\.gradle\caches\transforms-3\53dc92462dd95f8ede0012e22079a312\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:12:9-14:37
+318            android:name="com.facebook.soloader.enabled"
+318-->[com.facebook.soloader:soloader:0.10.5] C:\Users\HP\.gradle\caches\transforms-3\53dc92462dd95f8ede0012e22079a312\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:13:13-57
+319            android:value="false" />
+319-->[com.facebook.soloader:soloader:0.10.5] C:\Users\HP\.gradle\caches\transforms-3\53dc92462dd95f8ede0012e22079a312\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:14:13-34
+320    </application>
+321
+322</manifest>

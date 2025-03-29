@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '@/screens/Home';
 import Search from '@/screens/Search';
 import Favorite from '@/screens/Favorite';
-import Profile from '@/screens/Profile';
+
 import {
   House_Icon,
   House_Active,
