@@ -4,11 +4,12 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import Login from '@/screens/Login';
+import {observer} from 'mobx-react-lite';
 import {RootStackParams} from '@/utils/type';
+import Login from '@/screens/Login';
 import Register from '@/screens/Register';
 import TabNavigator from './TabNavigator';
-import {observer} from 'mobx-react-lite';
+import Location from '@/screens/AccountSetup/Location';
 
 const AppStack = ({name}: any) => {
   const Stack = createStackNavigator<RootStackParams>();
@@ -49,6 +50,13 @@ const AppStack = ({name}: any) => {
         component={Register}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="Location"
+        component={Location}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
         }}
       />
     </Stack.Navigator>

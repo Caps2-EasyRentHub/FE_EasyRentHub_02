@@ -7,6 +7,7 @@ import {AuthContext} from '@/context/AuthContext';
 import Login from '@/screens/Login';
 import Splash from '@/components/Splash';
 import TabNavigator from './TabNavigator';
+import Location from '@/screens/AccountSetup/Location';
 
 const AppNavigation = () => {
   const {isLoading, userToken, lat, lng} = useContext(AuthContext);
