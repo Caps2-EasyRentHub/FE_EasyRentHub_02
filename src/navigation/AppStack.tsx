@@ -10,6 +10,10 @@ import Login from '@/screens/Login';
 import Register from '@/screens/Register';
 import TabNavigator from './TabNavigator';
 import Location from '@/screens/AccountSetup/Location';
+import CreateEstate from '@/screens/CreateEstate';
+import AddEstateLocation from '@/screens/CreateEstate/AddEstateLocation';
+import AddEstateImages from '@/screens/CreateEstate/AddEstateImages';
+import AddEstateInfo from '@/screens/CreateEstate/AddEstateInfo';
 
 const AppStack = ({name}: any) => {
   const Stack = createStackNavigator<RootStackParams>();
@@ -57,6 +61,34 @@ const AppStack = ({name}: any) => {
         component={Location}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="CreateEstate"
+        component={CreateEstate}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="AddEstateLocation"
+        component={AddEstateLocation}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="AddEstateImages"
+        component={AddEstateImages}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="AddEstateInfo"
+        component={AddEstateInfo}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
     </Stack.Navigator>
