@@ -56,13 +56,24 @@ export const AuthProvider = ({children}: any) => {
 
   const login = (email: string, password: string) => {
     setIsLoading(true);
+    console.log('Authen email, password:' + email + password);
 
     axios
-      .post(`${Config.API_URL}/api/login`, {
-        email,
-        password,
-      })
+      .post(
+        `http://10.0.2.2:5000/api/login`,
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // timeout: 15000,
+        },
+      )
       .then((res) => {
+        console.log('API server is reachable:', res.data);
         AsyncStorage.setItem('access_token', res.data.access_token);
         AsyncStorage.setItem('idUser', res.data.user._id);
         AsyncStorage.setItem('avatarUser', res.data.user.avatar);
@@ -85,8 +96,20 @@ export const AuthProvider = ({children}: any) => {
         setCity(res.data.user.address.city);
         isLoggedIn();
         setStatus(false);
+        console.log(res.data);
       })
       .catch((err) => {
+        if (axios.isAxiosError(err)) {
+          if (err.code === 'ECONNABORTED') {
+            console.log('Timeout - kết nối quá lâu');
+          } else if (err.message === 'Network err') {
+            console.log(
+              'Lỗi kết nối - kiểm tra lại địa chỉ IP và kết nối mạng',
+            );
+          } else {
+            console.log('Lỗi API:', err.response?.data || err.message);
+          }
+        }
         setStatus(false);
         console.log(err);
       })
