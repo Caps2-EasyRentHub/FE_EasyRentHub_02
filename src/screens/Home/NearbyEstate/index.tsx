@@ -33,6 +33,7 @@ const NearbyEstate = ({detail, id}: {detail: boolean; id: string}) => {
       .then((res) => res.json())
       .then((res) => {
         setData(res.estates);
+        console.log(res.estates);
       })
       .finally(() => setLoad(false));
   }, []);
@@ -40,7 +41,7 @@ const NearbyEstate = ({detail, id}: {detail: boolean; id: string}) => {
   const RenderItems = ({item}: {item: EstateItems}) => {
     return item._id === id
       ? null
-      : item.status === 1 && (
+      : item.status === 'available' && (
           <View style={styles.cardItem}>
             <View style={styles.btnFavorite}>
               <FavoriteButton
@@ -54,7 +55,7 @@ const NearbyEstate = ({detail, id}: {detail: boolean; id: string}) => {
             <View style={styles.priceView}>
               <View style={styles.priceContent}>
                 <Text style={styles.price}>$ </Text>
-                <Text style={styles.price}>{item.price.rent}</Text>
+                <Text style={styles.price}>{item.price}</Text>
                 <Text style={styles.stay}> /</Text>
                 <Text style={styles.stay}>month</Text>
               </View>

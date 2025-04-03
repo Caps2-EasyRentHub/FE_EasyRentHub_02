@@ -22,6 +22,8 @@ const FeaturedEstates: React.FC<FeaturedProps> = ({navigation}) => {
   const [data, setData] = useState<EstateDetailProps[]>([]);
   const {userToken, idUser} = useContext(AuthContext);
   const [load, setLoad] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     setLoad(true);
     fetch(`${Config.API_URL}/api/estates`, {
@@ -32,11 +34,15 @@ const FeaturedEstates: React.FC<FeaturedProps> = ({navigation}) => {
       .then((res) => {
         setData(res.estates);
       })
+      .catch((err) => {
+        setError('Không thể tải dữ liệu');
+        console.error(err);
+      })
       .finally(() => setLoad(false));
   }, []);
 
   const RenderItems = ({item}: {item: EstateDetailProps}) => {
-    return item.status === 1 ? (
+    return item.status === 'available' ? (
       <View style={styles.cardItem}>
         <View>
           <FavoriteButton
@@ -78,7 +84,7 @@ const FeaturedEstates: React.FC<FeaturedProps> = ({navigation}) => {
           </View>
           <View style={styles.priceView}>
             <Text style={styles.price}>$ </Text>
-            <Text style={styles.price}>{item.price.rent}</Text>
+            <Text style={styles.price}>{item.price}</Text>
             <Text style={styles.stay}> /</Text>
             <Text style={styles.stay}>month</Text>
           </View>
@@ -94,14 +100,31 @@ const FeaturedEstates: React.FC<FeaturedProps> = ({navigation}) => {
       </View>
       {load ? (
         <Splash />
-      ) : (
+      ) : data.length > 0 ? (
         <View style={styles.listFeatured}>
           <FlatList
             data={data}
             renderItem={(item) => RenderItems(item)}
             keyExtractor={(item) => item._id.toString()}
             horizontal
+            refreshing={load}
+            onRefresh={() => {
+              setLoad(true);
+              fetch(`${Config.API_URL}/api/estates`, {
+                method: 'GET',
+                headers: {Authorization: userToken},
+              })
+                .then((res) => res.json())
+                .then((res) => {
+                  setData(res.estates);
+                })
+                .finally(() => setLoad(false));
+            }}
           />
+        </View>
+      ) : (
+        <View>
+          <Text>Không có dữ liệu</Text>
         </View>
       )}
     </View>
@@ -182,7 +205,7 @@ const styles = StyleSheet.create({
   },
   price: {
     color: '#252B5C',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Lato-Bold',
     marginLeft: 2,
   },
