@@ -32,7 +32,6 @@ const Login = () => {
   const HandleLogin = (email: string, password: string) => {
     setIsLoading(!status);
     login(email, password);
-    console.log("email, password:" + email + password);
 
     setLoginSuccess(true);
     setIsLoading(status);

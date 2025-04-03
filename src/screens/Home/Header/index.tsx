@@ -1,23 +1,20 @@
 import {
   ActivityIndicator,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {getImages} from '@/assets/Images';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {navigate} from '@/navigation/NavigationUtils';
 import {Config} from '@/config';
 import {AuthContext} from '@/context/AuthContext';
-import Splash from '@/components/Splash';
 import {screenWidth} from '@/themes/Responsive';
 
-const Header = ({navigation, load}: any) => {
+const Header = ({load}: any) => {
   const {idUser, userToken} = useContext(AuthContext);
   const [isLoad, setIsLoad] = useState(true);
   const [road, setRoad] = useState();

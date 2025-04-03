@@ -69,7 +69,7 @@ export const AuthProvider = ({children}: any) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          // timeout: 15000,
+          timeout: 15000,
         },
       )
       .then((res) => {

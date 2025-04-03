@@ -2,15 +2,14 @@ import {
   StyleSheet,
   Text,
   View,
-  PermissionsAndroid,
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
   Image,
   ScrollView,
 } from 'react-native';
-import React, {useContext, useEffect, useRef, useState} from 'react';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import React, {useContext, useEffect, useState} from 'react';
+import MapView, {Marker} from 'react-native-maps';
 import {screenHeight, screenWidth} from '@/themes/Responsive';
 import BackButton from '@/components/BackButton';
 import Feather from 'react-native-vector-icons/Feather';
@@ -19,7 +18,6 @@ import axios from 'axios';
 import {useTranslation} from 'react-i18next';
 import Geolocation from 'react-native-geolocation-service';
 import {ButtonCenter, Marker_Icon} from '@/assets/Svg';
-import {getImages} from '@/assets/Images';
 import {AuthContext} from '@/context/AuthContext';
 import {Config} from '@/config';
 import {goBack} from '@/navigation/NavigationUtils';
@@ -55,11 +53,11 @@ const Location = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        setLat(res.user.address.lat);
-        setLng(res.user.address.lng);
-        setRoad(res.user.address.road);
-        setCity(res.user.address.city);
-        setCountry(res.user.address.country);
+        setLat(res?.user?.address?.lat || '');
+        setLng(res?.user?.address?.lng || '');
+        setRoad(res?.user?.address?.road || '');
+        setCity(res?.user?.address?.city || '');
+        setCountry(res?.user?.address?.country || '');
       })
       .finally(() => setIsLoading(false));
   }, []);

@@ -54,7 +54,7 @@ const Search = () => {
   useEffect(() => {
     if (idEstate) {
       const loadEstate = async () => {
-        await fetch(`${Config.API_URL}/api//estate/${idEstate}`, {
+        await fetch(`${Config.API_URL}/api/estate/${idEstate}`, {
           method: 'GET',
           headers: {Authorization: userToken},
         })
