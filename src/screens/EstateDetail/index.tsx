@@ -152,7 +152,7 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
           </View>
           <View style={styles.nameView}>
             <Text style={styles.nameStyle}>{data.name}</Text>
-            <Text style={styles.priceStyle}>$ {data.price}</Text>
+            <Text style={styles.priceStyle}>$ {data.price.rent}</Text>
           </View>
           <View style={styles.nameView}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -166,7 +166,7 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
               </Text>
             </View>
 
-            <Text style={styles.perText}>per month</Text>
+            <Text style={styles.perText}>{t('month')}</Text>
           </View>
           {data.user._id !== idUser && (
             <View style={{flexDirection: 'row', marginTop: 20}}>

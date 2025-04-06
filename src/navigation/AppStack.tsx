@@ -16,6 +16,7 @@ import AddEstateImages from '@/screens/CreateEstate/AddEstateImages';
 import AddEstateInfo from '@/screens/CreateEstate/AddEstateInfo';
 import EstateDetail from '@/screens/EstateDetail';
 import AddReview from '@/screens/Reviews/AddReview';
+import BookingHistory from '@/screens/Profile/BookingHistory';
 
 const AppStack = ({name}: any) => {
   const Stack = createStackNavigator<RootStackParams>();
@@ -103,6 +104,13 @@ const AppStack = ({name}: any) => {
       <Stack.Screen
         name="AddReview"
         component={AddReview}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="BookingHistory"
+        component={BookingHistory}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}

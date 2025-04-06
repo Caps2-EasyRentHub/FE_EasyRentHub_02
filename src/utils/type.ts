@@ -13,7 +13,7 @@ export type RootStackParams = {
   Register: any;
   Location: any;
   Stories: any;
-  EstateDetail: {id: EstateDetailProps; nearby: boolean};
+  EstateDetail: {id: string; nearby: boolean};
   ReviewDetails: {estate: EstateItems; reviews: [ReviewItems]};
   AllReview: any;
   TabMenu: any;
@@ -32,4 +32,5 @@ export type RootStackParams = {
   TransactionSummary: any;
   Setting: any;
   EditListing: () => void;
+  BookingHistory: undefined;
 };
