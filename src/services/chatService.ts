@@ -62,4 +62,44 @@ export const chatService = {
       throw error;
     }
   },
+
+  // Admin specific methods
+  async getAdminChats(adminId: string): Promise<Chat[]> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/chats?adminId=${adminId}`);
+      if (!response.ok) throw new Error('Failed to fetch admin chats');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching admin chats:', error);
+      throw error;
+    }
+  },
+
+  async getLandlordChats(landlordId: string): Promise<Chat[]> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/landlord/chats?landlordId=${landlordId}`);
+      if (!response.ok) throw new Error('Failed to fetch landlord chats');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching landlord chats:', error);
+      throw error;
+    }
+  },
+
+  async initiateAdminChat(landlordId: string, adminId: string, estateId?: string): Promise<Chat> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/chats/initiate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ landlordId, adminId, estateId }),
+      });
+      if (!response.ok) throw new Error('Failed to initiate admin chat');
+      return await response.json();
+    } catch (error) {
+      console.error('Error initiating admin chat:', error);
+      throw error;
+    }
+  }
 }; 

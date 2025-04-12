@@ -46,17 +46,27 @@ const ChatContext = createContext<{
   dispatch: React.Dispatch<ChatAction>;
   sendMessage: (content: string) => Promise<void>;
   loadMessages: (chatId: string) => Promise<void>;
+  loadAdminChats: (adminId: string) => Promise<void>;
+  loadLandlordChats: (landlordId: string) => Promise<void>;
+  initiateAdminChat: (landlordId: string, adminId: string, estateId?: string) => Promise<void>;
 } | null>(null);
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(chatReducer, initialState);
-  const { idUser } = useContext(AuthContext);
+  const { idUser, userRole } = useContext(AuthContext);
 
   const loadChats = async () => {
     if (!idUser) return;
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const chats = await chatService.getChats(idUser);
+      let chats;
+      if (userRole === 'admin') {
+        chats = await chatService.getAdminChats(idUser);
+      } else if (userRole === 'landlord') {
+        chats = await chatService.getLandlordChats(idUser);
+      } else {
+        chats = await chatService.getChats(idUser);
+      }
       dispatch({ type: 'SET_CHATS', payload: chats });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: 'Failed to load chats' });
@@ -97,8 +107,55 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const loadAdminChats = async (adminId: string) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      const chats = await chatService.getAdminChats(adminId);
+      dispatch({ type: 'SET_CHATS', payload: chats });
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to load admin chats' });
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }
+  };
+
+  const loadLandlordChats = async (landlordId: string) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      const chats = await chatService.getLandlordChats(landlordId);
+      dispatch({ type: 'SET_CHATS', payload: chats });
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to load landlord chats' });
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }
+  };
+
+  const initiateAdminChat = async (landlordId: string, adminId: string, estateId?: string) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      const chat = await chatService.initiateAdminChat(landlordId, adminId, estateId);
+      dispatch({ type: 'SET_CURRENT_CHAT', payload: chat });
+      dispatch({ type: 'SET_CHATS', payload: [...state.chats, chat] });
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: 'Failed to initiate admin chat' });
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }
+  };
+
   return (
-    <ChatContext.Provider value={{ state, dispatch, sendMessage, loadMessages }}>
+    <ChatContext.Provider 
+      value={{ 
+        state, 
+        dispatch, 
+        sendMessage, 
+        loadMessages,
+        loadAdminChats,
+        loadLandlordChats,
+        initiateAdminChat
+      }}
+    >
       {children}
     </ChatContext.Provider>
   );

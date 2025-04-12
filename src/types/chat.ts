@@ -11,7 +11,7 @@ export interface ChatParticipant {
   id: string;
   name: string;
   avatar: string;
-  role: 'landlord' | 'tenant';
+  role: 'landlord' | 'tenant' | 'admin';
 }
 
 export interface Chat {
