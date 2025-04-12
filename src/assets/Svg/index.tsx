@@ -439,6 +439,40 @@ export const Chat_Icon = (props: any) => (
   </Svg>
 );
 
+export const Chat_Active = (props: any) => (
+  <Svg
+    width={20}
+    height={20}
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <Path
+      d="M9.99984 18.3334C14.6023 18.3334 18.3332 14.6026 18.3332 10.0001C18.3332 5.39758 14.6023 1.66675 9.99984 1.66675C5.39734 1.66675 1.6665 5.39758 1.6665 10.0001C1.6665 11.5176 2.07234 12.9417 2.7815 14.1667L2.08317 17.9167L5.83317 17.2184C7.09945 17.951 8.53693 18.3356 9.99984 18.3334V18.3334Z"
+      fill="#1F4C6B"
+      stroke="#1F4C6B"
+      strokeWidth={1.25}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M6.66992 8.3335H13.3366"
+      stroke="white"
+      strokeWidth={1.25}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <Path
+      d="M6.66992 11.6667H10.0033"
+      stroke="white"
+      strokeWidth={1.25}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </Svg>
+);
+
 export const Bed_Icon = (props: any) => (
   <Svg
     width={20}

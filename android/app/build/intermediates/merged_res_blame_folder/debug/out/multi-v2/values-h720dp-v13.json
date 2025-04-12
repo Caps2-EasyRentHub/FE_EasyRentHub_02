@@ -4,7 +4,7 @@
             "outputFile": "com.zentro.app-mergeDebugResources-58:/values-h720dp-v13/values-h720dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\13243535f7843ef8e92fc0673f916a11\\transformed\\appcompat-1.6.1\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
+                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-3\\58ef78fadd23b9dd12b39470dc2bef03\\transformed\\appcompat-1.6.1\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

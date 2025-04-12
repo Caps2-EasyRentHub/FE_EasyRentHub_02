@@ -13,6 +13,7 @@
     "clean:ios": "cd ios && xcodebuild clean && cd ../"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.1.0",
     "@gorhom/bottom-sheet": "^4.5.1",
     "@react-native-async-storage/async-storage": "^1.19.4",
     "@react-native-community/cli": "^18.0.0",
@@ -24,6 +25,7 @@
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/stack": "^6.3.18",
     "axios": "^1.6.1",
+    "date-fns": "^4.1.0",
     "i18next": "^23.6.0",
     "mobx": "^6.10.2",
     "mobx-react-lite": "^4.0.5",

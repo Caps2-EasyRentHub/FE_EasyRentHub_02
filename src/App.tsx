@@ -4,6 +4,7 @@ import './Translations/i18n';
 import {languageStore} from './stores';
 import {AuthProvider} from './context/AuthContext';
 import {PaperProvider} from 'react-native-paper';
+import {ChatProvider} from './context/ChatContext';
 
 const App = () => {
   useEffect(() => {
@@ -13,7 +14,9 @@ const App = () => {
   return (
     <AuthProvider>
       <PaperProvider>
-        <AppNavigation />
+        <ChatProvider>
+          <AppNavigation />
+        </ChatProvider>
       </PaperProvider>
     </AuthProvider>
   );
