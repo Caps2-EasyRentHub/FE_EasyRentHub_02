@@ -14,97 +14,152 @@ import {screenWidth} from '@/themes/Responsive';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {Error, Filter} from '@/assets/Svg';
-import {getImages} from '@/assets/Images';
+import {Error, Filter as FilterIcon} from '@/assets/Svg';
 import {push} from '@/navigation/NavigationUtils';
 import FavoriteButton from '@/components/FavoriteButton';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
-import Slider from '@react-native-community/slider';
 import {Config} from '@/config';
 import {AuthContext} from '@/context/AuthContext';
 import {EstateItems} from '@/utils/interface';
 import Splash from '@/components/Splash';
+import Filter from '@/components/Filter';
 
 const SearchResult = ({route}: any) => {
-  const {result} = route.params;
   const {t} = useTranslation();
-  const [search, setSearch] = useState(result);
-  const [location, setLocation] = useState('');
-  const {userToken, idUser} = useContext(AuthContext);
+  const {userToken} = useContext(AuthContext);
   const [data, setData] = useState<EstateItems[]>([]);
-  const [load, setLoad] = useState(false);
-  useEffect(() => {
-    setLoad(true);
-    fetch(`${Config.API_URL}/api/searchEstates?name=${search}`, {
-      method: 'GET',
-      headers: {Authorization: userToken},
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res.estates);
-      })
-      .finally(() => setLoad(false));
-  }, [search]);
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [search, setSearch] = useState<string>('');
+  const [load, setLoad] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [filters, setFilters] = useState({
+    propertyType: [] as string[],
+    priceRange: [0, 10000] as [number, number],
+    bedrooms: 0,
+    bathrooms: 0,
+  });
 
-  const snapPoints = useMemo(() => ['50%'], []);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ['90%'], []);
 
   const handleOpenPress = () => bottomSheetRef.current?.expand();
   const handleClosePress = () => bottomSheetRef.current?.close();
 
+  const handleFilterChange = (newFilters: typeof filters) => {
+    setFilters(newFilters);
+    handleClosePress();
+  };
+
+  const filteredData = useMemo(() => {
+    return data.filter(item => {
+      // Filter by search text
+      if (search && !item.title.toLowerCase().includes(search.toLowerCase())) {
+        return false;
+      }
+
+      // Filter by property type
+      if (filters.propertyType.length > 0) {
+        const itemType = item.features.find(f => 
+          ['house', 'apartment', 'villa', 'condo'].includes(f.toLowerCase())
+        );
+        if (!itemType || !filters.propertyType.includes(itemType.toLowerCase())) {
+          return false;
+        }
+      }
+
+      // Filter by price range
+      if (item.price < filters.priceRange[0] || item.price > filters.priceRange[1]) {
+        return false;
+      }
+
+      // Filter by bedrooms and bathrooms
+      const bedroomCount = item.features.filter(f => f.toLowerCase().includes('bedroom')).length;
+      const bathroomCount = item.features.filter(f => f.toLowerCase().includes('bathroom')).length;
+
+      if (filters.bedrooms > 0 && bedroomCount !== filters.bedrooms) {
+        return false;
+      }
+
+      if (filters.bathrooms > 0 && bathroomCount !== filters.bathrooms) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [data, search, filters]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoad(true);
+        setError(null);
+        const response = await fetch(`${Config.API_URL}/api/estates`, {
+          headers: {Authorization: userToken},
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const result = await response.json();
+        setData(result.estates);
+      } catch (err) {
+        setError('Error loading estates');
+        console.error('Error loading estates:', err);
+      } finally {
+        setLoad(false);
+      }
+    };
+    loadData();
+  }, [userToken]);
+
   const RenderItems = ({item}: {item: EstateItems}) => {
     return (
-      item.status === 1 && (
-        <View style={styles.cardItem}>
-          <View style={styles.btnFavorite}>
-            {/* <FavoriteButton favorite={item.assets.favorite} /> */}
-          </View>
-
-          <View style={styles.priceView}>
-            <View style={styles.priceContent}>
-              <Text style={styles.price}>$ </Text>
-              <Text style={styles.price}>{item.price.rent}</Text>
-              <Text style={styles.stay}> /</Text>
-              <Text style={styles.stay}>month</Text>
-            </View>
-          </View>
-
-          <Image
-            source={{uri: item.images[0]}}
-            style={styles.images}
-          />
-
-          <TouchableOpacity
-            style={styles.cardContent}
-            onPress={() =>
-              push({name: 'EstateDetail', params: {id: item._id, nearby: true}})
-            }
-          >
-            <Text style={styles.cardName}>{item.name}</Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={styles.ratingView}>
-                <Entypo
-                  name="star"
-                  color={'#FFC42D'}
-                  size={10}
-                />
-                <Text style={styles.rating}>3</Text>
-              </View>
-              <View style={styles.locationView}>
-                <FontAwesome6
-                  name="location-dot"
-                  color={'#234F68'}
-                  size={9}
-                />
-                <Text style={styles.location}>
-                  {item.address.road}, {item.address.city},{' '}
-                  {item.address.country}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+      <View style={styles.cardItem}>
+        <View style={styles.btnFavorite}>
+          <FavoriteButton id={item.id} />
         </View>
-      )
+
+        <View style={styles.priceView}>
+          <View style={styles.priceContent}>
+            <Text style={styles.price}>$ </Text>
+            <Text style={styles.price}>{item.price}</Text>
+            <Text style={styles.stay}> /</Text>
+            <Text style={styles.stay}>month</Text>
+          </View>
+        </View>
+
+        <Image
+          source={{uri: item.images[0]}}
+          style={styles.images}
+        />
+
+        <TouchableOpacity
+          style={styles.cardContent}
+          onPress={() =>
+            push({name: 'EstateDetail', params: {id: item.id, nearby: true}})
+          }
+        >
+          <Text style={styles.cardName}>{item.title}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <View style={styles.ratingView}>
+              <Entypo
+                name="star"
+                color={'#FFC42D'}
+                size={10}
+              />
+              <Text style={styles.rating}>3</Text>
+            </View>
+            <View style={styles.locationView}>
+              <FontAwesome6
+                name="location-dot"
+                color={'#234F68'}
+                size={9}
+              />
+              <Text style={styles.location}>
+                {item.location}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -122,7 +177,7 @@ const SearchResult = ({route}: any) => {
         onPress={handleOpenPress}
         activeOpacity={0.6}
       >
-        <Filter />
+        <FilterIcon />
       </TouchableOpacity>
       <View>
         <TextInput
@@ -145,12 +200,22 @@ const SearchResult = ({route}: any) => {
       </View>
       <View style={styles.viewFound}>
         <Text style={styles.textFound}>Found</Text>
-        <Text style={styles.numFound}> {data.length} </Text>
+        <Text style={styles.numFound}> {filteredData.length} </Text>
         <Text style={styles.textFound}>estates</Text>
       </View>
       {load ? (
         <Splash />
-      ) : data.length === 0 ? (
+      ) : error ? (
+        <View style={{marginTop: 124}}>
+          <View style={styles.viewSearch}>
+            <Error color={true} />
+          </View>
+          <View style={styles.viewResult}>
+            <Text style={styles.titleNormal}>{t('error')}</Text>
+            <Text style={styles.titleHighlight}> {error}</Text>
+          </View>
+        </View>
+      ) : filteredData.length === 0 ? (
         <View style={{marginTop: 124}}>
           <View style={styles.viewSearch}>
             <Error color={true} />
@@ -163,7 +228,7 @@ const SearchResult = ({route}: any) => {
       ) : (
         <ScrollView>
           <View style={styles.viewRender}>
-            {data.map((item: EstateItems, index: number) => {
+            {filteredData.map((item: EstateItems, index: number) => {
               return (
                 <RenderItems
                   item={item}
@@ -183,46 +248,12 @@ const SearchResult = ({route}: any) => {
         backdropComponent={(props) => (
           <BottomSheetBackdrop
             {...props}
-            appearsOnIndex={0}
             disappearsOnIndex={-1}
+            appearsOnIndex={0}
           />
         )}
       >
-        <View style={styles.titleBts}>
-          <Text style={styles.txtFilter}>{t('filter')}</Text>
-          <TouchableOpacity style={styles.btnReset}>
-            <Text style={styles.txtReset}>{t('reset')}</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.txtLocation}>{t('price')}</Text>
-
-        <Slider
-          style={{width: 200, height: 40}}
-          minimumValue={0}
-          maximumValue={1}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
-        />
-        <Text style={styles.txtLocation}>{t('location')}</Text>
-        <View>
-          <TextInput
-            placeholder="Address filtering"
-            style={[
-              styles.input,
-              {fontFamily: search ? 'Lato-Bold' : 'Lato-Regular'},
-            ]}
-            placeholderTextColor={'#A1A5C1'}
-            onChangeText={(text) => setLocation(text)}
-            value={location}
-          />
-          <View style={styles.icon}>
-            <Feather
-              name="search"
-              size={20}
-              color={'#252B5C'}
-            />
-          </View>
-        </View>
+        <Filter onFilterChange={handleFilterChange} />
       </BottomSheet>
     </View>
   );
@@ -267,7 +298,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: '#F5F4F8',
   },
-
   icon: {
     position: 'absolute',
     top: 45,
@@ -368,8 +398,6 @@ const styles = StyleSheet.create({
     right: 16,
     position: 'absolute',
     zIndex: 1,
-    // width: 75,
-    // height: 25,
     backgroundColor: 'rgba(35,79,104,.69)',
     borderRadius: 8,
   },
@@ -394,34 +422,5 @@ const styles = StyleSheet.create({
     width: screenWidth / 2 - 43.5,
     height: 180,
     borderRadius: 25,
-  },
-  titleBts: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 24,
-    alignItems: 'center',
-  },
-  txtFilter: {
-    color: '#252B5C',
-    fontFamily: 'Lato-Bold',
-    fontSize: 20,
-  },
-  btnReset: {
-    paddingVertical: 19,
-    paddingHorizontal: 30,
-    borderRadius: 35,
-    backgroundColor: '#1F4C6B',
-  },
-  txtReset: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontFamily: 'Lato-Medium',
-  },
-  txtLocation: {
-    color: '#252B5C',
-    fontFamily: 'Lato-Bold',
-    fontSize: 20,
-    marginLeft: 24,
-    marginTop: 30,
   },
 });

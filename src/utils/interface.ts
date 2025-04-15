@@ -61,6 +61,11 @@ export interface EstateItems {
   images: Array<string>;
   user: string;
   status: number;
+  property: {
+    bedroom: number;
+    bathroom: number;
+    type: string;
+  };
 }
 
 export interface ReviewItems {
