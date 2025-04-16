@@ -59,6 +59,24 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
       .finally(() => setLoad(false));
   }, []);
 
+  useEffect(() => {
+    if (id) {
+      getEstateDetail(id);
+    }
+  }, [id, getEstateDetail]);
+
+  useEffect(() => {
+    if (id) {
+      getEstateReviews(id);
+    }
+  }, [id, getEstateReviews]);
+
+  useEffect(() => {
+    if (id) {
+      getEstateNearby(id);
+    }
+  }, [id, getEstateNearby]);
+
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
   const AnimatedHeader = Animated.createAnimatedComponent(View);
   const DynamicHeader = ({value}: any) => {
@@ -216,6 +234,15 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
               </View>
             ) : null}
           </View>
+
+          {data.user._id !== idUser && (
+            <TouchableOpacity
+              style={styles.bookButton}
+              onPress={() => push({name: 'Booking', params: {estate: data}})}>
+              <Text style={styles.bookButtonText}>{t('book_room')}</Text>
+            </TouchableOpacity>
+          )}
+          <View style={styles.separator}></View>
           <View>
             <Text style={styles.locationTitle}>{t('location')}</Text>
             <View style={styles.locationView}>
@@ -445,5 +472,18 @@ const styles = StyleSheet.create({
   maps: {
     marginTop: 15,
     marginBottom: 35,
+  },
+  bookButton: {
+    backgroundColor: '#8BC83F',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 24,
+    marginHorizontal: 24,
+  },
+  bookButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
