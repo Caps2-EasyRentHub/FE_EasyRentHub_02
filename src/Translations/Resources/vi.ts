@@ -118,4 +118,7 @@ export default {
   admin_offline: 'Admin đang offline',
   landlord_online: 'Chủ nhà đang online',
   landlord_offline: 'Chủ nhà đang offline',
+  notifications: 'Thông báo',
+  mark_all_read: 'Đánh dấu tất cả đã đọc',
+  no_notifications: 'Không có thông báo',
 };

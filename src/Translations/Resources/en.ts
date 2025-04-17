@@ -118,4 +118,7 @@ export default {
   admin_offline: 'Admin is offline',
   landlord_online: 'Landlord is online',
   landlord_offline: 'Landlord is offline',
+  notifications: 'Notifications',
+  mark_all_read: 'Mark all as read',
+  no_notifications: 'No notifications',
 };
