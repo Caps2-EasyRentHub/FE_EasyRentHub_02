@@ -20,6 +20,7 @@ const CreateEstate = () => {
     Keyboard.dismiss();
   };
   const [nameEstates, setNameEstates] = useState<string>('');
+  const [houseNumber, setHouseNumber] = useState<string>('');
   const [btnRent, setBtnRent] = useState<boolean>(false);
   const [btnSell, setBtnSell] = useState<boolean>(false);
   return (
@@ -42,42 +43,16 @@ const CreateEstate = () => {
             <House_Icon />
           </View>
         </View>
-        <Text style={styles.titleList}>{t('listing_type')}</Text>
-        {/* <View style={styles.viewList}>
-          <TouchableOpacity
-            style={
-              !btnRent
-                ? styles.btnRent
-                : [styles.btnRent, {backgroundColor: '#234F68'}]
-            }
-            onPress={() => setBtnRent(!btnRent)}
-          >
-            <Text
-              style={
-                !btnRent ? styles.txtRent : [styles.txtRent, {color: '#FFFFFF'}]
-              }
-            >
-              {t('rent')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={
-              !btnSell
-                ? styles.btnSell
-                : [styles.btnSell, {backgroundColor: '#234F68'}]
-            }
-            onPress={() => setBtnSell(!btnSell)}
-          >
-            <Text
-              style={
-                !btnSell ? styles.txtSell : [styles.txtSell, {color: '#FFFFFF'}]
-              }
-            >
-              {t('sell')}
-            </Text>
-          </TouchableOpacity>
-        </View> */}
-        {nameEstates && (btnRent || btnSell) ? (
+        <View style={styles.inputContainer}>
+          <Text style={styles.inputLabel}>{t('house_number')}</Text>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => setHouseNumber(text)}
+            placeholder={t('enter_house_number')}
+            keyboardType="numeric"
+          />
+        </View>
+        {nameEstates && houseNumber ? (
           <TouchableOpacity
             style={styles.btnNext}
             onPress={() => {
@@ -86,10 +61,7 @@ const CreateEstate = () => {
                 params: {
                   data: {
                     name: nameEstates,
-                    listType: {
-                      rent: btnRent,
-                      sell: btnSell,
-                    },
+                    house_number: parseInt(houseNumber),
                   },
                 },
               });
@@ -201,5 +173,15 @@ const styles = StyleSheet.create({
     bottom: 26,
     position: 'absolute',
     left: 70,
+  },
+  inputLabel: {
+    color: '#252B5C',
+    fontFamily: 'Lato-Bold',
+    fontSize: 16,
+    marginBottom: 8,
+    marginLeft: 24,
+  },
+  inputContainer: {
+    marginTop: 20,
   },
 });

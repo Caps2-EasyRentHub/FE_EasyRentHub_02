@@ -44,6 +44,7 @@ const Search = () => {
       })
         .then((res) => res.json())
         .then((res) => {
+          console.log('Estates data:', res.estates);
           setData(res.estates);
         });
     };
@@ -60,12 +61,15 @@ const Search = () => {
         })
           .then((res) => res.json())
           .then((res) => {
+            console.log('Selected estate:', res.estate);
+
             setEstate([res.estate]);
           });
       };
       loadEstate();
     }
   }, [idEstate]);
+
   const handleFavorite = (id: any) => {
     console.log(id);
 
@@ -75,6 +79,33 @@ const Search = () => {
       return false;
     }
   };
+
+  const safeParseFloat = (value: any): number => {
+    try {
+      if (value === undefined || value === null) {
+        console.warn('Value is undefined or null');
+        return 0;
+      }
+
+      // Nếu là string, parse
+      if (typeof value === 'string') {
+        const parsed = parseFloat(value);
+        return isNaN(parsed) ? 0 : parsed;
+      }
+
+      // Nếu đã là number, trả về luôn
+      if (typeof value === 'number') {
+        return isNaN(value) ? 0 : value;
+      }
+
+      console.warn('Value is not a string or number:', value);
+      return 0;
+    } catch (error) {
+      console.error('Error parsing float:', error);
+      return 0;
+    }
+  };
+
   return isLoading ? (
     <View style={styles.container}>
       <ActivityIndicator
@@ -96,6 +127,31 @@ const Search = () => {
           provider={PROVIDER_GOOGLE}
         >
           {data?.map((item: any, index: number) => {
+            if (!item.address || !item.address.lat || !item.address.lng) {
+              console.warn('Missing address coordinates for item:', item._id);
+              return null;
+            }
+
+            const latitude = safeParseFloat(item.address.lat);
+            const longitude = safeParseFloat(item.address.lng);
+
+            if (latitude === 0 || longitude === 0) {
+              console.warn(
+                'Invalid coordinates for item:',
+                item._id,
+                latitude,
+                longitude,
+              );
+              return null;
+            }
+
+            console.log(
+              'Showing marker for item:',
+              item._id,
+              latitude,
+              longitude,
+            );
+
             return (
               item.status === 'available' && (
                 <Marker
@@ -130,7 +186,7 @@ const Search = () => {
             />
           </View>
           <TextInput
-            placeholder="Search House, Apartment, etc"
+            placeholder="Search House, Apartment, etc..."
             style={[
               styles.input,
               {fontFamily: search ? 'Lato-Bold' : 'Lato-Regular'},
@@ -187,7 +243,7 @@ const Search = () => {
                     </View>
                     <View style={styles.priceView}>
                       <Text style={styles.price}>$ </Text>
-                      <Text style={styles.price}>{item.price.rent}</Text>
+                      <Text style={styles.price}>{item.price}</Text>
                       <Text style={styles.stay}> /</Text>
                       <Text style={styles.stay}>month</Text>
                     </View>

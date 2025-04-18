@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useState, useCallback, useMemo, useRef, useContext} from 'react';
 import {BackButton} from '@/components';
@@ -23,62 +24,82 @@ const AddEstateInfo = ({route}: any) => {
   const {data} = route.params;
   const {userToken} = useContext(AuthContext);
   const {t} = useTranslation();
+
   const [active, setActive] = useState(true);
   const [sell, setSell] = useState(0);
   const [rent, setRent] = useState(0);
-  const [bedroom, setBedroom] = useState(0);
-  const [bathroom, setBathroom] = useState(0);
-  const [floors, setFloors] = useState(0);
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [bedroom, setBedroom] = useState<number>(1);
+  const [bathroom, setBathroom] = useState<number>(1);
+  const [floors, setFloors] = useState<number>(1);
+  const [price, setPrice] = useState<number>(0);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const snapPoints = useMemo(() => ['50%'], []);
 
-  const handleOpenPress = () => {
-    if (data && sell | rent && bedroom && bathroom && floors) {
-      setLoading(true);
-      axios
-        .post(
-          `${Config.API_URL}/api/estates`,
-          {
-            name: data.name,
-            listType: data.listType,
-            address: {
-              road: data.address.road,
-              quarter: data.address.quarter,
-              city: data.address.city,
-              country: data.address.country,
-              lat: data.address.lat,
-              lng: data.address.lng,
-            },
-            images: data.images,
-            price: {
-              sell: sell,
-              rent: rent,
-            },
-            property: {
-              bedroom: bedroom,
-              bathroom: bathroom,
-              floors: floors,
-            },
-          },
-          {
-            headers: {Authorization: userToken},
-          },
-        )
-        .then((res) => {
-          setSuccess(true);
-          bottomSheetRef.current?.expand();
-        })
-        .catch((e) => {
-          setSuccess(false);
-          bottomSheetRef.current?.expand();
-        })
-        .finally(() => {
+  const handleCreateEstate = async () => {
+    setLoading(true);
+    try {
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append('Authorization', userToken);
+
+      const raw = JSON.stringify({
+        name: data.name,
+        images: data.images,
+        address: {
+          house_number: data.house_number,
+          road: data.address.road,
+          quarter: data.address.quarter,
+          city: data.address.city,
+          country: data.address.country,
+          lat: data.address.lat,
+          lng: data.address.lng,
+        },
+        price: price,
+        property: {
+          bedroom: bedroom,
+          bathroom: bathroom,
+          floors: floors,
+        },
+        status: 'available',
+      });
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+
+      fetch(`${Config.API_URL}/api/estates`, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("result create estate: ");
+          console.log(result);
           setLoading(false);
+          if (result) {
+            bottomSheetRef.current?.snapToIndex(0);
+            setSuccess(true);
+          } else {
+            Alert.alert(
+              t('error'),
+              result.message || t('something_went_wrong'),
+            );
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false);
+          Alert.alert(t('error'), t('something_went_wrong'));
         });
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert(t('error'), t('something_went_wrong'));
+    } finally {
+      setLoading(false);
     }
   };
   const handleClosePress = () => bottomSheetRef.current?.close();
@@ -98,93 +119,31 @@ const AddEstateInfo = ({route}: any) => {
           <Text style={styles.titleHighlight}>{t('almost_finish')}</Text>
           <Text style={styles.titleNormal}>{t('complete_listing')}</Text>
         </View>
-        {data.listType.sell && (
+        <View>
+          <Text style={styles.inputTitle}>{t('price')}</Text>
           <View>
-            <Text style={styles.sellTitle}>
-              {t('sell')} {t('price')}
-            </Text>
-            <View>
-              <TextInput
-                style={styles.sellInput}
-                keyboardType="numeric"
-                onChangeText={(value) => setSell(parseFloat(value))}
+            <TextInput
+              style={styles.sellInput}
+              keyboardType="numeric"
+              onChangeText={(value) => {
+                if (value === '') {
+                  setPrice(null);
+                } else {
+                  const parsedValue = parseFloat(value);
+                  setPrice(isNaN(parsedValue) ? null : parsedValue);
+                }
+              }}
+              placeholder="Nhập giá"
+            />
+            <View style={styles.dollarIcon}>
+              <FontAwesome
+                name="dollar"
+                color={'#252B5C'}
+                size={16}
               />
-              <View style={styles.dollarIcon}>
-                <FontAwesome
-                  name="dollar"
-                  color={'#252B5C'}
-                  size={16}
-                />
-              </View>
             </View>
           </View>
-        )}
-        {data.listType.rent && (
-          <View>
-            <Text style={styles.rentTitle}>
-              {t('rent')} {t('price')}
-            </Text>
-            <View>
-              <TextInput
-                style={styles.rentInput}
-                keyboardType="numeric"
-                onChangeText={(value) => setRent(parseFloat(value))}
-              />
-              <View style={styles.dollarIcon}>
-                <FontAwesome
-                  name="dollar"
-                  color={'#252B5C'}
-                  size={16}
-                />
-              </View>
-              <View style={styles.btnView}>
-                <TouchableOpacity
-                  style={
-                    active
-                      ? [styles.btnNormal, {backgroundColor: '#234F68'}]
-                      : styles.btnNormal
-                  }
-                  onPress={() => setActive(true)}
-                >
-                  <Text
-                    style={
-                      active
-                        ? [
-                            styles.btnText,
-                            {color: '#FFFFFF', fontFamily: 'Lato-Bold'},
-                          ]
-                        : styles.btnText
-                    }
-                  >
-                    {t('month')}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    !active
-                      ? [styles.btnNormal, {backgroundColor: '#234F68'}]
-                      : styles.btnNormal
-                  }
-                  onPress={() => setActive(false)}
-                >
-                  <Text
-                    style={
-                      !active
-                        ? [
-                            styles.btnText,
-                            {color: '#FFFFFF', fontFamily: 'Lato-Bold'},
-                          ]
-                        : styles.btnText
-                    }
-                  >
-                    {t('year')}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        )}
-
+        </View>
         <View style={styles.propertyView}>
           <Text style={styles.sellTitle}>{t('property')}</Text>
           <View style={styles.propertyFrom}>
@@ -263,7 +222,7 @@ const AddEstateInfo = ({route}: any) => {
         <TouchableOpacity
           style={styles.btnFinish}
           activeOpacity={0.8}
-          onPress={handleOpenPress}
+          onPress={handleCreateEstate}
         >
           <Text style={styles.txtFinish}>{t('finish')}</Text>
         </TouchableOpacity>
@@ -322,7 +281,7 @@ const AddEstateInfo = ({route}: any) => {
               <TouchableOpacity style={styles.btnFinishModal}>
                 <Text
                   style={styles.txtFinishModal}
-                  onPress={handleOpenPress}
+                  onPress={handleCreateEstate}
                 >
                   {t('retry')}
                 </Text>

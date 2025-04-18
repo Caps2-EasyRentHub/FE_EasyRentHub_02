@@ -78,7 +78,7 @@ const SearchResult = ({route}: any) => {
       item.status === 'available' && (
         <View style={styles.cardItem}>
           <View style={styles.btnFavorite}>
-            <FavoriteButton favorite={item.assets.favorite} />
+            {/* <FavoriteButton favorite={item.assets.favorite} /> */}
           </View>
 
           <View style={styles.priceView}>
