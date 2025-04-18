@@ -1,5 +1,10 @@
 android/.gradle/
 
+# Gradle files
+.gradle/
+build/
+gradle/
+
 # OSX
 #
 .DS_Store
