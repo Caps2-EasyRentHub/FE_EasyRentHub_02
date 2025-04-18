@@ -4,7 +4,7 @@
             "outputFile": "com.zentro.app-mergeDebugResources-58:/values-zh/values-zh.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-3\\77274931a3e46814d5042c05b1ddd0aa\\transformed\\jetified-ucrop-2.2.6-native\\res\\values-zh\\values-zh.xml",
+                    "source": "C:\\Users\\HP\\.gradle\\caches\\transforms-3\\82426094a4f9f1439d11d702f3453948\\transformed\\jetified-ucrop-2.2.6-native\\res\\values-zh\\values-zh.xml",
                     "from": {
                         "startLines": "2,3,4",
                         "startColumns": "4,4,4",

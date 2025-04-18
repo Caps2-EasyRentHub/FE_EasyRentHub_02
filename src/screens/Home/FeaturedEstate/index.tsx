@@ -100,7 +100,7 @@ const FeaturedEstates: React.FC<FeaturedProps> = ({navigation}) => {
       </View>
       {load ? (
         <Splash />
-      ) : data.length > 0 ? (
+      ) : data && data.length > 0 ? (
         <View style={styles.listFeatured}>
           <FlatList
             data={data}

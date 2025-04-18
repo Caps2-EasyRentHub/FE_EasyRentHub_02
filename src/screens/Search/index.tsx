@@ -97,7 +97,7 @@ const Search = () => {
         >
           {data?.map((item: any, index: number) => {
             return (
-              item.status === 1 && (
+              item.status === 'available' && (
                 <Marker
                   key={index}
                   coordinate={{
