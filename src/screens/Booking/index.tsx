@@ -61,15 +61,14 @@ const Booking: React.FC<BookingProps> = ({route}) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${Config.API_URL}/api/payment`,
+        `${Config.API_URL}/api/rental/request`,
         {
           estateId: estate._id,
           checkIn: moment(checkIn).format('DD/MM/YYYY'),
           checkOut: moment(checkOut).format('DD/MM/YYYY'),
           note: note,
           price: calculateTotalPrice(),
-          type: 'rent',
-          status: '1', // Processing
+          status: '1',
         },
         {
           headers: {Authorization: userToken},
