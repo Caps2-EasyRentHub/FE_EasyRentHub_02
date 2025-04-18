@@ -77,7 +77,6 @@ const Favorite = () => {
                   id={item._id}
                 />
               </View>
-
               <Image
                 source={{uri: item.images[0]}}
                 style={styles.imgItem}
@@ -87,7 +86,7 @@ const Favorite = () => {
                 <View style={styles.ratingView}>
                   <Entypo
                     name="star"
-                    color={'rgba(35,79,104,.42)'}
+                    color={'#FFC42D'}
                     size={12}
                   />
                   <Text style={styles.rating}>3.5</Text>
@@ -104,9 +103,9 @@ const Favorite = () => {
                 </View>
                 <View style={styles.priceView}>
                   <Text style={styles.price}>$ </Text>
-                  <Text style={styles.price}>{item.price.rent}</Text>
+                  <Text style={styles.price}>{item.price}</Text>
                   <Text style={styles.stay}> /</Text>
-                  <Text style={styles.stay}>month</Text>
+                  <Text style={styles.stay}>tháng</Text>
                 </View>
               </View>
             </View>
@@ -115,8 +114,21 @@ const Favorite = () => {
       );
     });
   };
-  const handleUnFavorite = (item: any) => {
-    console.log(item.id);
+  const handleUnFavorite = async (item: any) => {
+    try {
+      await fetch(`${Config.API_URL}/api/estate/${item._id}/unlike`, {
+        method: 'PATCH',
+        headers: {Authorization: userToken},
+      });
+
+      setData((prevData) =>
+        prevData.filter((estate) => estate._id !== item._id),
+      );
+
+      console.log('Đã xóa khỏi danh sách yêu thích:', item._id);
+    } catch (error) {
+      console.error('Lỗi khi xóa khỏi yêu thích:', error);
+    }
   };
   const RightSwipe = (item: any) => {
     return (
@@ -145,7 +157,7 @@ const Favorite = () => {
         />
       </TouchableOpacity>
       <Text style={styles.txtEstates}>
-        {data.length} {t('estates')}
+        {data.length} {t('phòng trọ')}
       </Text>
       {isLoading ? (
         <Splash />

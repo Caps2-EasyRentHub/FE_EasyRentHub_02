@@ -60,7 +60,7 @@ export const AuthProvider = ({children}: any) => {
 
     axios
       .post(
-        `http://192.168.1.76:5000/api/login`,
+        `${Config.API_URL}/api/login`,
         {
           email,
           password,

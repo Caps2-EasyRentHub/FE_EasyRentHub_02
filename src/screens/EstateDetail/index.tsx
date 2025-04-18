@@ -59,24 +59,6 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
       .finally(() => setLoad(false));
   }, []);
 
-  useEffect(() => {
-    if (id) {
-      getEstateDetail(id);
-    }
-  }, [id, getEstateDetail]);
-
-  useEffect(() => {
-    if (id) {
-      getEstateReviews(id);
-    }
-  }, [id, getEstateReviews]);
-
-  useEffect(() => {
-    if (id) {
-      getEstateNearby(id);
-    }
-  }, [id, getEstateNearby]);
-
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
   const AnimatedHeader = Animated.createAnimatedComponent(View);
   const DynamicHeader = ({value}: any) => {
@@ -170,7 +152,7 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
           </View>
           <View style={styles.nameView}>
             <Text style={styles.nameStyle}>{data.name}</Text>
-            <Text style={styles.priceStyle}>$ {data.price.rent}</Text>
+            <Text style={styles.priceStyle}>$ {data.price}</Text>
           </View>
           <View style={styles.nameView}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -186,7 +168,7 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
 
             <Text style={styles.perText}>{t('month')}</Text>
           </View>
-          {data.user._id !== idUser && (
+          {/* {data.user._id !== idUser && (
             <View style={{flexDirection: 'row', marginTop: 20}}>
               <TouchableOpacity
                 style={styles.rentButton}
@@ -198,23 +180,8 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
                 <Text style={styles.buyText}>{t('buy')}</Text>
               </TouchableOpacity>
             </View>
-          )}
+          )} */}
           <View style={styles.separator}></View>
-          {data.user._id !== idUser && (
-            <View style={styles.ownerView}>
-              <View style={{flexDirection: 'row'}}>
-                <Image
-                  source={{uri: data.user.avatar}}
-                  style={styles.avatarStyles}
-                />
-                <View style={{marginLeft: 16}}>
-                  <Text style={styles.username}>{data.user.full_name}</Text>
-                  {/* <Text style={styles.address}>{data.address}</Text> */}
-                </View>
-              </View>
-              <Chat_Icon />
-            </View>
-          )}
 
           <View style={styles.facilitiesView}>
             {data.property.bedroom ? (
@@ -238,10 +205,28 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
           {data.user._id !== idUser && (
             <TouchableOpacity
               style={styles.bookButton}
-              onPress={() => push({name: 'Booking', params: {estate: data}})}>
+              onPress={() => push({name: 'Booking', params: {estate: data}})}
+            >
               <Text style={styles.bookButtonText}>{t('book_room')}</Text>
             </TouchableOpacity>
           )}
+
+          {data.user._id !== idUser && (
+            <View style={styles.ownerView}>
+              <View style={{flexDirection: 'row'}}>
+                <Image
+                  source={{uri: data.user.avatar}}
+                  style={styles.avatarStyles}
+                />
+                <View style={{marginLeft: 16}}>
+                  <Text style={styles.username}>{data.user.full_name}</Text>
+                  {/* <Text style={styles.address}>{data.address}</Text> */}
+                </View>
+              </View>
+              <Chat_Icon />
+            </View>
+          )}
+
           <View style={styles.separator}></View>
           <View>
             <Text style={styles.locationTitle}>{t('location')}</Text>

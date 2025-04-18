@@ -49,15 +49,15 @@ const TabMenu = () => {
       })}
     >
       <Tab.Screen
-        name="Transaction"
+        name="Giao dịch"
         component={Transaction}
       />
       <Tab.Screen
-        name="Listing"
+        name="Danh sách"
         component={Listing}
       />
       <Tab.Screen
-        name="Confirm"
+        name="Xác nhận"
         component={Confirm}
       />
     </Tab.Navigator>

@@ -43,7 +43,7 @@ const CreateEstate = () => {
           </View>
         </View>
         <Text style={styles.titleList}>{t('listing_type')}</Text>
-        <View style={styles.viewList}>
+        {/* <View style={styles.viewList}>
           <TouchableOpacity
             style={
               !btnRent
@@ -76,7 +76,7 @@ const CreateEstate = () => {
               {t('sell')}
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         {nameEstates && (btnRent || btnSell) ? (
           <TouchableOpacity
             style={styles.btnNext}

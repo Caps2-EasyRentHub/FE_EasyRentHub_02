@@ -30,7 +30,7 @@ export default {
   explore: 'khám phá',
   let: 'Hãy',
   sign_in: 'đăng nhập',
-  featured_estates: 'Bất động sản nổi bật',
+  featured_estates: 'Phòng trọ nổi bật',
   all: 'Tất cả',
   view_all: 'xem tất cả',
   rent: 'Thuê',

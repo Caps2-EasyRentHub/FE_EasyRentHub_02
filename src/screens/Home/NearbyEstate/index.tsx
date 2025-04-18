@@ -57,7 +57,7 @@ const NearbyEstate = ({detail, id}: {detail: boolean; id: string}) => {
                 <Text style={styles.price}>$ </Text>
                 <Text style={styles.price}>{item.price}</Text>
                 <Text style={styles.stay}> /</Text>
-                <Text style={styles.stay}>month</Text>
+                <Text style={styles.stay}>tháng</Text>
               </View>
             </View>
 

@@ -86,7 +86,7 @@ const FeaturedEstates: React.FC<FeaturedProps> = ({navigation}) => {
             <Text style={styles.price}>$ </Text>
             <Text style={styles.price}>{item.price}</Text>
             <Text style={styles.stay}> /</Text>
-            <Text style={styles.stay}>month</Text>
+            <Text style={styles.stay}>tháng</Text>
           </View>
         </TouchableOpacity>
       </View>
