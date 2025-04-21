@@ -156,22 +156,15 @@ const Transaction = () => {
             );
             const estateData = await estateRes.json();
 
-            // Kiểm tra xem user đã review chưa
-            console.log('estateData.estate.reviews');
-            console.log(estateData.estate.reviews);
             const hasReviewed = estateData.estate.reviews?.some(
               (review: any) => review.estateUserId === idUser,
             );
 
-            // Chỉ hiển thị nếu chưa review
-            console.log('hasReviewed');
-            console.log(hasReviewed);
             if (!hasReviewed) {
               unreviewedTransactions.push(transaction);
             }
           } catch (error) {
             console.error('Error fetching estate:', error);
-            // Nếu có lỗi, vẫn đưa transaction vào danh sách
             unreviewedTransactions.push(transaction);
           }
         }

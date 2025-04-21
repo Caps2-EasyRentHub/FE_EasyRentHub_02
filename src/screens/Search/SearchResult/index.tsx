@@ -37,21 +37,14 @@ const SearchResult = ({route}: any) => {
   useEffect(() => {
     setLoad(true);
 
-    console.log(`Searching for: ${search}`);
-
     fetch(`${Config.API_URL}/api/searchEstates?name=${search}`, {
       method: 'GET',
       headers: {Authorization: userToken},
     })
       .then((res) => {
-        // Log status code
-        console.log(`Response status: ${res.status}`);
         return res.json();
       })
       .then((res) => {
-        // Log kết quả từ API
-        console.log('Search results:', res);
-
         if (!res.estates) {
           console.warn('No estates returned from API');
           setData([]);

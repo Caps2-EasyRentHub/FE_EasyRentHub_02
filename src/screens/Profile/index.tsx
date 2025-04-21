@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Pencil_Icon, Setting_Icon} from '@/assets/Svg';
+import {Pencil_Icon, Review_Icon, Setting_Icon} from '@/assets/Svg';
 import {getImages} from '@/assets/Images';
 import {screenWidth} from '@/themes/Responsive';
 import {ProfileProps, UserData} from '@/utils/interface';
@@ -84,7 +84,8 @@ const Profile: React.FC<ProfileProps> = () => {
               style={styles.btnListing}
               onPress={() => navigate({name: 'AllReview'})}
             >
-              <Text style={styles.username}>0</Text>
+              <Text style={{height: 6}}></Text>
+              <Review_Icon />
               <Text style={styles.listingText}>{t('reviews')}</Text>
             </TouchableOpacity>
           </View>
@@ -166,7 +167,6 @@ const styles = StyleSheet.create({
   listingText: {
     color: '#53587A',
     fontFamily: 'Lato-Regular',
-    marginTop: 7,
   },
   btnListing: {
     marginTop: 20,

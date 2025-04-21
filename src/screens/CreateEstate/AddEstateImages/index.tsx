@@ -61,7 +61,6 @@ const AddEstateImages = ({route}: any) => {
     setImages(newArray);
   };
   const HandleNext = () => {
-    console.log(img);
     if (img) {
       push({
         name: 'AddEstateInfo',

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {BackButton} from '@/components';
 import {ReviewDetail, ReviewItems} from '@/utils/interface';
 import {useTranslation} from 'react-i18next';
@@ -16,122 +16,126 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {screenWidth} from '@/themes/Responsive';
 import StarRating from '@/components/StarRating';
 import {getImages} from '@/assets/Images';
+import Splash from '@/components/Splash';
+import {AuthContext} from '@/context/AuthContext';
+import {Config} from '@/config';
 
 const AllReview = () => {
   const {t} = useTranslation();
-  const review = [
-    {
-      id: 1,
-      name: 'Hung',
-      avatar: getImages().picture_1,
-      address: 'Việt Nam',
-      phone: '123456789',
-      email: 'admin@gmail.com',
-      reviews: {
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        images: [
-          getImages().picture_4,
-          getImages().picture_5,
-          getImages().picture_3,
-          getImages().picture_4,
-          getImages().picture_5,
-          getImages().picture_3,
-        ],
-        star_rating: 5,
-      },
-    },
-    {
-      id: 2,
-      name: 'Tony',
-      avatar: getImages().picture_2,
-      address: 'Việt Nam',
-      phone: '123456789',
-      email: 'admin@gmail.com',
-      reviews: {
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        images: [getImages().picture_4, getImages().picture_5],
-        star_rating: 2,
-      },
-    },
-  ];
-  const estate = [
-    {
-      id: 1,
-      name: 'Hung',
-      avatar: getImages().picture_1,
-      address: 'Việt Nam',
-      phone: '123456789',
-      email: 'admin@gmail.com',
-      assets: {
-        images: [
-          getImages().picture_1,
-          getImages().picture_2,
-          getImages().picture_3,
-          getImages().picture_4,
-          getImages().picture_5,
-        ],
-        name: 'Sky Dandelions Apartment',
-        location: 'K814 Tran Cao Van,TP.Đà Nẵng, Việt Nam',
-        star_rating: 4.5,
-        price: 290,
-        bathroom: 2,
-        bedroom: 2,
-        floors: 2,
-        time: 'month',
-        favorite: true,
-      },
-    },
-    {
-      id: 2,
-      name: 'Tony',
-      avatar: getImages().picture_2,
-      address: 'Việt Nam',
-      phone: '123456789',
-      email: 'admin@gmail.com',
-      assets: {
-        images: [
-          getImages().picture_4,
-          getImages().picture_5,
-          getImages().picture_3,
-        ],
-        name: 'Sky Dandelions Apartment',
-        location: 'K814 Tran Cao Van,TP.Đà Nẵng, Việt Nam',
-        star_rating: 4.7,
-        price: 160,
-        bathroom: 2,
-        bedroom: 3,
-        floors: 2,
-        time: 'month',
-        favorite: false,
-      },
-    },
-  ];
+  const {userToken, idUser} = useContext(AuthContext);
+  const [review, setReview] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
   const star = [1, 2, 3, 4, 5, 6];
   const [pressStar, setPressStar] = useState(0);
+
+  useEffect(() => {
+    fetchUserReviews();
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = () => {
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', userToken);
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(`${Config.API_URL}/api/user/${idUser}`, requestOptions)
+      .then((res) => res.json())
+      .then((result) => {
+        console.log('User data: ', result);
+        if (result.user) {
+          setUserData(result.user);
+        }
+      })
+      .catch((error) => console.error('Error fetching user data: ', error));
+  };
+
+  const fetchUserReviews = () => {
+    setLoading(true);
+
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', userToken);
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(`${Config.API_URL}/api/user-reviews/${idUser}`, requestOptions)
+      .then((res) => res.json())
+      .then((result) => {
+        console.log('User reviews: ', result.reviews);
+        const formattedReviews = (result.reviews || []).map((review) => {
+
+          return {
+            ...review,
+            estateId: review.estateId || {},
+            user: review.user || {},
+          };
+        });
+
+        setReview(formattedReviews);
+      })
+      .catch((error) => console.error('Error fetching reviews: ', error))
+      .finally(() => setLoading(false));
+  };
 
   const Agency = () => {
     return (
       <View style={styles.agencyView}>
-        <View style={styles.agencyContent}>
-          <Image
-            source={getImages().picture_1}
-            style={styles.avatar}
-          />
-          <View style={styles.cardAgencyContent}>
-            <Text style={styles.cardName}>UserName</Text>
+        {userData ? (
+          <View style={styles.agencyContent}>
+            <Image
+              source={{uri: userData.avatar || ''}}
+              style={styles.avatar}
+            />
+            <View style={styles.cardAgencyContent}>
+              <Text style={styles.cardName}>
+                {userData.full_name || 'User'}
+              </Text>
 
-            <View style={styles.ratingView}>
-              <Text style={styles.name}>name</Text>
+              <View style={styles.ratingView}>
+                <Text style={styles.name}>{userData.email || ''}</Text>
+              </View>
             </View>
           </View>
-        </View>
+        ) : (
+          <View style={styles.agencyContent}>
+            <View style={[styles.avatar, {backgroundColor: '#F5F4F8'}]} />
+            <View style={styles.cardAgencyContent}>
+              <Text style={styles.cardName}>Loading...</Text>
+              <View style={styles.ratingView}>
+                <Text style={styles.name}>Please wait</Text>
+              </View>
+            </View>
+          </View>
+        )}
       </View>
     );
   };
 
+  const getUserName = (item) => {
+    try {
+      if (item.user && item.user.full_name) {
+        return item.user.full_name;
+      }
+      return 'Unknown User';
+    } catch (error) {
+      console.error('Error getting user name:', error);
+      return 'Unknown User';
+    }
+  };
+
   const Reviews = ({item, index}: {item: ReviewItems; index: number}) => {
+    const estate = item.estateId || {};
+    const userName = getUserName(item);
+
     return (
       <View
         key={index}
@@ -140,11 +144,15 @@ const AllReview = () => {
         <View style={styles.estateView}>
           <View style={styles.estateContent}>
             <Image
-              source={getImages().picture_1}
+              source={{
+                uri: estate.images && estate.images[0] ? estate.images[0] : '',
+              }}
               style={styles.estateImage}
             />
             <View style={styles.cardEstateContent}>
-              <Text style={styles.cardName}>Fairview Apartment</Text>
+              <Text style={styles.cardName}>
+                {estate.name || 'Unknown Estate'}
+              </Text>
               <View style={{flexDirection: 'row'}}>
                 <View style={styles.ratingView}>
                   <Entypo
@@ -152,7 +160,7 @@ const AllReview = () => {
                     color={'#234F68'}
                     size={10}
                   />
-                  <Text style={styles.rating}>4.5</Text>
+                  <Text style={styles.rating}>{item.star || 0}</Text>
                 </View>
                 <View style={styles.ratingView}>
                   <FontAwesome6
@@ -162,7 +170,8 @@ const AllReview = () => {
                     style={{marginLeft: 6}}
                   />
                   <Text style={styles.location}>
-                    K814 Tran Cao Van,TP.Đà Nẵng, Việt Nam
+                    {item.estate?.address?.road}, {item.estate?.address?.city},{' '}
+                    {item.estate?.address?.country}
                   </Text>
                 </View>
               </View>
@@ -173,7 +182,7 @@ const AllReview = () => {
         <View style={styles.reviewContent}>
           <View style={styles.outsideAvatar}>
             <Image
-              source={item.avatar}
+              source={{uri: item.user?.avatar || ''}}
               style={styles.reviewAvatar}
             />
           </View>
@@ -185,18 +194,20 @@ const AllReview = () => {
             }}
           >
             <View style={styles.reviewStar}>
-              <Text style={styles.reviewName}>{item.name}</Text>
+              <Text style={styles.reviewName}>
+                {item.user.full_name || 'Unknown User'}
+              </Text>
               <View style={styles.star}>
-                <StarRating star={item.reviews.star_rating} />
+                <StarRating star={item.star || 0} />
               </View>
             </View>
-            <Text style={styles.reviewText}>{item.reviews.content}</Text>
+            <Text style={styles.reviewText}>{item.content}</Text>
             <View style={styles.reviewImagesView}>
-              {item.reviews.images.map((image: any, index: number) => {
+              {(item.images || []).map((image: string, imgIndex: number) => {
                 return (
                   <Image
-                    key={index}
-                    source={image}
+                    key={imgIndex}
+                    source={{uri: image}}
                     style={styles.reviewImages}
                   />
                 );
@@ -247,21 +258,25 @@ const AllReview = () => {
       </View>
       <ScrollView>
         <Text style={styles.reviewTitle}>{t('user_reviews')}</Text>
-        {review.map((item: ReviewItems, index: number) => {
-          return pressStar === 0 ? (
-            <Reviews
-              item={item}
-              index={index}
-              key={index}
-            />
-          ) : pressStar === item.reviews.star_rating ? (
-            <Reviews
-              item={item}
-              index={index}
-              key={index}
-            />
-          ) : null;
-        })}
+        {loading ? (
+          <Splash />
+        ) : (
+          review.map((item: any, index: number) => {
+            return pressStar === 0 ? (
+              <Reviews
+                item={item}
+                index={index}
+                key={index}
+              />
+            ) : pressStar === item.star ? (
+              <Reviews
+                item={item}
+                index={index}
+                key={index}
+              />
+            ) : null;
+          })
+        )}
       </ScrollView>
     </View>
   );
@@ -338,6 +353,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Bold',
     fontSize: 16,
     color: '#252B5C',
+    width: 300,
   },
   ratingView: {
     flexDirection: 'row',
@@ -354,6 +370,7 @@ const styles = StyleSheet.create({
     color: '#53587A',
     fontFamily: 'Lato-Regular',
     marginLeft: 2,
+    width: 300,
   },
   starView: {
     marginLeft: 24,

@@ -117,7 +117,7 @@ const Confirm = () => {
 
   useEffect(() => {
     setLoad(true);
-    fetch(`${Config.API_URL}/api/allPayment`, {
+    fetch(`${Config.API_URL}/api/rental/all-bookings`, {
       method: 'GET',
       headers: {Authorization: userToken},
     })

@@ -33,7 +33,6 @@ const NearbyEstate = ({detail, id}: {detail: boolean; id: string}) => {
       .then((res) => res.json())
       .then((res) => {
         setData(res.estates);
-        console.log(res.estates);
       })
       .finally(() => setLoad(false));
   }, []);

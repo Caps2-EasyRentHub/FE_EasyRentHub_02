@@ -77,8 +77,6 @@ const AddEstateInfo = ({route}: any) => {
       fetch(`${Config.API_URL}/api/estates`, requestOptions)
         .then((response) => response.json())
         .then((result) => {
-          console.log("result create estate: ");
-          console.log(result);
           setLoading(false);
           if (result) {
             bottomSheetRef.current?.snapToIndex(0);

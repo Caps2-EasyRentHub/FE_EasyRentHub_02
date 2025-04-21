@@ -56,7 +56,6 @@ export const AuthProvider = ({children}: any) => {
 
   const login = (email: string, password: string) => {
     setIsLoading(true);
-    console.log('Authen email, password:' + email + password);
 
     axios
       .post(
@@ -73,7 +72,6 @@ export const AuthProvider = ({children}: any) => {
         },
       )
       .then((res) => {
-        console.log('API server is reachable:', res.data);
         AsyncStorage.setItem('access_token', res.data.access_token);
         AsyncStorage.setItem('idUser', res.data.user._id);
         AsyncStorage.setItem('avatarUser', res.data.user.avatar);
@@ -96,7 +94,6 @@ export const AuthProvider = ({children}: any) => {
         setCity(res.data.user.address.city);
         isLoggedIn();
         setStatus(false);
-        console.log(res.data);
       })
       .catch((err) => {
         if (axios.isAxiosError(err)) {
@@ -111,7 +108,6 @@ export const AuthProvider = ({children}: any) => {
           }
         }
         setStatus(false);
-        console.log(err);
       })
       .finally(() => setStatus(true));
     setIsLoading(false);

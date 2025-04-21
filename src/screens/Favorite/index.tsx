@@ -125,7 +125,6 @@ const Favorite = () => {
         prevData.filter((estate) => estate._id !== item._id),
       );
 
-      console.log('Đã xóa khỏi danh sách yêu thích:', item._id);
     } catch (error) {
       console.error('Lỗi khi xóa khỏi yêu thích:', error);
     }

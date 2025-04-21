@@ -44,7 +44,6 @@ const Search = () => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log('Estates data:', res.estates);
           setData(res.estates);
         });
     };
@@ -61,8 +60,6 @@ const Search = () => {
         })
           .then((res) => res.json())
           .then((res) => {
-            console.log('Selected estate:', res.estate);
-
             setEstate([res.estate]);
           });
       };
@@ -71,8 +68,6 @@ const Search = () => {
   }, [idEstate]);
 
   const handleFavorite = (id: any) => {
-    console.log(id);
-
     if (id === idUser) {
       return true;
     } else {
@@ -144,13 +139,6 @@ const Search = () => {
               );
               return null;
             }
-
-            console.log(
-              'Showing marker for item:',
-              item._id,
-              latitude,
-              longitude,
-            );
 
             return (
               item.status === 'available' && (

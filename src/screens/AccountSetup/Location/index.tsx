@@ -62,8 +62,6 @@ const Location = () => {
       .finally(() => setIsLoading(false));
   }, []);
   const handleChooseLocation = (lat: any, lng: any) => {
-    console.log(lat, lng, road, city, country);
-
     const address = {
       lat,
       lng,
