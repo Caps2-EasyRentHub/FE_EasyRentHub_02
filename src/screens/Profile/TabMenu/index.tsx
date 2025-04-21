@@ -49,7 +49,7 @@ const TabMenu = () => {
       })}
     >
       <Tab.Screen
-        name="Giao dịch"
+        name="Trạng thái"
         component={Transaction}
       />
       <Tab.Screen

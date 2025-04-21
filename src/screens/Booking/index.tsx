@@ -102,7 +102,8 @@ const Booking: React.FC<BookingProps> = ({route}) => {
           <Text style={styles.sectionTitle}>{t('check_in')}</Text>
           <TouchableOpacity
             style={styles.dateButton}
-            onPress={() => setShowCheckInPicker(true)}>
+            onPress={() => setShowCheckInPicker(true)}
+          >
             <Text style={styles.dateText}>
               {moment(checkIn).format('DD/MM/YYYY')}
             </Text>
@@ -122,7 +123,8 @@ const Booking: React.FC<BookingProps> = ({route}) => {
           <Text style={styles.sectionTitle}>{t('check_out')}</Text>
           <TouchableOpacity
             style={styles.dateButton}
-            onPress={() => setShowCheckOutPicker(true)}>
+            onPress={() => setShowCheckOutPicker(true)}
+          >
             <Text style={styles.dateText}>
               {moment(checkOut).format('DD/MM/YYYY')}
             </Text>
@@ -165,7 +167,8 @@ const Booking: React.FC<BookingProps> = ({route}) => {
         <TouchableOpacity
           style={[styles.bookButton, loading && styles.disabledButton]}
           onPress={handleBooking}
-          disabled={loading}>
+          disabled={loading}
+        >
           <Text style={styles.bookButtonText}>
             {loading ? t('processing') : t('book_room')}
           </Text>
@@ -244,4 +247,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Booking; 
+export default Booking;

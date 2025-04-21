@@ -39,7 +39,7 @@ const ConfirmDetail: React.FC<RouteConfirm> = ({route}) => {
           headers: {Authorization: userToken},
         },
       )
-      .then((res) => {})
+      .then((res) => res.json())
       .catch((e) => {
         console.log(e);
       })

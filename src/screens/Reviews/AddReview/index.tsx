@@ -124,11 +124,11 @@ const AddReview = ({route}: any) => {
       <KeyboardAvoidingView>
         <ScrollView>
           <View style={styles.title}>
-            <Text style={styles.titleNormal}>Hi, how was your</Text>
-            <Text style={styles.titleHighlight}> overall</Text>
+            <Text style={styles.titleNormal}>Xin chào,</Text>
+            <Text style={styles.titleHighlight}> trải nghiệm</Text>
           </View>
           <Text style={[styles.titleHighlight, {marginLeft: 24, marginTop: 5}]}>
-            experience?
+            của bạn như thế nào?
           </Text>
           <View style={styles.viewStar}>
             {[1, 2, 3, 4, 5].map((item) => (
@@ -156,7 +156,7 @@ const AddReview = ({route}: any) => {
               />
             </View>
             <TextInput
-              placeholder="Write your experience in here (optional)"
+              placeholder="Viết trải nghiệm của bạn ở đây (tùy chọn)"
               style={[
                 styles.input,
                 {fontFamily: content ? 'Lato-Bold' : 'Lato-Regular'},
@@ -198,11 +198,11 @@ const AddReview = ({route}: any) => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            style={[styles.btnFinish, {marginBottom: 100}]}
+            style={[styles.btnFinish, {marginBottom: 100, marginTop: 30}]}
             activeOpacity={0.8}
             onPress={handleOpenPress}
           >
-            <Text style={styles.txtFinish}>{t('submit')}</Text>
+            <Text style={styles.txtFinish}>{t('Đánh giá')}</Text>
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -222,10 +222,10 @@ const AddReview = ({route}: any) => {
         {success ? (
           <View style={styles.contentContainer}>
             <Success />
-            <Text style={[styles.titleNormal, {marginTop: 24}]}>
-              Successfully
+            <Text style={(styles.titleNormal)}>
+              Đã gửi đánh giá của bạn
             </Text>
-            <Text style={styles.titleHighlight}>submitted your review</Text>
+            <Text style={[styles.titleHighlight]}>Thành công</Text>
             <View style={styles.btnModalGroup}>
               <TouchableOpacity
                 style={styles.btnFinishModal}

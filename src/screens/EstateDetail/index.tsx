@@ -17,7 +17,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {Bath_Icon, Bed_Icon, Chat_Icon} from '@/assets/Svg';
 import {useTranslation} from 'react-i18next';
 import Maps from '@/components/Maps';
-// import Reviews from '@/screens/Reviews';
+import Reviews from '@/screens/Reviews';
 import {ScrollView} from 'react-native-virtualized-view';
 import NearbyEstate from '@/screens/Home/NearbyEstate';
 import {push} from '@/navigation/NavigationUtils';
@@ -249,7 +249,7 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
               />
             </View>
           </View>
-          {/* <Reviews estate={data} /> */}
+          <Reviews estate={data} />
           {nearby && (
             <NearbyEstate
               detail={true}

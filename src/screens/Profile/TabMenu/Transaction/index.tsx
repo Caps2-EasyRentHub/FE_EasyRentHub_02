@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {format} from 'date-fns';
 import FavoriteButton from '@/components/FavoriteButton';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
@@ -30,9 +31,10 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
   const {userToken, idUser} = useContext(AuthContext);
   const [data, setData] = useState<EstateDetailProps | null>(null);
   const [load, setLoad] = useState(true);
+
   useEffect(() => {
     setLoad(true);
-    fetch(`${Config.API_URL}/api/estate/${item.estateId}`, {
+    fetch(`${Config.API_URL}/api/estate/${item.estate._id}`, {
       method: 'GET',
       headers: {Authorization: userToken},
     })
@@ -44,23 +46,23 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
   }, []);
   const getStatus = (status: string) => {
     switch (status) {
-      case '1':
-        return 'Processing';
-      case '2':
-        return 'Booked';
-      case '3':
-        return 'Cancel Booking';
+      case 'pending':
+        return 'Đang chờ';
+      case 'approved':
+        return 'Đã đặt';
+      case 'cancelled':
+        return 'Đã Hủy';
       default:
-        return 'Complete';
+        return 'Hoàn thành';
     }
   };
   const getColorStatus = (status: string) => {
     switch (status) {
-      case '1':
+      case 'pending':
         return '#fdd43f';
-      case '2':
+      case 'approved':
         return '#1a97f5';
-      case '3':
+      case 'cancelled':
         return '#fc4b6c';
       default:
         return '#39cb7f';
@@ -77,12 +79,6 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
             id={data._id}
           />
         </View> */}
-
-        <View style={styles.priceView}>
-          <View style={styles.priceContent}>
-            <Text style={styles.price}>{item.type}</Text>
-          </View>
-        </View>
 
         <View
           style={[
@@ -117,7 +113,9 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
                 color={'#8BC83F'}
                 size={10}
               />
-              <Text style={styles.location}>{item.checkIn}</Text>
+              <Text style={styles.location}>
+                {format(new Date(item.startDate), 'dd/MM/yyyy')}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -129,32 +127,75 @@ const Transaction = () => {
   const {t} = useTranslation();
   const {userToken, idUser} = useContext(AuthContext);
   const [data, setData] = useState<[TranSactionProps] | null>(null);
+  const [filteredData, setFilteredData] = useState<TranSactionProps[] | null>(
+    null,
+  );
   const [load, setLoad] = useState(true);
 
   useEffect(() => {
     setLoad(true);
-    fetch(`${Config.API_URL}/api/payment/${idUser}`, {
+    fetch(`${Config.API_URL}/api/rental/tenant-bookings/${idUser}`, {
       method: 'GET',
       headers: {Authorization: userToken},
     })
       .then((res) => res.json())
-      .then((res) => {
-        setData(res.payments);
+      .then(async (res) => {
+        setData(res.bookings);
+
+        const transactions = [...res.bookings];
+        const unreviewedTransactions = [];
+        for (const transaction of transactions) {
+          try {
+            // Lấy thông tin estate
+            const estateRes = await fetch(
+              `${Config.API_URL}/api/estate/${transaction.estate._id}`,
+              {
+                method: 'GET',
+                headers: {Authorization: userToken},
+              },
+            );
+            const estateData = await estateRes.json();
+
+            // Kiểm tra xem user đã review chưa
+            console.log('estateData.estate.reviews');
+            console.log(estateData.estate.reviews);
+            const hasReviewed = estateData.estate.reviews?.some(
+              (review: any) => review.estateUserId === idUser,
+            );
+
+            // Chỉ hiển thị nếu chưa review
+            console.log('hasReviewed');
+            console.log(hasReviewed);
+            if (!hasReviewed) {
+              unreviewedTransactions.push(transaction);
+            }
+          } catch (error) {
+            console.error('Error fetching estate:', error);
+            // Nếu có lỗi, vẫn đưa transaction vào danh sách
+            unreviewedTransactions.push(transaction);
+          }
+        }
+
+        setFilteredData(unreviewedTransactions);
+        setLoad(false);
       })
-      .finally(() => setLoad(false));
-  }, []);
+      .catch((error) => {
+        console.error('Error fetching bookings:', error);
+        setLoad(false);
+      });
+  }, [idUser, userToken]);
   return (
     <ScrollView style={styles.container}>
       <View>
         <Text style={styles.textTitle}>
-          {data && data.length} {t('transactions')}
+          {t('transactions')} {filteredData && filteredData.length} {t('phòng')}
         </Text>
         <View style={styles.viewRender}>
           {load ? (
             <Splash />
           ) : (
-            data &&
-            data.map((item: TranSactionProps, index: number) => {
+            filteredData &&
+            filteredData.map((item: TranSactionProps, index: number) => {
               return (
                 <RenderItems
                   item={item}
@@ -179,7 +220,6 @@ const styles = StyleSheet.create({
     marginBottom: 332,
   },
   textTitle: {
-    textTransform: 'lowercase',
     color: '#252B5C',
     fontFamily: 'Lato-Medium',
     fontSize: 18,

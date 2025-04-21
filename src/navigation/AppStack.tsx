@@ -16,6 +16,10 @@ import AddEstateImages from '@/screens/CreateEstate/AddEstateImages';
 import AddEstateInfo from '@/screens/CreateEstate/AddEstateInfo';
 import EstateDetail from '@/screens/EstateDetail';
 import AddReview from '@/screens/Reviews/AddReview';
+import ReviewDetails from '@/screens/Reviews/ReviewDetails';
+import AllReview from '@/screens/Profile/AllReview';
+import TabMenu from '@/screens/Profile/TabMenu';
+import TransactionDetail from '@/screens/Profile/TabMenu/Transaction/TransactionDetail';
 import BookingHistory from '@/screens/Profile/BookingHistory';
 import Booking from '@/screens/Booking';
 import SearchResult from '@/screens/Search/SearchResult';
@@ -106,6 +110,34 @@ const AppStack = ({name}: any) => {
       <Stack.Screen
         name="AddReview"
         component={AddReview}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="ReviewDetails"
+        component={ReviewDetails}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="AllReview"
+        component={AllReview}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="TabMenu"
+        component={TabMenu}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="TransactionDetail"
+        component={TransactionDetail}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}

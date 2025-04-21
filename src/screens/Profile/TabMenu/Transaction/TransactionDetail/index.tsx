@@ -30,25 +30,34 @@ import {Error, Success} from '@/assets/Svg';
 const TransactionDetail: React.FC<RouteTransaction> = ({route}) => {
   const {transaction, estate} = route.params;
   const {t} = useTranslation();
-  const fromDate = moment(transaction.checkIn, 'DD/MM/YYYY');
-  const toDate = moment(transaction.checkOut, 'DD/MM/YYYY');
-  const totalDate = toDate.diff(fromDate, 'days');
   const [checked, setChecked] = useState(transaction.status);
   const {userToken} = useContext(AuthContext);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['50%'], []);
+  const startDate = moment(transaction.startDate).format('DD/MM/YYYY');
+  const endDate = moment(transaction.endDate).format('DD/MM/YYYY');
+  const fromDate = moment(startDate, 'DD/MM/YYYY');
+  const toDate = moment(endDate, 'DD/MM/YYYY');
+  const totalDate = toDate.diff(fromDate, 'days');
+
+  const roleLandLord = transaction.landlord.full_name;
+  const roleTenant = transaction.tenant.full_name;
+  const userInfo = roleTenant ? roleTenant : roleLandLord;
+
   const handleStatus = () => {
     axios
       .patch(
         `${Config.API_URL}/api/payment/${transaction._id}`,
         {
-          status: '3',
+          status: 'pending',
         },
         {
           headers: {Authorization: userToken},
         },
       )
-      .then((res) => setChecked('3'))
+      .then((res) => {
+        setChecked('cancelled');
+      })
       .catch((e) => {
         console.log(e);
       });
@@ -80,9 +89,6 @@ const TransactionDetail: React.FC<RouteTransaction> = ({route}) => {
               </Text>
             </View>
           </View>
-          <View style={styles.typeView}>
-            <Text style={styles.typeText}>{transaction.type}</Text>
-          </View>
         </View>
       </View>
     );
@@ -96,19 +102,15 @@ const TransactionDetail: React.FC<RouteTransaction> = ({route}) => {
           <View style={styles.tranView}>
             <View style={styles.tranContent}>
               <Text style={styles.tranText}>{t('check_in')}</Text>
-              <Text style={styles.tranText}>{transaction.checkIn}</Text>
+              <Text style={styles.tranText}>{startDate}</Text>
             </View>
             <View style={styles.tranContent}>
               <Text style={styles.tranText}>{t('check_out')}</Text>
-              <Text style={styles.tranText}>{transaction.checkOut}</Text>
+              <Text style={styles.tranText}>{endDate}</Text>
             </View>
             <View style={styles.tranContent}>
               <Text style={styles.tranText}>{t('owner_name')}</Text>
-              <Text style={styles.tranText}>{transaction.user.full_name}</Text>
-            </View>
-            <View style={styles.tranContent}>
-              <Text style={styles.tranText}>{t('transaction_type')}</Text>
-              <Text style={styles.tranText}>{transaction.type}</Text>
+              <Text style={styles.tranText}>{userInfo}</Text>
             </View>
           </View>
         </View>
@@ -127,19 +129,15 @@ const TransactionDetail: React.FC<RouteTransaction> = ({route}) => {
               <Text style={styles.tranText}>{totalDate} Days</Text>
             </View>
             <View style={styles.tranContent}>
-              <Text style={styles.tranText}>{t('monthly_payment')}</Text>
-              <Text style={styles.tranText}>{transaction.checkOut}</Text>
-            </View>
-            <View style={styles.tranContent}>
-              <Text style={styles.tranText}>{t('discount')}</Text>
-              <Text style={styles.tranText}>-$ {transaction.discount}</Text>
+              <Text style={styles.tranText}>{t('Lưu ý:')}</Text>
+              <Text style={styles.noteText}>{transaction.notes}</Text>
             </View>
           </View>
         </View>
         <View style={styles.payView}>
           <View style={styles.payContent}>
             <Text style={styles.payText}>{t('total')}</Text>
-            <Text style={styles.payText}>$ {transaction.price}</Text>
+            <Text style={styles.payText}>$ {transaction.rentalPrice}</Text>
           </View>
         </View>
       </View>
@@ -162,7 +160,7 @@ const TransactionDetail: React.FC<RouteTransaction> = ({route}) => {
             <Text style={styles.methodText}>{t('direct_transaction')}</Text>
           </View>
         </View>
-        {(checked === '1' || checked === '2') && (
+        {(checked === 'pending') && (
           <TouchableOpacity
             style={[styles.btnCancel, {backgroundColor: '#fc4b6c'}]}
             onPress={() => bottomSheetRef.current?.expand()}
@@ -170,7 +168,7 @@ const TransactionDetail: React.FC<RouteTransaction> = ({route}) => {
             <Text style={styles.textReview}>Cancel Booking</Text>
           </TouchableOpacity>
         )}
-        {checked === '3' && (
+        {checked === 'cancelled' && (
           <TouchableOpacity
             style={styles.btnCancel}
             activeOpacity={1}
@@ -178,7 +176,7 @@ const TransactionDetail: React.FC<RouteTransaction> = ({route}) => {
             <Text style={styles.txtCancel}>Cancel Booking</Text>
           </TouchableOpacity>
         )}
-        {checked === '4' && (
+        {checked === 'approved' && (
           <TouchableOpacity
             style={styles.btnReview}
             onPress={() => push({name: 'AddReview', params: {id: estate._id}})}
@@ -331,6 +329,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Regular',
     fontSize: 14,
     marginTop: 15,
+  },
+  noteText: {
+    color: '#53587A',
+    fontFamily: 'Lato-Regular',
+    fontSize: 14,
+    marginTop: 15,
+    width: 160,
   },
   payDetail: {
     width: screenWidth - 48,

@@ -53,7 +53,7 @@ export default {
   listings: 'Danh sách',
   confirm: 'Xác nhận',
   profile: 'Hồ sơ',
-  transactions: 'Giao dịch',
+  transactions: 'Trạng thái',
   transaction_detail: 'Chi tiết giao dịch',
   transaction: 'Giao dịch',
   check_in: 'Ngày đặt',
