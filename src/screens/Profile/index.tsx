@@ -8,7 +8,12 @@ import {
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Pencil_Icon, Review_Icon, Setting_Icon} from '@/assets/Svg';
+import {
+  Pencil_Icon,
+  Review_Icon,
+  Setting_Icon,
+  History_Icon,
+} from '@/assets/Svg';
 import {getImages} from '@/assets/Images';
 import {screenWidth} from '@/themes/Responsive';
 import {ProfileProps, UserData} from '@/utils/interface';
@@ -76,9 +81,13 @@ const Profile: React.FC<ProfileProps> = () => {
               <Text style={styles.username}>{lengthEstates}</Text>
               <Text style={styles.listingText}>{t('listings')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnListing}>
-              <Text style={styles.username}>0</Text>
-              <Text style={styles.listingText}>{t('confirm')}</Text>
+            <TouchableOpacity
+              style={styles.btnListing}
+              onPress={() => navigate({name: 'BookingHistory'})}
+            >
+              <Text style={{height: 6}}></Text>
+              <History_Icon />
+              <Text style={styles.listingText}>{t('Lịch sử')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.btnListing}

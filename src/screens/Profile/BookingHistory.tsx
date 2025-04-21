@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,155 +13,187 @@ import moment from 'moment';
 import {observer} from 'mobx-react-lite';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {getImages} from '../../assets/Images';
+import {AuthContext} from '@/context/AuthContext';
+import {measure} from 'react-native-reanimated';
+import {Config} from '@/config';
+import {Left_Icon} from '@/assets/Svg';
 
 const {city} = getImages();
 
 interface RentalTransaction {
   _id: string;
-  estate: string;
-  tenant: string;
-  landlord: string;
-  estateName: string;
-  address: {
-    house_number: string;
-    road: string;
-    quarter: string;
-    city: string;
-    country: string;
-    lat: string;
-    lng: string;
+  estate: {
+    _id: string;
+    name: string;
+    address: {
+      house_number: string;
+      road: string;
+      quarter: string;
+      city: string;
+      country: string;
+      lat: string;
+      lng: string;
+    };
+    property: {
+      bedroom: number;
+      bathroom: number;
+      floors: number;
+    };
+    images: string[];
   };
-  property: {
-    bedroom: number;
-    bathroom: number;
-    floors: number;
+  tenant: {
+    _id: string;
+    full_name: string;
   };
-  images: string[];
-  startDate: Date;
+  landlord: {
+    _id: string;
+    full_name: string;
+  };
+  startDate: string;
+  endDate: string;
   rentalPrice: number;
   notes: string;
-  status: 'pending' | 'approved' | 'rejected' | 'completed' | 'cancelled';
-  isBooked: boolean;
+  status: 'pending' | 'approved' | 'rejected' | 'cancelled';
 }
 
 const STATUS_COLORS = {
   pending: '#FFA500',
   approved: '#4CAF50',
   rejected: '#FF0000',
-  completed: '#2196F3',
   cancelled: '#9E9E9E',
 };
 
-// Mock data for demonstration
-const mockBookings: RentalTransaction[] = [
-  {
-    _id: '1',
-    estate: 'estate1',
-    tenant: 'tenant1',
-    landlord: 'landlord1',
-    estateName: 'Luxury Apartment Downtown',
-    address: {
-      house_number: '123',
-      road: 'Main Street',
-      quarter: 'Downtown',
-      city: 'Ho Chi Minh',
-      country: 'Vietnam',
-      lat: '10.762622',
-      lng: '106.660172',
-    },
-    property: {
-      bedroom: 3,
-      bathroom: 2,
-      floors: 1,
-    },
-    images: ['https://example.com/image1.jpg'],
-    startDate: new Date('2024-04-01'),
-    rentalPrice: 1500,
-    notes: 'Beautiful view of the city',
-    status: 'pending',
-    isBooked: true,
-  },
-  {
-    _id: '2',
-    estate: 'estate2',
-    tenant: 'tenant2',
-    landlord: 'landlord2',
-    estateName: 'Modern Villa with Pool',
-    address: {
-      house_number: '456',
-      road: 'Beach Road',
-      quarter: 'Seaside',
-      city: 'Da Nang',
-      country: 'Vietnam',
-      lat: '16.047079',
-      lng: '108.206230',
-    },
-    property: {
-      bedroom: 4,
-      bathroom: 3,
-      floors: 2,
-    },
-    images: ['https://example.com/image2.jpg'],
-    startDate: new Date('2024-03-15'),
-    rentalPrice: 2500,
-    notes: 'Private pool included',
-    status: 'approved',
-    isBooked: true,
-  },
-];
+const changeLangue = {
+  pending: 'Đang chờ',
+  approved: 'Đã đặt',
+  rejected: 'Từ chối',
+  cancelled: 'Đã hủy',
+};
 
 const BookingHistory = observer(() => {
   const navigation = useNavigation();
+  const {userToken, idUser} = useContext(AuthContext);
+  const [bookings, setBookings] = useState<RentalTransaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchBookingHistory();
+  }, []);
+
+  const fetchBookingHistory = () => {
+    setLoading(true);
+
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', userToken);
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(
+      `${Config.API_URL}/api/rental/tenant-bookings/${idUser}`,
+      requestOptions,
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((result) => {
+        console.log('idUser: ', idUser);
+        console.log('Booking history: ', result);
+        if (result.bookings && Array.isArray(result.bookings))
+          setBookings(result.bookings);
+      })
+      .catch((error) => {
+        console.error('Error fetching booking history: ', error);
+      })
+      .finally(() => setLoading(false));
+  };
 
   const renderBookingItem = ({item}: {item: RentalTransaction}) => (
     <TouchableOpacity
       style={styles.bookingCard}
-      onPress={() => navigation.navigate('EstateDetail', {id: item.estate, nearby: false})}
+      onPress={() =>
+        navigation.navigate('EstateDetail', {
+          id: item.estate._id,
+          nearby: false,
+        })
+      }
     >
       <View style={styles.cardHeader}>
         <Image
-          source={{uri: item.images[0]}}
+          source={{
+            uri:
+              item.estate.images && item.estate.images.length > 0
+                ? item.estate.images[0]
+                : '',
+          }}
           style={styles.estateImage}
           defaultSource={city}
         />
         <View style={styles.headerInfo}>
-          <Text 
+          <Text
             style={styles.estateName}
             numberOfLines={1}
           >
-            {item.estateName}
+            {item.estate.name || 'Không tên'}
           </Text>
           <Text style={styles.price}>
-            ${item.rentalPrice.toLocaleString()}/month
+            ${item.rentalPrice ? item.rentalPrice.toLocaleString() : '0'}/tháng
           </Text>
         </View>
       </View>
-      
+
       <ScrollView style={styles.detailsContainer}>
         <View style={styles.infoRow}>
-          <Text style={styles.label}>Address:</Text>
+          <Text style={styles.label}>Địa chỉ:</Text>
           <Text style={styles.value}>
-            {`${item.address.house_number} ${item.address.road}, ${item.address.quarter}, ${item.address.city}, ${item.address.country}`}
+            {item.estate.address
+              ? `${item.estate.address.house_number || ''} ${
+                  item.estate.address.road || ''
+                }, ${item.estate.address.quarter || ''}, ${
+                  item.estate.address.city || ''
+                }, ${item.estate.address.country || ''}`
+              : 'Địa chỉ không có sẵn'}
           </Text>
         </View>
 
         <View style={styles.infoRow}>
-          <Text style={styles.label}>Property Details:</Text>
+          <Text style={styles.label}>Các thông tin phòng:</Text>
           <Text style={styles.value}>
-            {`${item.property.bedroom} Bedrooms • ${item.property.bathroom} Bathrooms • ${item.property.floors} Floor(s)`}
+            {item.estate.property
+              ? `${item.estate.property.bedroom || 0} Phòng ngủ, ${
+                  item.estate.property.bathroom || 0
+                } Phòng tắm, ${item.estate.property.floors || 0} Tầng`
+              : 'Chi tiết phòng không có sẵn'}
           </Text>
         </View>
 
         <View style={styles.infoRow}>
-          <Text style={styles.label}>Start Date:</Text>
+          <Text style={styles.label}>Ngày bắt đầu:</Text>
           <Text style={styles.value}>
-            {moment(item.startDate).format('MMM DD, YYYY')}
+            {item.startDate
+              ? moment(item.startDate).format('DD/MM/YYYY')
+              : 'Not specified'}
+          </Text>
+        </View>
+
+        <View style={styles.infoRow}>
+          <Text style={styles.label}>Ngày kết thúc:</Text>
+          <Text style={styles.value}>
+            {item.endDate
+              ? moment(item.endDate).format('DD/MM/YYYY')
+              : 'Not specified'}
           </Text>
         </View>
 
         {item.notes && (
           <View style={styles.infoRow}>
-            <Text style={styles.label}>Notes:</Text>
+            <Text style={styles.label}>Ghi chú:</Text>
             <Text style={styles.value}>{item.notes}</Text>
           </View>
         )}
@@ -170,11 +202,11 @@ const BookingHistory = observer(() => {
           <View
             style={[
               styles.statusBadge,
-              {backgroundColor: STATUS_COLORS[item.status]},
+              {backgroundColor: STATUS_COLORS[item.status] || '#999999'},
             ]}
           >
             <Text style={styles.statusText}>
-              {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+              {changeLangue[item.status] || 'Không xác định'}
             </Text>
           </View>
         </View>
@@ -185,18 +217,33 @@ const BookingHistory = observer(() => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Booking History</Text>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <Left_Icon
+            width="20"
+            height="20"
+          />
+          <Text style={styles.headerTitle}>Lịch sử thuê xe</Text>
+        </TouchableOpacity>
       </View>
       <FlatList
-        data={mockBookings}
+        data={bookings}
         renderItem={renderBookingItem}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No bookings found</Text>
-          </View>
+          loading ? (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Đang tải dữ liệu...</Text>
+            </View>
+          ) : (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Không tìm thấy phòng đã đặt</Text>
+            </View>
+          )
         }
       />
     </SafeAreaView>
@@ -218,6 +265,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333333',
+    width: 150,
+    marginLeft: 6,
   },
   listContainer: {
     padding: 16,
@@ -299,6 +348,10 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     color: '#666666',
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

@@ -1,3 +1,3 @@
 export const Config = {
-  API_URL: 'http://192.168.1.136:5000',
+  API_URL: 'http://192.168.1.192:5000',
 };
