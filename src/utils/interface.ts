@@ -10,6 +10,7 @@ export interface HomeProps {
 }
 export interface ProfileProps {
   navigation: any;
+  route: any;
 }
 export interface OnboardingProps {
   navigation: any;

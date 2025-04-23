@@ -4,6 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import BackButton from '@/components/BackButton';
@@ -15,13 +16,51 @@ import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '@/utils/type';
 import {navigate} from '@/navigation/NavigationUtils';
+import {authService} from '@/services/authService';
 
 const Register = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [showPassword, setShowPassword] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async () => {
+    if (!fullName || !email || !password || !confirmPassword) {
+      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Lỗi', 'Mật khẩu không khớp');
+      return;
+    }
+
+    if (password.length < 6) {
+      Alert.alert('Lỗi', 'Mật khẩu phải có ít nhất 6 ký tự');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await authService.register(
+        fullName,
+        email,
+        password,
+        confirmPassword,
+        'Tenant'
+      );
+      Alert.alert('Thành công', 'Đăng ký thành công!');
+      navigate({name: 'Login'});
+    } catch (error: any) {
+      Alert.alert('Lỗi', error.message || 'Đăng ký thất bại');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <BackButton />
@@ -74,6 +113,8 @@ const Register = () => {
           placeholderTextColor={'#A1A5C1'}
           onChangeText={(text) => setEmail(text)}
           value={email}
+          keyboardType="email-address"
+          autoCapitalize="none"
         />
       </View>
       <View style={{marginTop: 25}}>
@@ -94,6 +135,26 @@ const Register = () => {
           placeholderTextColor={'#A1A5C1'}
           onChangeText={(text) => setPassword(text)}
           value={password}
+        />
+      </View>
+      <View style={{marginTop: 25}}>
+        <View style={styles.icon}>
+          <Feather
+            name="lock"
+            size={20}
+            color={'#252B5C'}
+          />
+        </View>
+        <TextInput
+          placeholder="Xác nhận mật khẩu"
+          secureTextEntry={showPassword}
+          style={[
+            styles.input,
+            {fontFamily: confirmPassword ? 'Lato-Bold' : 'Lato-Regular'},
+          ]}
+          placeholderTextColor={'#A1A5C1'}
+          onChangeText={(text) => setConfirmPassword(text)}
+          value={confirmPassword}
         />
       </View>
       <View
@@ -126,9 +187,11 @@ const Register = () => {
             borderRadius: 10,
             justifyContent: 'center',
             alignItems: 'center',
+            opacity: loading ? 0.7 : 1,
           }}
           activeOpacity={0.7}
-          onPress={() => navigate({name: 'Location'})}
+          onPress={handleRegister}
+          disabled={loading}
         >
           <Text
             style={{
@@ -138,7 +201,7 @@ const Register = () => {
               padding: 6,
             }}
           >
-            Đăng ký
+            {loading ? 'Đang đăng ký...' : 'Đăng ký'}
           </Text>
         </TouchableOpacity>
 

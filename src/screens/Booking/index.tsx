@@ -10,7 +10,7 @@ import {
 import {useTranslation} from 'react-i18next';
 import {AuthContext} from '@/context/AuthContext';
 import {Config} from '@/config';
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import {push} from '@/navigation/NavigationUtils';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -26,7 +26,7 @@ interface BookingProps {
 const Booking: React.FC<BookingProps> = ({route}) => {
   const {estate} = route.params;
   const {t} = useTranslation();
-  const {userToken} = useContext(AuthContext);
+  const {userToken, idUser} = useContext(AuthContext);
   const [checkIn, setCheckIn] = useState(new Date());
   const [checkOut, setCheckOut] = useState(new Date());
   const [showCheckInPicker, setShowCheckInPicker] = useState(false);
@@ -58,17 +58,20 @@ const Booking: React.FC<BookingProps> = ({route}) => {
   };
 
   const handleBooking = async () => {
+    if (!idUser) {
+      console.error('User ID is missing');
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axios.post(
         `${Config.API_URL}/api/rental/request`,
         {
           estateId: estate._id,
-          checkIn: moment(checkIn).format('DD/MM/YYYY'),
-          checkOut: moment(checkOut).format('DD/MM/YYYY'),
-          note: note,
-          price: calculateTotalPrice(),
-          status: '1',
+          startDate: moment(checkIn).format('YYYY-MM-DD'),
+          endDate: moment(checkOut).format('YYYY-MM-DD'),
+          notes: note,
         },
         {
           headers: {Authorization: userToken},
@@ -79,13 +82,17 @@ const Booking: React.FC<BookingProps> = ({route}) => {
         push({
           name: 'TransactionDetail',
           params: {
-            transaction: response.data.transaction,
+            transaction: response.data.booking,
             estate: estate,
           },
         });
       }
     } catch (error) {
-      console.error('Booking error:', error);
+      const axiosError = error as AxiosError;
+      console.error('Booking error:', axiosError);
+      if (axiosError.response) {
+        console.error('Error response:', axiosError.response.data);
+      }
     } finally {
       setLoading(false);
     }
@@ -219,6 +226,7 @@ const styles = StyleSheet.create({
     color: '#53587A',
   },
   noteInput: {
+    color: 'black',
     backgroundColor: '#F5F4F8',
     padding: 12,
     borderRadius: 8,

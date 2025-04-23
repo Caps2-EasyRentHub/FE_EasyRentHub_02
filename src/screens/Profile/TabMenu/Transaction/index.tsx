@@ -13,23 +13,36 @@ import FavoriteButton from '@/components/FavoriteButton';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {
-  EstateDetailProps,
-  EstateItems,
-  TranSactionProps,
-} from '@/utils/interface';
 import {screenHeight, screenWidth} from '@/themes/Responsive';
 import {push} from '@/navigation/NavigationUtils';
-import {getImages} from '@/assets/Images';
-import {Pencil_Icon} from '@/assets/Svg';
-import {t} from 'i18next';
 import {AuthContext} from '@/context/AuthContext';
 import {Config} from '@/config';
 import Splash from '@/components/Splash';
 
+interface Estate {
+  _id: string;
+  name: string;
+  address: string;
+  images: string[];
+  property: string;
+  status: string;
+  price: number;
+  reviews?: Array<{
+    estateUserId: string;
+  }>;
+}
+
+interface TranSactionProps {
+  _id: string;
+  estate: Estate;
+  startDate: string;
+  endDate: string;
+  status: string;
+}
+
 const RenderItems = ({item}: {item: TranSactionProps}) => {
   const {userToken, idUser} = useContext(AuthContext);
-  const [data, setData] = useState<EstateDetailProps | null>(null);
+  const [data, setData] = useState<Estate | null>(null);
   const [load, setLoad] = useState(true);
   const [error, setError] = useState(false);
 
@@ -67,6 +80,7 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
         return 'Hoàn thành';
     }
   };
+
   const getColorStatus = (status: string) => {
     switch (status) {
       case 'pending':
@@ -146,6 +160,7 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
   );
 };
 
+
 const Transaction = () => {
   const {t} = useTranslation();
   const {userToken, idUser} = useContext(AuthContext);
@@ -161,45 +176,29 @@ const Transaction = () => {
       method: 'GET',
       headers: {Authorization: userToken},
     })
-      .then((res) => res.json())
-      .then(async (res) => {
-        setData(res.bookings);
-
-        const transactions = [...res.bookings];
-        const unreviewedTransactions = [];
-        for (const transaction of transactions) {
-          try {
-            // Lấy thông tin estate
-            const estateRes = await fetch(
-              `${Config.API_URL}/api/estate/${transaction.estate._id}`,
-              {
-                method: 'GET',
-                headers: {Authorization: userToken},
-              },
-            );
-            const estateData = await estateRes.json();
-
-            const hasReviewed = estateData.estate.reviews?.some(
-              (review: any) => review.estateUserId === idUser,
-            );
-
-            if (!hasReviewed) {
-              unreviewedTransactions.push(transaction);
-            }
-          } catch (error) {
-            console.error('Error fetching estate:', error);
-            unreviewedTransactions.push(transaction);
-          }
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
         }
-
-        setFilteredData(unreviewedTransactions);
+        return res.json();
+      })
+      .then(async (res) => {
+        console.log('API Response:', res);
+        if (res.bookings && Array.isArray(res.bookings)) {
+          setFilteredData(res.bookings);
+        } else {
+          console.error('Invalid bookings data:', res);
+          setFilteredData([]);
+        }
         setLoad(false);
       })
       .catch((error) => {
         console.error('Error fetching bookings:', error);
+        setFilteredData([]);
         setLoad(false);
       });
   }, [idUser, userToken]);
+
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -212,12 +211,7 @@ const Transaction = () => {
           ) : (
             filteredData &&
             filteredData.map((item: TranSactionProps, index: number) => {
-              return (
-                <RenderItems
-                  item={item}
-                  key={index}
-                />
-              );
+              return <RenderItems item={item} key={index} />;
             })
           )}
         </View>
