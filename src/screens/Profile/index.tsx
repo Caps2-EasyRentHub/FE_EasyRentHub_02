@@ -24,7 +24,7 @@ import {Config} from '@/config';
 import Splash from '@/components/Splash';
 
 const Profile: React.FC<ProfileProps> = () => {
-  const {userToken, idUser, logout} = useContext(AuthContext);
+  const {userToken, idUser} = useContext(AuthContext);
   const {t} = useTranslation();
   const [data, setData] = useState<UserData | null>(null);
   const [lengthEstates, setLengthEstates] = useState();

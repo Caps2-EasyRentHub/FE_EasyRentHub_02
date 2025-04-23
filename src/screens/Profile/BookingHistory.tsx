@@ -72,7 +72,7 @@ const changeLangue = {
 
 const BookingHistory = observer(() => {
   const navigation = useNavigation();
-  const {userToken, idUser} = useContext(AuthContext);
+  const {userToken, idUser, role} = useContext(AuthContext);
   const [bookings, setBookings] = useState<RentalTransaction[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -114,7 +114,11 @@ const BookingHistory = observer(() => {
       .finally(() => setLoading(false));
   };
 
-  const renderBookingItem = ({item}: {item: RentalTransaction}) => (
+  const renderBookingItem = ({item}: {item: RentalTransaction}) => {
+    if (!item || !item.estate) {
+      return null;
+    }
+
     <TouchableOpacity
       style={styles.bookingCard}
       onPress={() =>
@@ -211,43 +215,48 @@ const BookingHistory = observer(() => {
           </View>
         </View>
       </ScrollView>
-    </TouchableOpacity>
-  );
+    </TouchableOpacity>;
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-          <Left_Icon
-            width="20"
-            height="20"
-          />
-          <Text style={styles.headerTitle}>Lịch sử thuê xe</Text>
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        data={bookings}
-        renderItem={renderBookingItem}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          loading ? (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Đang tải dữ liệu...</Text>
-            </View>
-          ) : (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Không tìm thấy phòng đã đặt</Text>
-            </View>
-          )
-        }
-      />
-    </SafeAreaView>
-  );
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <Left_Icon
+              width="20"
+              height="20"
+            />
+            <Text style={styles.headerTitle}>
+              {role === 'landlord' ? 'Lịch sử cho thuê' : 'Lịch sử thuê xe'}
+              {/* Lịch sử thuê xe */}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={bookings}
+          renderItem={renderBookingItem}
+          keyExtractor={(item) => item._id}
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            loading ? (
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>Đang tải dữ liệu...</Text>
+              </View>
+            ) : (
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>
+                  Không tìm thấy phòng đã đặt
+                </Text>
+              </View>
+            )
+          }
+        />
+      </SafeAreaView>
+    );
+  };
 });
 
 const styles = StyleSheet.create({

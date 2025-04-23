@@ -31,19 +31,30 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
   const {userToken, idUser} = useContext(AuthContext);
   const [data, setData] = useState<EstateDetailProps | null>(null);
   const [load, setLoad] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setLoad(true);
+    if (!item?.estate?._id) {
+      setError(true);
+      setLoad(false);
+      return;
+    }
+
     fetch(`${Config.API_URL}/api/estate/${item.estate._id}`, {
       method: 'GET',
       headers: {Authorization: userToken},
     })
       .then((res) => res.json())
       .then((res) => {
-        setData(res.estate);
+        if (res.estate) {
+          setData(res.estate);
+        } else {
+          setError(true);
+        }
       })
       .finally(() => setLoad(false));
-  }, []);
+  }, [item?.estate?._id, userToken]);
   const getStatus = (status: string) => {
     switch (status) {
       case 'pending':
@@ -68,10 +79,18 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
         return '#39cb7f';
     }
   };
+
+  if (load) {
+    return <Splash />;
+  }
+
+  if (error || !data) {
+    return null;
+  }
+
   return (
-    data && (
-      <View style={styles.cardItem}>
-        {/* <View style={styles.btnFavorite}>
+    <View style={styles.cardItem}>
+      {/* <View style={styles.btnFavorite}>
           <FavoriteButton
             favorite={
               data.likes.find((item: any) => item._id === idUser) ? true : false
@@ -80,53 +99,57 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
           />
         </View> */}
 
-        <View
-          style={[
-            styles.statusView,
-            {backgroundColor: getColorStatus(item.status)},
-          ]}
-        >
-          <View style={styles.priceContent}>
-            <Text style={styles.price}>{getStatus(item.status)}</Text>
+      <View
+        style={[
+          styles.statusView,
+          {backgroundColor: getColorStatus(item.status)},
+        ]}
+      >
+        <View style={styles.priceContent}>
+          <Text style={styles.price}>{getStatus(item.status)}</Text>
+        </View>
+      </View>
+
+      <Image
+        source={{uri: data?.images[0]}}
+        style={styles.images}
+      />
+
+      <TouchableOpacity
+        style={styles.cardContent}
+        onPress={() =>
+          push({
+            name: 'TransactionDetail',
+            params: {transaction: item, estate: data},
+          })
+        }
+      >
+        <Text style={styles.cardName}>{data?.name}</Text>
+        <View style={{flexDirection: 'row'}}>
+          <View style={styles.locationView}>
+            <AntDesign
+              name="clockcircle"
+              color={'#8BC83F'}
+              size={10}
+            />
+            <Text style={styles.location}>
+              {item.startDate
+                ? format(new Date(item.startDate), 'dd/MM/yyyy')
+                : item.checkIn
+                ? format(new Date(item.checkIn), 'dd/MM/yyyy')
+                : 'N/A'}
+            </Text>
           </View>
         </View>
-
-        <Image
-          source={{uri: data?.images[0]}}
-          style={styles.images}
-        />
-
-        <TouchableOpacity
-          style={styles.cardContent}
-          onPress={() =>
-            push({
-              name: 'TransactionDetail',
-              params: {transaction: item, estate: data},
-            })
-          }
-        >
-          <Text style={styles.cardName}>{data?.name}</Text>
-          <View style={{flexDirection: 'row'}}>
-            <View style={styles.locationView}>
-              <AntDesign
-                name="clockcircle"
-                color={'#8BC83F'}
-                size={10}
-              />
-              <Text style={styles.location}>
-                {format(new Date(item.startDate), 'dd/MM/yyyy')}
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-    )
+      </TouchableOpacity>
+    </View>
   );
 };
+
 const Transaction = () => {
   const {t} = useTranslation();
   const {userToken, idUser} = useContext(AuthContext);
-  const [data, setData] = useState<[TranSactionProps] | null>(null);
+  const [_data, setData] = useState<[TranSactionProps] | null>(null);
   const [filteredData, setFilteredData] = useState<TranSactionProps[] | null>(
     null,
   );

@@ -135,4 +135,9 @@ export interface TranSactionProps {
   user: Users;
   estateId: string;
   estateUserId: string;
+  startDate?: string;
+  estate?: {
+    _id: string;
+    [key: string]: any;
+  };
 }

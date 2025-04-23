@@ -151,10 +151,12 @@ const Onboarding: React.FC<OnboardingProps> = observer(() => {
           </View>
         </View>
         <View style={styles.imageContainer}>
-          <Image
-            source={item.image}
-            style={styles.images}
-          />
+          <View style={styles.imageWrapper}>
+            <Image
+              source={item.image}
+              style={styles.images}
+            />
+          </View>
           <View style={styles.imageOverlay} />
         </View>
       </View>
@@ -330,10 +332,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 8,
   },
-  images: {
-    width: screenWidth - 32,
-    height: screenHeight - 500,
-    borderRadius: 30,
+  imageWrapper: {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -342,6 +341,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 5,
+    borderRadius: 30,
+  },
+  images: {
+    width: screenWidth - 32,
+    height: screenHeight - 500,
+    borderRadius: 30,
   },
   imageOverlay: {
     position: 'absolute',

@@ -1,14 +1,37 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {Text} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Transaction from './Transaction';
 import Listing from './Listing';
 import {screenWidth} from '@/themes/Responsive';
 import Confirm from './Confirm';
+import {AuthContext} from '@/context/AuthContext';
+import {Config} from '@/config';
 
 const Tab = createMaterialTopTabNavigator();
 
 const TabMenu = () => {
+  const {userToken, idUser} = useContext(AuthContext);
+  const [isLandlord, setIsLandlord] = useState(false);
+
+  useEffect(() => {
+    const checkIfLandlord = async () => {
+      try {
+        const response = await fetch(`${Config.API_URL}/api/user/${idUser}`, {
+          method: 'GET',
+          headers: {Authorization: userToken},
+        });
+        const data = await response.json();
+        setIsLandlord(data.lengthEstates > 0);
+      } catch (error) {
+        console.error('Error checking landlord status:', error);
+        setIsLandlord(false);
+      }
+    };
+
+    checkIfLandlord();
+  }, [idUser, userToken]);
+
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -22,13 +45,12 @@ const TabMenu = () => {
           borderRadius: 100,
           top: 9,
           backgroundColor: '#FFFFFF',
-          width: screenWidth / 3 - 24 - 8,
+          width: screenWidth / (isLandlord ? 3 : 2) - 24 - 8,
           left: 8,
         },
         swipeEnabled: false,
         tabBarLabel: ({focused}) => {
-          let label;
-          return (label = focused ? (
+          return focused ? (
             <Text
               style={{
                 color: '#252B5C',
@@ -44,7 +66,7 @@ const TabMenu = () => {
             >
               {route.name}
             </Text>
-          ));
+          );
         },
       })}
     >
@@ -52,10 +74,12 @@ const TabMenu = () => {
         name="Trạng thái"
         component={Transaction}
       />
-      <Tab.Screen
-        name="Danh sách"
-        component={Listing}
-      />
+      {isLandlord && (
+        <Tab.Screen
+          name="Danh sách"
+          component={Listing}
+        />
+      )}
       <Tab.Screen
         name="Xác nhận"
         component={Confirm}
@@ -65,5 +89,3 @@ const TabMenu = () => {
 };
 
 export default TabMenu;
-
-const styles = StyleSheet.create({});
