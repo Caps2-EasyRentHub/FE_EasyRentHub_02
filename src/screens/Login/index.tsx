@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -7,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {getImages} from '@/assets/Images';
 import {Email_Icon} from '@/assets/Svg';
 import Feather from 'react-native-vector-icons/Feather';
@@ -22,19 +23,31 @@ import {AuthContext} from '@/context/AuthContext';
 import Loading from '@/components/Loading';
 
 const Login = () => {
-  const {login, status} = useContext(AuthContext);
+  const {login} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(true);
-  const [loginSuccess, setLoginSuccess] = useState(false);
-  const {t} = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const HandleLogin = (email: string, password: string) => {
-    setIsLoading(!status);
-    login(email, password);
+  const {t} = useTranslation();
 
-    setLoginSuccess(true);
-    setIsLoading(status);
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert(t('error'), t('please_fill_all_fields'));
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await login(email, password);
+      Alert.alert(t('success'), t('login_successful'));
+    } catch (error) {
+      Alert.alert(
+        t('error'),
+        error instanceof Error ? error.message : t('login_failed')
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -65,24 +78,6 @@ const Login = () => {
           {t('sign_in')}
         </Text>
       </View>
-      {loginSuccess && (
-        <View
-          style={{
-            height: 50,
-            width: screenWidth - 48,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginHorizontal: 24,
-            paddingHorizontal: 46,
-            borderRadius: 10,
-            backgroundColor: '#234F68',
-            position: 'absolute',
-            top: 229,
-          }}
-        >
-          <Text style={{color: '#FFFFFF'}}>Email hoặc mật khẩu không chính xác</Text>
-        </View>
-      )}
       <View style={{marginTop: 74}}>
         <View style={styles.icon}>
           <Email_Icon color="#252B5C" />
@@ -96,6 +91,9 @@ const Login = () => {
           placeholderTextColor={'#A1A5C1'}
           onChangeText={(text) => setEmail(text)}
           value={email}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
         />
       </View>
       <View style={{marginTop: 15}}>
@@ -116,6 +114,8 @@ const Login = () => {
           placeholderTextColor={'#A1A5C1'}
           onChangeText={(text) => setPassword(text)}
           value={password}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
       </View>
       <View
@@ -141,11 +141,16 @@ const Login = () => {
       <View style={{marginTop: 50}}>
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity
-            onPress={() => HandleLogin(email, password)}
+            onPress={handleLogin}
             style={styles.btnLogin}
             activeOpacity={0.7}
+            disabled={isLoading}
           >
-            <Text style={styles.txtLogin}>{t('login')}</Text>
+            {isLoading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <Text style={styles.txtLogin}>{t('login')}</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>

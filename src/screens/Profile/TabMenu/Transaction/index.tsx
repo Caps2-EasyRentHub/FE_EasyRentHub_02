@@ -13,23 +13,36 @@ import FavoriteButton from '@/components/FavoriteButton';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {
-  EstateDetailProps,
-  EstateItems,
-  TranSactionProps,
-} from '@/utils/interface';
 import {screenHeight, screenWidth} from '@/themes/Responsive';
 import {push} from '@/navigation/NavigationUtils';
-import {getImages} from '@/assets/Images';
-import {Pencil_Icon} from '@/assets/Svg';
-import {t} from 'i18next';
 import {AuthContext} from '@/context/AuthContext';
 import {Config} from '@/config';
 import Splash from '@/components/Splash';
 
+interface Estate {
+  _id: string;
+  name: string;
+  address: string;
+  images: string[];
+  property: string;
+  status: string;
+  price: number;
+  reviews?: Array<{
+    estateUserId: string;
+  }>;
+}
+
+interface TranSactionProps {
+  _id: string;
+  estate: Estate;
+  startDate: string;
+  endDate: string;
+  status: string;
+}
+
 const RenderItems = ({item}: {item: TranSactionProps}) => {
   const {userToken, idUser} = useContext(AuthContext);
-  const [data, setData] = useState<EstateDetailProps | null>(null);
+  const [data, setData] = useState<Estate | null>(null);
   const [load, setLoad] = useState(true);
 
   useEffect(() => {
@@ -44,6 +57,7 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
       })
       .finally(() => setLoad(false));
   }, []);
+
   const getStatus = (status: string) => {
     switch (status) {
       case 'pending':
@@ -56,6 +70,7 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
         return 'Hoàn thành';
     }
   };
+
   const getColorStatus = (status: string) => {
     switch (status) {
       case 'pending':
@@ -68,33 +83,21 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
         return '#39cb7f';
     }
   };
+
   return (
     data && (
       <View style={styles.cardItem}>
-        {/* <View style={styles.btnFavorite}>
-          <FavoriteButton
-            favorite={
-              data.likes.find((item: any) => item._id === idUser) ? true : false
-            }
-            id={data._id}
-          />
-        </View> */}
-
         <View
           style={[
             styles.statusView,
             {backgroundColor: getColorStatus(item.status)},
-          ]}
-        >
+          ]}>
           <View style={styles.priceContent}>
             <Text style={styles.price}>{getStatus(item.status)}</Text>
           </View>
         </View>
 
-        <Image
-          source={{uri: data?.images[0]}}
-          style={styles.images}
-        />
+        <Image source={{uri: data?.images[0]}} style={styles.images} />
 
         <TouchableOpacity
           style={styles.cardContent}
@@ -103,16 +106,11 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
               name: 'TransactionDetail',
               params: {transaction: item, estate: data},
             })
-          }
-        >
+          }>
           <Text style={styles.cardName}>{data?.name}</Text>
           <View style={{flexDirection: 'row'}}>
             <View style={styles.locationView}>
-              <AntDesign
-                name="clockcircle"
-                color={'#8BC83F'}
-                size={10}
-              />
+              <AntDesign name="clockcircle" color={'#8BC83F'} size={10} />
               <Text style={styles.location}>
                 {format(new Date(item.startDate), 'dd/MM/yyyy')}
               </Text>
@@ -123,10 +121,11 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
     )
   );
 };
+
 const Transaction = () => {
   const {t} = useTranslation();
   const {userToken, idUser} = useContext(AuthContext);
-  const [data, setData] = useState<[TranSactionProps] | null>(null);
+  const [data, setData] = useState<TranSactionProps[] | null>(null);
   const [filteredData, setFilteredData] = useState<TranSactionProps[] | null>(
     null,
   );
@@ -138,45 +137,29 @@ const Transaction = () => {
       method: 'GET',
       headers: {Authorization: userToken},
     })
-      .then((res) => res.json())
-      .then(async (res) => {
-        setData(res.bookings);
-
-        const transactions = [...res.bookings];
-        const unreviewedTransactions = [];
-        for (const transaction of transactions) {
-          try {
-            // Lấy thông tin estate
-            const estateRes = await fetch(
-              `${Config.API_URL}/api/estate/${transaction.estate._id}`,
-              {
-                method: 'GET',
-                headers: {Authorization: userToken},
-              },
-            );
-            const estateData = await estateRes.json();
-
-            const hasReviewed = estateData.estate.reviews?.some(
-              (review: any) => review.estateUserId === idUser,
-            );
-
-            if (!hasReviewed) {
-              unreviewedTransactions.push(transaction);
-            }
-          } catch (error) {
-            console.error('Error fetching estate:', error);
-            unreviewedTransactions.push(transaction);
-          }
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
         }
-
-        setFilteredData(unreviewedTransactions);
+        return res.json();
+      })
+      .then(async (res) => {
+        console.log('API Response:', res);
+        if (res.bookings && Array.isArray(res.bookings)) {
+          setFilteredData(res.bookings);
+        } else {
+          console.error('Invalid bookings data:', res);
+          setFilteredData([]);
+        }
         setLoad(false);
       })
       .catch((error) => {
         console.error('Error fetching bookings:', error);
+        setFilteredData([]);
         setLoad(false);
       });
   }, [idUser, userToken]);
+
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -189,12 +172,7 @@ const Transaction = () => {
           ) : (
             filteredData &&
             filteredData.map((item: TranSactionProps, index: number) => {
-              return (
-                <RenderItems
-                  item={item}
-                  key={index}
-                />
-              );
+              return <RenderItems item={item} key={index} />;
             })
           )}
         </View>

@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  SafeAreaView,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -12,7 +13,11 @@ import {
   Pencil_Icon,
   Review_Icon,
   Setting_Icon,
+<<<<<<< Updated upstream
   History_Icon,
+=======
+  Note_Icon,
+>>>>>>> Stashed changes
 } from '@/assets/Svg';
 import {getImages} from '@/assets/Images';
 import {screenWidth} from '@/themes/Responsive';
@@ -23,21 +28,24 @@ import {AuthContext} from '@/context/AuthContext';
 import {Config} from '@/config';
 import Splash from '@/components/Splash';
 
-const Profile: React.FC<ProfileProps> = () => {
-  const {userToken, idUser, logout} = useContext(AuthContext);
+const Profile: React.FC<ProfileProps> = ({navigation, route}) => {
+  const {userToken, idUser} = useContext(AuthContext);
   const {t} = useTranslation();
   const [data, setData] = useState<UserData | null>(null);
-  const [lengthEstates, setLengthEstates] = useState();
+  const [lengthEstates, setLengthEstates] = useState<number>(0);
+  
   const getProFile = async () => {
-    await fetch(`${Config.API_URL}/api/user/${idUser}`, {
-      method: 'GET',
-      headers: {Authorization: userToken},
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res.user);
-        setLengthEstates(res.lengthEstates);
+    try {
+      const response = await fetch(`${Config.API_URL}/api/user/${idUser}`, {
+        method: 'GET',
+        headers: {Authorization: userToken},
       });
+      const res = await response.json();
+      setData(res.user);
+      setLengthEstates(res.lengthEstates || 0);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
   };
 
   useEffect(() => {
@@ -47,8 +55,17 @@ const Profile: React.FC<ProfileProps> = () => {
   const handleEmailPress = (email: string) => {
     Linking.openURL(`mailto:${email}`);
   };
+  
+  if (!data) {
+    return (
+      <SafeAreaView style={styles.component}>
+        <Splash />
+      </SafeAreaView>
+    );
+  }
+
   return (
-    <View style={styles.component}>
+    <SafeAreaView style={styles.component}>
       <Text style={styles.profileTitle}>{t('profile')}</Text>
       <TouchableOpacity
         style={styles.btnSetting}
@@ -56,60 +73,48 @@ const Profile: React.FC<ProfileProps> = () => {
       >
         <Setting_Icon />
       </TouchableOpacity>
-      {!data ? (
-        <Splash />
-      ) : (
-        <>
-          <View>
-            <Image
-              style={styles.avatar}
-              source={{uri: data.avatar}}
-            />
-            <View style={styles.btnEdit}>
-              <Pencil_Icon />
-            </View>
-          </View>
-          <Text style={styles.username}>{data.full_name}</Text>
-          <Text
-            style={styles.email}
-            onPress={() => handleEmailPress(data.email)}
-          >
-            {data.email}
-          </Text>
-          <View style={styles.information}>
-            <TouchableOpacity style={styles.btnListing}>
-              <Text style={styles.username}>{lengthEstates}</Text>
-              <Text style={styles.listingText}>{t('listings')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.btnListing}
-              onPress={() => navigate({name: 'BookingHistory'})}
-            >
-              <Text style={{height: 6}}></Text>
-              <History_Icon />
-              <Text style={styles.listingText}>{t('Lịch sử')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.btnListing}
-              onPress={() => navigate({name: 'AllReview'})}
-            >
-              <Text style={{height: 6}}></Text>
-              <Review_Icon />
-              <Text style={styles.listingText}>{t('reviews')}</Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              height: '100%',
-              width: screenWidth - 48,
-              marginTop: 20,
-            }}
-          >
-            <TabMenu />
-          </View>
-        </>
-      )}
-    </View>
+      <View>
+        <Image
+          style={styles.avatar}
+          source={{uri: data.avatar}}
+        />
+        <View style={styles.btnEdit}>
+          <Pencil_Icon />
+        </View>
+      </View>
+      <Text style={styles.username}>{data.full_name}</Text>
+      <Text
+        style={styles.email}
+        onPress={() => handleEmailPress(data.email)}
+      >
+        {data.email}
+      </Text>
+      <View style={styles.information}>
+        <TouchableOpacity style={styles.btnListing}>
+          <Text style={styles.username}>{lengthEstates}</Text>
+          <Text style={styles.listingText}>{t('listings')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btnListing}
+          onPress={() => navigate({name: 'BookingHistory'})}
+        >
+          <Text style={{height: 6}} />
+          <Note_Icon />
+          <Text style={styles.listingText}>{t('Lịch sử')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btnListing}
+          onPress={() => navigate({name: 'AllReview'})}
+        >
+          <Text style={{height: 6}} />
+          <Review_Icon />
+          <Text style={styles.listingText}>{t('reviews')}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.tabMenuContainer}>
+        <TabMenu />
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -186,5 +191,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ECEDF3',
     marginLeft: 10,
+  },
+  tabMenuContainer: {
+    flex: 1,
+    width: screenWidth - 48,
+    marginTop: 20,
   },
 });

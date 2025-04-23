@@ -27,6 +27,12 @@ const Maps = ({user, estate}: any) => {
 
   const [routeCoordinates, setRouteCoordinates] = useState([]);
 
+  // Helper function to safely convert string coordinates to numbers
+  const toNumber = (value: string | number): number => {
+    if (typeof value === 'number') return value;
+    return parseFloat(value) || 0;
+  };
+
   useEffect(() => {
     requestCameraPermission();
   }, [isLoading]);
@@ -46,12 +52,13 @@ const Maps = ({user, estate}: any) => {
       console.warn(err);
     }
   };
+
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
       async (position) => {
         const {latitude, longitude} = position.coords;
         const URL = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
-        const URL1 = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${estate.address.lat}&lon=${estate.address.lng}`;
+        const URL1 = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${estate?.address?.lat}&lon=${estate?.address?.lng}`;
         try {
           const response = await axios.get(URL);
           const response1 = await axios.get(URL1);
@@ -73,34 +80,38 @@ const Maps = ({user, estate}: any) => {
   };
 
   const handleGetDirections = async () => {
-    if (user.address && estate.address) {
-      const latDelta = Math.abs(user.address.lat - estate.address.lat);
-      const lonDelta = Math.abs(user.address.lng - estate.address.lng);
+    if (user?.address && estate?.address) {
+      const userLat = toNumber(user.address.lat);
+      const userLng = toNumber(user.address.lng);
+      const estateLat = toNumber(estate.address.lat);
+      const estateLng = toNumber(estate.address.lng);
+
+      const latDelta = Math.abs(userLat - estateLat);
+      const lonDelta = Math.abs(userLng - estateLng);
       const zoomLatDelta = latDelta * 3;
       const zoomLonDelta = lonDelta * 3;
 
       const mapLatDelta = Math.max(zoomLatDelta, 0.001);
       const mapLonDelta = Math.max(zoomLonDelta, 0.001);
       setMapDelta({mapLatDelta, mapLonDelta});
-    }
-    if (user.address && estate.address) {
-      const URL = `https://router.project-osrm.org/route/v1/driving/${user.address.lng},${user.address.lat};${estate.address.lng},${estate.address.lat}?overview=full&geometries=geojson`;
+
+      const URL = `https://router.project-osrm.org/route/v1/driving/${userLng},${userLat};${estateLng},${estateLat}?overview=full&geometries=geojson`;
       try {
         const response = await axios.get(URL);
         if (response.data.code === 'Ok') {
           const coordinates = response.data.routes[0].geometry.coordinates;
 
           const arr = coordinates.map((coordinate: any) => ({
-            latitude: coordinate[1],
-            longitude: coordinate[0],
+            latitude: toNumber(coordinate[1]),
+            longitude: toNumber(coordinate[0]),
           }));
           arr.unshift({
-            latitude: parseFloat(user.address.lat),
-            longitude: parseFloat(user.address.lng),
+            latitude: userLat,
+            longitude: userLng,
           });
           arr.push({
-            latitude: parseFloat(estate.address.lat),
-            longitude: parseFloat(estate.address.lng),
+            latitude: estateLat,
+            longitude: estateLng,
           });
           setRouteCoordinates(arr);
         }
@@ -121,14 +132,14 @@ const Maps = ({user, estate}: any) => {
     <View style={styles.container}>
       <View style={styles.borderRadiusMap}>
         {mapDelta &&
-          user.address &&
-          estate.address &&
+          user?.address &&
+          estate?.address &&
           routeCoordinates !== null && (
             <MapView
               style={styles.map}
               region={{
-                latitude: parseFloat(user.address.lat),
-                longitude: parseFloat(user.address.lng),
+                latitude: toNumber(user.address.lat),
+                longitude: toNumber(user.address.lng),
                 latitudeDelta: mapDelta?.mapLatDelta,
                 longitudeDelta: mapDelta?.mapLonDelta,
               }}
@@ -137,8 +148,8 @@ const Maps = ({user, estate}: any) => {
             >
               <Marker
                 coordinate={{
-                  latitude: parseFloat(user.address.lat),
-                  longitude: parseFloat(user.address.lng),
+                  latitude: toNumber(user.address.lat),
+                  longitude: toNumber(user.address.lng),
                 }}
                 title={
                   user.address?.road +
@@ -159,8 +170,8 @@ const Maps = ({user, estate}: any) => {
 
               <Marker
                 coordinate={{
-                  latitude: parseFloat(estate.address.lat),
-                  longitude: parseFloat(estate.address.lng),
+                  latitude: toNumber(estate.address.lat),
+                  longitude: toNumber(estate.address.lng),
                 }}
                 title={
                   estate.address?.road +

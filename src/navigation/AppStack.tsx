@@ -23,6 +23,7 @@ import TransactionDetail from '@/screens/Profile/TabMenu/Transaction/Transaction
 import BookingHistory from '@/screens/Profile/BookingHistory';
 import Booking from '@/screens/Booking';
 import SearchResult from '@/screens/Search/SearchResult';
+import Setting from '@/screens/Profile/Setting';
 
 const AppStack = ({name}: any) => {
   const Stack = createStackNavigator<RootStackParams>();
@@ -159,6 +160,13 @@ const AppStack = ({name}: any) => {
       <Stack.Screen
         name="SearchResult"
         component={SearchResult}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="Setting"
+        component={Setting}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
