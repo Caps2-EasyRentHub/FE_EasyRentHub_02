@@ -13,11 +13,7 @@ import {
   Pencil_Icon,
   Review_Icon,
   Setting_Icon,
-<<<<<<< Updated upstream
-  History_Icon,
-=======
   Note_Icon,
->>>>>>> Stashed changes
 } from '@/assets/Svg';
 import {getImages} from '@/assets/Images';
 import {screenWidth} from '@/themes/Responsive';
