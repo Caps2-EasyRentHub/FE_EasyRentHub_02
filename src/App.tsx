@@ -4,6 +4,7 @@ import './Translations/i18n';
 import {languageStore} from './stores';
 import {AuthProvider} from './context/AuthContext';
 import {PaperProvider} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 // import {ChatProvider} from './context/ChatContext';
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
       <PaperProvider>
         {/* <ChatProvider> */}
         <AppNavigation />
+        <Toast />
         {/* </ChatProvider> */}
       </PaperProvider>
     </AuthProvider>

@@ -1,6 +1,5 @@
 import {
   ActivityIndicator,
-  Alert,
   Image,
   StyleSheet,
   Text,
@@ -8,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {getImages} from '@/assets/Images';
 import {Email_Icon} from '@/assets/Svg';
 import Feather from 'react-native-vector-icons/Feather';
@@ -16,37 +15,84 @@ import Separator from '@/components/Separator';
 import GoogleButton from '@/components/GoogleButton';
 import FacebookButton from '@/components/FacebookButton';
 import {screenWidth} from '@/themes/Responsive';
-import BackButton from '@/components/BackButton';
 import {useTranslation} from 'react-i18next';
 import {navigate} from '@/navigation/NavigationUtils';
-import {AuthContext} from '@/context/AuthContext';
 import Loading from '@/components/Loading';
+import {useAuth} from '@/hooks/useAuth';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {Snackbar} from 'react-native-paper';
+import axios from 'axios';
+
+type RootStackParamList = {
+  Login: undefined;
+  OptionLogin: undefined;
+  Home: undefined;
+  Register: undefined;
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const Login = () => {
-  const {login} = useContext(AuthContext);
+  const {login} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const {t} = useTranslation();
+  const navigation = useNavigation<NavigationProp>();
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert(t('error'), t('please_fill_all_fields'));
-      return;
+  // State cho validation
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  // State cho Snackbar
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarType, setSnackbarType] = useState<'success' | 'error'>('success');
+
+  const showSnackbar = (message: string, type: 'success' | 'error') => {
+    setSnackbarMessage(message);
+    setSnackbarType(type);
+    setSnackbarVisible(true);
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    setEmailError('');
+    setPasswordError('');
+
+    if (!email) {
+      setEmailError(t('Vui lòng nhập Email'));
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError(t('Email không hợp lệ'));
+      isValid = false;
     }
 
+    if (!password) {
+      setPasswordError(t('Vui lòng nhập Mật khẩu'));
+      isValid = false;
+    } else if (password.length < 6) {
+      setPasswordError(t('Mật khẩu phải ít nhất 6 ký tự'));
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
+  const handleLogin = async () => {
+    if (!validateForm()) return;
+
     try {
-      setIsLoading(true);
-      await login(email, password);
-      Alert.alert(t('success'), t('login_successful'));
+      const response = await login(email, password);
+      if (response.access_token) {
+        showSnackbar('Đăng nhập thành công', 'success');
+        navigation.navigate('HomeScreen');
+        navigation.navigate('Home');
+      }
     } catch (error) {
-      Alert.alert(
-        t('error'),
-        error instanceof Error ? error.message : t('login_failed')
-      );
-    } finally {
-      setIsLoading(false);
+      showSnackbar('Email hoặc mật khẩu không đúng', 'error');
     }
   };
 
@@ -54,7 +100,7 @@ const Login = () => {
     <View style={styles.container}>
       {isLoading && <Loading />}
       <View style={{zIndex: isLoading ? 0 : 1}}>
-        <BackButton />
+        {/* Không hiển thị nút Back */}
       </View>
 
       <Image
@@ -67,11 +113,9 @@ const Login = () => {
           alignItems: 'center',
           marginTop: 10,
           marginLeft: 29,
-        }}
-      >
+        }}>
         <Text
-          style={{color: '#252B5C', fontFamily: 'Lato-Medium', fontSize: 25}}
-        >
+          style={{color: '#252B5C', fontFamily: 'Lato-Medium', fontSize: 25}}>
           {t('let')}{' '}
         </Text>
         <Text style={{color: '#1F4C6B', fontFamily: 'Lato-Bold', fontSize: 25}}>
@@ -87,22 +131,23 @@ const Login = () => {
           style={[
             styles.input,
             {fontFamily: email ? 'Lato-Bold' : 'Lato-Regular'},
+            emailError ? styles.inputError : null,
           ]}
           placeholderTextColor={'#A1A5C1'}
-          onChangeText={(text) => setEmail(text)}
+          onChangeText={(text) => {
+            setEmail(text);
+            setEmailError('');
+          }}
           value={email}
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
         />
+        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
       </View>
       <View style={{marginTop: 15}}>
         <View style={styles.icon}>
-          <Feather
-            name="lock"
-            size={20}
-            color={'#252B5C'}
-          />
+          <Feather name="lock" size={20} color={'#252B5C'} />
         </View>
         <TextInput
           placeholder="Mật khẩu"
@@ -110,13 +155,20 @@ const Login = () => {
           style={[
             styles.input,
             {fontFamily: password ? 'Lato-Bold' : 'Lato-Regular'},
+            passwordError ? styles.inputError : null,
           ]}
           placeholderTextColor={'#A1A5C1'}
-          onChangeText={(text) => setPassword(text)}
+          onChangeText={(text) => {
+            setPassword(text);
+            setPasswordError('');
+          }}
           value={password}
           autoCapitalize="none"
           autoCorrect={false}
         />
+        {passwordError ? (
+          <Text style={styles.errorText}>{passwordError}</Text>
+        ) : null}
       </View>
       <View
         style={{
@@ -124,15 +176,13 @@ const Login = () => {
           flexDirection: 'row',
           marginHorizontal: 24,
           marginTop: 10,
-        }}
-      >
+        }}>
         <TouchableOpacity>
           <Text style={styles.text}>{t('forgot_password')}?</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setShowPassword(!showPassword)}
-          activeOpacity={0.6}
-        >
+          activeOpacity={0.6}>
           <Text style={styles.text}>
             {showPassword ? t('show_password') : t('hide_password')}
           </Text>
@@ -144,8 +194,7 @@ const Login = () => {
             onPress={handleLogin}
             style={styles.btnLogin}
             activeOpacity={0.7}
-            disabled={isLoading}
-          >
+            disabled={isLoading}>
             {isLoading ? (
               <ActivityIndicator color="#FFFFFF" />
             ) : (
@@ -169,17 +218,30 @@ const Login = () => {
           marginBottom: 50,
         }}
         activeOpacity={0.5}
-        onPress={() => navigate({name: 'Register'})}
-      >
+        onPress={() => navigate({name: 'Register'})}>
         <Text
-          style={{fontSize: 14, color: '#53587A', fontFamily: 'Lato-Regular'}}
-        >
+          style={{fontSize: 14, color: '#53587A', fontFamily: 'Lato-Regular'}}>
           {t('no_account')}?{' '}
         </Text>
         <Text style={{fontSize: 14, color: '#1F4C6B', fontFamily: 'Lato-Bold'}}>
           {t('register')}
         </Text>
       </TouchableOpacity>
+
+      {/* Snackbar */}
+      <Snackbar
+        visible={snackbarVisible}
+        onDismiss={() => setSnackbarVisible(false)}
+        duration={3000}
+        style={{
+          backgroundColor: snackbarType === 'success' ? '#4CAF50' : '#F44336',
+        }}
+        action={{
+          label: 'Đóng',
+          onPress: () => setSnackbarVisible(false),
+        }}>
+        {snackbarMessage}
+      </Snackbar>
     </View>
   );
 };
@@ -210,6 +272,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#F5F4F8',
     zIndex: -1,
+  },
+  inputError: {
+    borderWidth: 1,
+    borderColor: '#F44336',
+  },
+  errorText: {
+    color: '#F44336',
+    fontSize: 12,
+    marginLeft: 24,
+    marginTop: 4,
+    fontFamily: 'Lato-Regular',
   },
   icon: {
     position: 'absolute',

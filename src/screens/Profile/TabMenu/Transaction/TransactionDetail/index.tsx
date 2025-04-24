@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native';
 import React, {
   FunctionComponent,
@@ -44,23 +45,27 @@ const TransactionDetail: React.FC<RouteTransaction> = ({route}) => {
   const roleTenant = transaction.tenant.full_name;
   const userInfo = roleTenant ? roleTenant : roleLandLord;
 
-  const handleStatus = () => {
-    axios
-      .patch(
-        `${Config.API_URL}/api/payment/${transaction._id}`,
+  const handleStatus = async () => {
+    try {
+      const response = await axios.patch(
+        `${Config.API_URL}/api/rental/cancel/${transaction._id}`,
         {
-          status: 'pending',
+          status: 'cancelled',
         },
         {
           headers: {Authorization: userToken},
         },
-      )
-      .then((res) => {
+      );
+
+      if (response.data) {
         setChecked('cancelled');
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+        handleClosePress();
+        Alert.alert('Thành công', 'Bạn đã hủy đặt phòng thành công');
+      }
+    } catch (error) {
+      console.error('Cancel booking error:', error);
+      Alert.alert('Lỗi', 'Không thể hủy đặt phòng. Vui lòng thử lại sau.');
+    }
   };
 
   const handleClosePress = () => bottomSheetRef.current?.close();

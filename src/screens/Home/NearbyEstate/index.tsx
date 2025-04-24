@@ -40,7 +40,7 @@ const NearbyEstate = ({detail, id}: {detail: boolean; id: string}) => {
   const RenderItems = ({item}: {item: EstateItems}) => {
     return item._id === id
       ? null
-      : item.status === 'available' && (
+      : item.status === 'available' && item.status !== 'pending' && (
           <View style={styles.cardItem}>
             <View style={styles.btnFavorite}>
               <FavoriteButton
