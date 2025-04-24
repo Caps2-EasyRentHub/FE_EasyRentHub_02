@@ -116,6 +116,7 @@ const FeaturedEstates: React.FC<FeaturedProps> = ({navigation}) => {
               })
                 .then((res) => res.json())
                 .then((res) => {
+                  console.log('res.estates: ' + res.estates);
                   setData(res.estates);
                 })
                 .finally(() => setLoad(false));

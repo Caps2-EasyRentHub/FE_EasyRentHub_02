@@ -160,7 +160,6 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
   );
 };
 
-
 const Transaction = () => {
   const {t} = useTranslation();
   const {userToken, idUser} = useContext(AuthContext);
@@ -172,6 +171,7 @@ const Transaction = () => {
 
   useEffect(() => {
     setLoad(true);
+
     fetch(`${Config.API_URL}/api/rental/tenant-bookings/${idUser}`, {
       method: 'GET',
       headers: {Authorization: userToken},
@@ -183,7 +183,6 @@ const Transaction = () => {
         return res.json();
       })
       .then(async (res) => {
-        console.log('API Response:', res);
         if (res.bookings && Array.isArray(res.bookings)) {
           setFilteredData(res.bookings);
         } else {
@@ -211,7 +210,12 @@ const Transaction = () => {
           ) : (
             filteredData &&
             filteredData.map((item: TranSactionProps, index: number) => {
-              return <RenderItems item={item} key={index} />;
+              return (
+                <RenderItems
+                  item={item}
+                  key={index}
+                />
+              );
             })
           )}
         </View>
