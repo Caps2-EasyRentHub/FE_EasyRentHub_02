@@ -25,34 +25,45 @@ const Listing = () => {
   const {t} = useTranslation();
   const {userToken, idUser} = useContext(AuthContext);
   const [data, setData] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 100);
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadPosts = async () => {
-      await fetch(`${Config.API_URL}/api/user_estates/${idUser}?limit=100`, {
-        method: 'GET',
-        headers: {Authorization: userToken},
-      })
-        .then((res) => res.json())
-        .then((res) => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `${Config.API_URL}/api/user_estates/${idUser}?limit=100`,
+          {
+            method: 'GET',
+            headers: {Authorization: userToken},
+          },
+        );
+        const res = await response.json();
+        console.log('API Response:', JSON.stringify(res));
+        if (res.estates && Array.isArray(res.estates)) {
           setData(res.estates);
-        });
+          console.log('Estates loaded:', res.estates.length);
+        } else {
+          console.log('Invalid estates data format:', res);
+        }
+      } catch (error) {
+        console.error('Error loading estates:', error);
+      } finally {
+        setLoading(false);
+      }
     };
-    loadPosts();
-  }, []);
+    if (idUser && userToken) {
+      loadPosts();
+    }
+  }, [idUser, userToken]);
 
   const RenderItems = ({item}: {item: EstateItems}) => {
+    console.log('Rendering item:', item._id, item.name);
     return (
       <View style={styles.cardItem}>
         <FavoriteButton
           favorite={
-            item.likes.find((item: any) => item === idUser) ? true : false
+            item.likes.find((like: any) => like === idUser) ? true : false
           }
           id={item._id}
         />
@@ -75,7 +86,7 @@ const Listing = () => {
           </TouchableOpacity>
         </View>
 
-        {item.status === 0 && (
+        {item.status === 'available' && (
           <View style={[styles.statusView, {backgroundColor: '#fdd43f'}]}>
             <View style={styles.priceContent}>
               <Text
@@ -95,7 +106,7 @@ const Listing = () => {
         <View style={styles.priceView}>
           <View style={styles.priceContent}>
             <Text style={styles.price}>$ </Text>
-            <Text style={styles.price}>{item.price.rent}</Text>
+            <Text style={styles.price}>{item.price}</Text>
             <Text style={styles.stay}> /</Text>
             <Text style={styles.stay}>month</Text>
           </View>
@@ -154,16 +165,24 @@ const Listing = () => {
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.viewRender}>
-          {data.map((item: EstateItems, index: number) => {
-            return (
-              <RenderItems
-                item={item}
-                key={index}
-              />
-            );
-          })}
-        </View>
+        {loading ? (
+          <Text style={{textAlign: 'center', marginTop: 20}}>Loading...</Text>
+        ) : data.length === 0 ? (
+          <Text style={{textAlign: 'center', marginTop: 20}}>
+            No listings found
+          </Text>
+        ) : (
+          <View style={styles.viewRender}>
+            {data.map((item: EstateItems, index: number) => {
+              return (
+                <RenderItems
+                  item={item}
+                  key={index}
+                />
+              );
+            })}
+          </View>
+        )}
       </View>
     </ScrollView>
   );

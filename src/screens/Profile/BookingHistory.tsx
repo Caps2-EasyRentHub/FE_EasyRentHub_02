@@ -104,8 +104,8 @@ const BookingHistory = observer(() => {
         return response.json();
       })
       .then((result) => {
-        console.log('idUser: ', idUser);
-        console.log('Booking history: ', result);
+        // console.log('idUser: ', idUser);
+        // console.log('Booking history: ', result);
         if (result.bookings && Array.isArray(result.bookings))
           setBookings(result.bookings);
       })

@@ -22,10 +22,10 @@ const TabMenu = () => {
           headers: {Authorization: userToken},
         });
         const data = await response.json();
-        setIsLandlord(data.lengthEstates > 0);
+        const landLord = data?.user?.role === 'Landlord';
+        setIsLandlord(landLord);
       } catch (error) {
         console.error('Error checking landlord status:', error);
-        setIsLandlord(false);
       }
     };
 

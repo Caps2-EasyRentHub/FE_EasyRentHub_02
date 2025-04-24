@@ -123,7 +123,7 @@ const Confirm = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        setData(res.payments);
+        setData(res.bookings);
       })
       .finally(() => setLoad(false));
   }, []);
