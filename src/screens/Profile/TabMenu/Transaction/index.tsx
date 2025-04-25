@@ -230,8 +230,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
     width: screenWidth,
-    height: screenHeight,
-    marginBottom: 332,
   },
   textTitle: {
     color: '#252B5C',

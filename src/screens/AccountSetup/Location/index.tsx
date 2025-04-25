@@ -58,9 +58,6 @@ const Location = () => {
         setRoad(res?.user?.address?.road || '');
         setCity(res?.user?.address?.city || '');
         setCountry(res?.user?.address?.country || '');
-        console.log('road: 123' + road);
-        console.log('lng' + lng);
-        console.log('city' + city);
       })
       .finally(() => setIsLoading(false));
   }, []);
@@ -96,11 +93,6 @@ const Location = () => {
       const city = response.data.address.city;
       const country = response.data.address.country;
       setRoad(road), setCity(city), setCountry(country);
-
-      console.log('response.data: road' + response.data.address);
-      console.log('road: road' + road);
-      console.log('country: road' + country);
-      console.log('city: road' + city);
     } catch (error) {
       console.error('Lỗi:', error);
     }

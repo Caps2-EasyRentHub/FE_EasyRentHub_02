@@ -47,7 +47,6 @@ const AllReview = () => {
     fetch(`${Config.API_URL}/api/user/${idUser}`, requestOptions)
       .then((res) => res.json())
       .then((result) => {
-        console.log('User data: ', result);
         if (result.user) {
           setUserData(result.user);
         }
@@ -70,7 +69,6 @@ const AllReview = () => {
     fetch(`${Config.API_URL}/api/user-reviews/${idUser}`, requestOptions)
       .then((res) => res.json())
       .then((result) => {
-        console.log('User reviews: ', result.reviews);
         const formattedReviews = (result.reviews || []).map((review) => {
 
           return {

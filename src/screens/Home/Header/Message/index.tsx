@@ -1,17 +1,17 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Chat_Icon } from '@/assets/Svg';
-import { chatService } from '@/services/chatService';
-import { useAuth } from '@/hooks/useAuth';
-import { useNavigation } from '@react-navigation/native';
-import { Chat } from '@/types/chat';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParams } from '@/utils/type';
+import React, {useEffect, useState, useCallback} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import {Chat_Icon} from '@/assets/Svg';
+import {chatService} from '@/services/chatService';
+import {useAuth} from '@/hooks/useAuth';
+import {useNavigation} from '@react-navigation/native';
+import {Chat} from '@/types/chat';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParams} from '@/utils/type';
 
 type NavigationProp = StackNavigationProp<RootStackParams>;
 
 const Message: React.FC = () => {
-  const { user } = useAuth();
+  const {user} = useAuth();
   const navigation = useNavigation<NavigationProp>();
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,7 +19,7 @@ const Message: React.FC = () => {
 
   const fetchUnreadCount = useCallback(async () => {
     if (!user?.id) return;
-    
+
     try {
       setLoading(true);
       setError(null);
@@ -29,7 +29,10 @@ const Message: React.FC = () => {
       }, 0);
       setUnreadCount(totalUnread);
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Có lỗi xảy ra khi tải tin nhắn';
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Có lỗi xảy ra khi tải tin nhắn';
       setError(errorMessage);
       Alert.alert('Lỗi', errorMessage);
     } finally {
@@ -61,19 +64,23 @@ const Message: React.FC = () => {
       style={styles.container}
       activeOpacity={0.7}
       accessibilityRole="button"
-      accessibilityLabel={`Tin nhắn${unreadCount > 0 ? `, Bạn có ${unreadCount} tin nhắn chưa đọc` : ''}`}
+      accessibilityLabel={`Tin nhắn${
+        unreadCount > 0 ? `, Bạn có ${unreadCount} tin nhắn chưa đọc` : ''
+      }`}
     >
       <Chat_Icon />
       {loading ? (
         <View style={[styles.badge, styles.loadingBadge]}>
           <Text style={styles.badgeText}>...</Text>
         </View>
-      ) : unreadCount > 0 && (
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>
-            {unreadCount > 99 ? '99+' : unreadCount}
-          </Text>
-        </View>
+      ) : (
+        unreadCount > 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </Text>
+          </View>
+        )
       )}
     </TouchableOpacity>
   );
