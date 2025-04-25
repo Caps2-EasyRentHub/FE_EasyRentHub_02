@@ -216,9 +216,7 @@ const Message = () => {
       </Swipeable>
     );
   };
-  const handleUnFavorite = (item: any) => {
-    console.log(item);
-  };
+  
   const RightSwipe = (item: any) => {
     return (
       <TouchableOpacity

@@ -160,8 +160,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     flex: 1,
     width: screenWidth,
-    height: screenHeight,
-    marginBottom: 332,
   },
   textTitle: {
     textTransform: 'lowercase',

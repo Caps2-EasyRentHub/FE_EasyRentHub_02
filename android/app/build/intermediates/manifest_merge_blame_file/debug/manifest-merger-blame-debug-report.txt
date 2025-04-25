@@ -9,37 +9,37 @@
 9        android:targetSdkVersion="33" />
 10
 11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-11-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:5:5-77
-11-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:5:22-75
+11-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:5:5-77
+11-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:5:22-75
 12    <uses-permission android:name="android.permission.INTERNET" />
-12-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:3:5-67
-12-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:3:22-64
+12-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:3:5-67
+12-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:3:22-64
 13    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-13-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:4:5-79
-13-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:4:22-76
+13-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:4:5-79
+13-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:4:22-76
 14    <uses-permission android:name="android.permission.Manifest.permission.CAMERA" />
-14-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:5:5-85
-14-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:5:22-82
+14-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:5:5-85
+14-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:5:22-82
 15    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-15-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:6:5-76
-15-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:6:22-73
+15-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:6:5-76
+15-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:6:22-73
 16    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-16-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:7:5-75
-16-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:7:22-72
+16-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:7:5-75
+16-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:7:22-72
 17    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-17-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:8:5-79
-17-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:8:22-77
+17-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:8:5-79
+17-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:8:22-77
 18    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-18-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:9:5-81
-18-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:9:22-78
+18-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:9:5-81
+18-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:9:22-78
 19
 20    <queries>
-20-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-11:15
+20-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-11:15
 21        <intent>
-21-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-10:18
+21-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-10:18
 22            <action android:name="android.media.action.IMAGE_CAPTURE" />
-22-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-73
-22-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:21-70
+22-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-73
+22-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:21-70
 23        </intent>
 24
 25        <package android:name="com.facebook.katana" /> <!-- Needs to be explicitly declared on Android R+ -->
@@ -104,57 +104,57 @@
 50-->[com.android.installreferrer:installreferrer:1.0] C:\Users\HP\.gradle\caches\transforms-3\29a75643f5ab72bbeb85cb5995ce9361\transformed\jetified-installreferrer-1.0\AndroidManifest.xml:9:22-107
 51
 52    <application
-52-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:10:5-43:19
+52-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:10:5-43:19
 53        android:name="com.zentro.MainApplication"
-53-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:12:7-38
+53-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:12:7-38
 54        android:allowBackup="false"
-54-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:16:7-34
+54-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:16:7-34
 55        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 55-->[androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\d1fc84c1d1b5167c0c16acf08f86d015\transformed\core-1.10.1\AndroidManifest.xml:28:18-86
 56        android:debuggable="true"
 57        android:icon="@mipmap/ic_launcher"
-57-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:14:7-41
+57-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:14:7-41
 58        android:label="@string/app_name"
-58-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:13:7-39
+58-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:13:7-39
 59        android:requestLegacyExternalStorage="true"
-59-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:11:7-50
+59-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:11:7-50
 60        android:roundIcon="@mipmap/ic_launcher_round"
-60-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:15:7-52
+60-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:15:7-52
 61        android:supportsRtl="true"
 61-->[com.facebook.android:facebook-android-sdk:18.0.3] C:\Users\HP\.gradle\caches\transforms-3\0ba0bea71e1e309fc388aa75a8dba794\transformed\jetified-facebook-android-sdk-18.0.3\AndroidManifest.xml:14:18-44
 62        android:theme="@style/AppTheme"
-62-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:17:7-38
+62-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:17:7-38
 63        android:usesCleartextTraffic="true" >
-63-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:8:9-44
+63-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:8:9-44
 64        <activity
-64-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:39:6-83
+64-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:39:6-83
 65            android:name="com.facebook.react.devsupport.DevSettingsActivity"
-65-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:39:16-80
+65-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:39:16-80
 66            android:exported="false" />
-66-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:11:84-108
+66-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\debug\AndroidManifest.xml:11:84-108
 67        <activity
-67-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:18:7-29:18
+67-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:18:7-29:18
 68            android:name="com.zentro.MainActivity"
-68-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:19:9-37
+68-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:19:9-37
 69            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-69-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:21:9-118
+69-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:21:9-118
 70            android:exported="true"
-70-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:24:9-32
+70-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:24:9-32
 71            android:label="@string/app_name"
-71-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:20:9-41
+71-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:20:9-41
 72            android:launchMode="singleTask"
-72-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:22:9-40
+72-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:22:9-40
 73            android:windowSoftInputMode="adjustResize" >
-73-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:23:9-51
+73-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:23:9-51
 74            <intent-filter>
-74-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:25:9-28:25
+74-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:25:9-28:25
 75                <action android:name="android.intent.action.MAIN" />
-75-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:26:13-65
-75-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:26:21-62
+75-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:26:13-65
+75-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:26:21-62
 76
 77                <category android:name="android.intent.category.LAUNCHER" />
-77-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:27:13-73
-77-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:27:23-70
+77-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:27:13-73
+77-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:27:23-70
 78            </intent-filter>
 79        </activity>
 80        <!--
@@ -163,73 +163,73 @@
 83            android:value="df99a90453534be26dd169f18d2e9b5d"/>
 84        -->
 85        <meta-data
-85-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:33:5-35:63
+85-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:33:5-35:63
 86            android:name="com.google.android.geo.API_KEY"
-86-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:34:6-51
+86-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:34:6-51
 87            android:value="AIzaSyCXHsPT450-AosY7dvzi5gUT_geYSpI34o" />
-87-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:35:6-61
+87-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:35:6-61
 88        <meta-data
-88-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:37:6-104
+88-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:37:6-104
 89            android:name="com.facebook.sdk.ApplicationId"
-89-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:37:17-62
+89-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:37:17-62
 90            android:value="@string/facebook_app_id" />
-90-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:37:63-102
+90-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:37:63-102
 91        <meta-data
-91-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:38:6-108
+91-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:38:6-108
 92            android:name="com.facebook.sdk.ClientToken"
-92-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:38:17-60
+92-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:38:17-60
 93            android:value="@string/facebook_client_token" />
-93-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:38:61-106
+93-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:38:61-106
 94
 95        <provider
-95-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:40:6-42:31
+95-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:40:6-42:31
 96            android:name="com.facebook.FacebookContentProvider"
-96-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:41:5-56
+96-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:41:5-56
 97            android:authorities="com.facebook.app.FacebookContentProvider625209123157341"
-97-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:40:16-93
+97-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:40:16-93
 98            android:exported="true" />
-98-->D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:42:5-28
+98-->D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\android\app\src\main\AndroidManifest.xml:42:5-28
 99        <provider
-99-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:16:9-24:20
+99-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:16:9-24:20
 100            android:name="com.reactnative.ivpusic.imagepicker.IvpusicImagePickerFileProvider"
-100-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-94
+100-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-94
 101            android:authorities="com.zentro.provider"
-101-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:18:13-60
+101-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:18:13-60
 102            android:exported="false"
-102-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:19:13-37
+102-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:19:13-37
 103            android:grantUriPermissions="true" >
-103-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:20:13-47
+103-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:20:13-47
 104            <meta-data
-104-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-23:78
+104-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-23:78
 105                android:name="android.support.FILE_PROVIDER_PATHS"
-105-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:17-67
+105-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:17-67
 106                android:resource="@xml/ivpusic_imagepicker_provider_paths" />
-106-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:17-75
+106-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:17-75
 107        </provider>
 108
 109        <activity
-109-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:26:9-28:72
+109-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:26:9-28:72
 110            android:name="com.yalantis.ucrop.UCropActivity"
-110-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:13-60
+110-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:27:13-60
 111            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-111-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:13-69
+111-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:13-69
 112
 113        <provider
-113-->[:react-native-image-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
+113-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
 114            android:name="com.imagepicker.ImagePickerProvider"
-114-->[:react-native-image-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-63
+114-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-63
 115            android:authorities="com.zentro.imagepickerprovider"
-115-->[:react-native-image-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-71
+115-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-71
 116            android:exported="false"
-116-->[:react-native-image-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
+116-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
 117            android:grantUriPermissions="true" >
-117-->[:react-native-image-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
+117-->[:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
 118            <meta-data
-118-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-23:78
+118-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-23:78
 119                android:name="android.support.FILE_PROVIDER_PATHS"
-119-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:17-67
+119-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:17-67
 120                android:resource="@xml/imagepicker_provider_paths" />
-120-->[:react-native-image-crop-picker] D:\University\Caps2\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:17-75
+120-->[:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:17-75
 121        </provider>
 122
 123        <activity

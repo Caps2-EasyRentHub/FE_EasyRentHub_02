@@ -39,10 +39,9 @@ const Listing = () => {
           },
         );
         const res = await response.json();
-        console.log('API Response:', JSON.stringify(res));
+
         if (res.estates && Array.isArray(res.estates)) {
           setData(res.estates);
-          console.log('Estates loaded:', res.estates.length);
         } else {
           console.log('Invalid estates data format:', res);
         }
@@ -58,16 +57,15 @@ const Listing = () => {
   }, [idUser, userToken]);
 
   const RenderItems = ({item}: {item: EstateItems}) => {
-    console.log('Rendering item:', item._id, item.name);
     return (
       <View style={styles.cardItem}>
-        <FavoriteButton
+        {/* <FavoriteButton
           favorite={
             item.likes.find((like: any) => like === idUser) ? true : false
           }
           id={item._id}
-        />
-        <View style={styles.btnFavorite}>
+        /> */}
+        {/* <View style={styles.btnFavorite}>
           <TouchableOpacity
             style={[
               styles.viewButton,
@@ -84,36 +82,38 @@ const Listing = () => {
           >
             <Pencil_Icon />
           </TouchableOpacity>
-        </View>
+        </View> */}
 
-        {item.status === 'available' && (
-          <View style={[styles.statusView, {backgroundColor: '#fdd43f'}]}>
-            <View style={styles.priceContent}>
-              <Text
-                style={{
-                  color: '#F5F4F8',
-                  fontSize: 12,
-                  fontFamily: 'Lato-Bold',
-                  marginLeft: 2,
-                }}
-              >
-                Wait
-              </Text>
-            </View>
+        {/* {(item.status === 'available' || item.status === 0) && ( */}
+        <View style={[styles.statusView, {backgroundColor: '#fdd43f'}]}>
+          <View style={styles.priceContent}>
+            <Text
+              style={{
+                color: '#F5F4F8',
+                fontSize: 12,
+                fontFamily: 'Lato-Bold',
+                marginLeft: 2,
+              }}
+            >
+              Wait
+            </Text>
           </View>
-        )}
+        </View>
+        {/* )} */}
 
         <View style={styles.priceView}>
           <View style={styles.priceContent}>
             <Text style={styles.price}>$ </Text>
-            <Text style={styles.price}>{item.price}</Text>
+            <Text style={styles.price}>{item.price.toLocaleString()}</Text>
             <Text style={styles.stay}> /</Text>
-            <Text style={styles.stay}>month</Text>
+            <Text style={styles.stay}>tháng</Text>
           </View>
         </View>
 
         <Image
-          source={{uri: item.images[0]}}
+          source={{
+            uri: item.images && item.images.length > 0 ? item.images[0] : null,
+          }}
           style={styles.images}
         />
 
@@ -123,7 +123,7 @@ const Listing = () => {
             push({name: 'EstateDetail', params: {id: item._id, nearby: false}})
           }
         >
-          <Text style={styles.cardName}>{item.name}</Text>
+          <Text style={styles.cardName}>{item.name || 'No Name'}</Text>
           <View style={{flexDirection: 'row'}}>
             <View style={styles.ratingView}>
               <Entypo
@@ -131,7 +131,7 @@ const Listing = () => {
                 color={'#FFC42D'}
                 size={10}
               />
-              <Text style={styles.rating}>4</Text>
+              <Text style={styles.rating}>{item.rating_star || 0}</Text>
             </View>
             <View style={styles.locationView}>
               <FontAwesome6
@@ -139,7 +139,12 @@ const Listing = () => {
                 color={'#234F68'}
                 size={9}
               />
-              <Text style={styles.location}>{item.address.road}</Text>
+              <Text style={styles.location}>
+                {' '}
+                {item.address && item.address.road
+                  ? item.address.road
+                  : 'No Address'}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -148,7 +153,13 @@ const Listing = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{
+        paddingHorizontal: 10,
+        paddingBottom: 20,
+      }}
+    >
       <View>
         <View style={styles.viewTitle}>
           <Text style={styles.textTitle}>
@@ -193,8 +204,6 @@ export default Listing;
 const styles = StyleSheet.create({
   container: {
     width: screenWidth,
-    height: screenHeight,
-    marginBottom: 332,
     backgroundColor: '#FFFFFF',
   },
   textTitle: {
@@ -206,7 +215,8 @@ const styles = StyleSheet.create({
   viewRender: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
+    marginHorizontal: 0,
   },
   btnFavorite: {
     position: 'absolute',
@@ -215,7 +225,8 @@ const styles = StyleSheet.create({
   },
 
   cardItem: {
-    width: screenWidth / 2 - 27.5,
+    width: screenWidth / 2 - 30,
+    marginHorizontal: 5,
     backgroundColor: '#F5F4F8',
     borderRadius: 25,
     marginTop: 20,
