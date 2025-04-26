@@ -73,7 +73,7 @@ const changeLangue = {
 
 const BookingHistory = observer(() => {
   const navigation = useNavigation();
-  const {userToken, idUser, role} = useContext(AuthContext);
+  const {userToken, idUser} = useContext(AuthContext);
   const [bookings, setBookings] = useState<RentalTransaction[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -114,108 +114,107 @@ const BookingHistory = observer(() => {
   };
 
   const renderBookingItem = ({item}: {item: RentalTransaction}) => {
-    if (!item || !item.estate) {
-      return null;
-    }
-
-    <TouchableOpacity
-      style={styles.bookingCard}
-      onPress={() =>
-        navigation.navigate('EstateDetail', {
-          id: item.estate._id,
-          nearby: false,
-        })
-      }
-    >
-      <View style={styles.cardHeader}>
-        <Image
-          source={{
-            uri:
-              item.estate.images && item.estate.images.length > 0
-                ? item.estate.images[0]
-                : '',
-          }}
-          style={styles.estateImage}
-          defaultSource={city}
-        />
-        <View style={styles.headerInfo}>
-          <Text
-            style={styles.estateName}
-            numberOfLines={1}
-          >
-            {item.estate.name || 'Không tên'}
-          </Text>
-          <Text style={styles.price}>
-            ${item.rentalPrice ? item.rentalPrice.toLocaleString() : '0'}/tháng
-          </Text>
-        </View>
-      </View>
-
-      <ScrollView style={styles.detailsContainer}>
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Địa chỉ:</Text>
-          <Text style={styles.value}>
-            {item.estate.address
-              ? `${item.estate.address.house_number || ''} ${
-                  item.estate.address.road || ''
-                }, ${item.estate.address.quarter || ''}, ${
-                  item.estate.address.city || ''
-                }, ${item.estate.address.country || ''}`
-              : 'Địa chỉ không có sẵn'}
-          </Text>
-        </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Các thông tin phòng:</Text>
-          <Text style={styles.value}>
-            {item.estate.property
-              ? `${item.estate.property.bedroom || 0} Phòng ngủ, ${
-                  item.estate.property.bathroom || 0
-                } Phòng tắm, ${item.estate.property.floors || 0} Tầng`
-              : 'Chi tiết phòng không có sẵn'}
-          </Text>
-        </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Ngày bắt đầu:</Text>
-          <Text style={styles.value}>
-            {item.startDate
-              ? moment(item.startDate).format('DD/MM/YYYY')
-              : 'Not specified'}
-          </Text>
-        </View>
-
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Ngày kết thúc:</Text>
-          <Text style={styles.value}>
-            {item.endDate
-              ? moment(item.endDate).format('DD/MM/YYYY')
-              : 'Not specified'}
-          </Text>
-        </View>
-
-        {item.notes && (
-          <View style={styles.infoRow}>
-            <Text style={styles.label}>Ghi chú:</Text>
-            <Text style={styles.value}>{item.notes}</Text>
-          </View>
-        )}
-
-        <View style={styles.statusContainer}>
-          <View
-            style={[
-              styles.statusBadge,
-              {backgroundColor: STATUS_COLORS[item.status] || '#999999'},
-            ]}
-          >
-            <Text style={styles.statusText}>
-              {changeLangue[item.status] || 'Không xác định'}
+    return (
+      <TouchableOpacity
+        style={styles.bookingCard}
+        onPress={() =>
+          navigation.navigate('EstateDetail', {
+            id: item.estate._id,
+            nearby: false,
+          })
+        }
+      >
+        <View style={styles.cardHeader}>
+          <Image
+            source={{
+              uri:
+                item.estate.images && item.estate.images.length > 0
+                  ? item.estate.images[0]
+                  : '',
+            }}
+            style={styles.estateImage}
+            defaultSource={city}
+          />
+          <View style={styles.headerInfo}>
+            <Text
+              style={styles.estateName}
+              numberOfLines={1}
+            >
+              {item.estate.name || 'Không tên'}
+            </Text>
+            <Text style={styles.price}>
+              ${item.rentalPrice ? item.rentalPrice.toLocaleString() : '0'}
+              /tháng
             </Text>
           </View>
         </View>
-      </ScrollView>
-    </TouchableOpacity>;
 
+        <ScrollView style={styles.detailsContainer}>
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>Địa chỉ:</Text>
+            <Text style={styles.value}>
+              {item.estate.address
+                ? `${item.estate.address.house_number || ''} ${
+                    item.estate.address.road || ''
+                  }, ${item.estate.address.quarter || ''}, ${
+                    item.estate.address.city || ''
+                  }, ${item.estate.address.country || ''}`
+                : 'Địa chỉ không có sẵn'}
+            </Text>
+          </View>
+
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>Các thông tin phòng:</Text>
+            <Text style={styles.value}>
+              {item.estate.property
+                ? `${item.estate.property.bedroom || 0} Phòng ngủ, ${
+                    item.estate.property.bathroom || 0
+                  } Phòng tắm, ${item.estate.property.floors || 0} Tầng`
+                : 'Chi tiết phòng không có sẵn'}
+            </Text>
+          </View>
+
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>Ngày bắt đầu:</Text>
+            <Text style={styles.value}>
+              {item.startDate
+                ? moment(item.startDate).format('DD/MM/YYYY')
+                : 'Not specified'}
+            </Text>
+          </View>
+
+          <View style={styles.infoRow}>
+            <Text style={styles.label}>Ngày kết thúc:</Text>
+            <Text style={styles.value}>
+              {item.endDate
+                ? moment(item.endDate).format('DD/MM/YYYY')
+                : 'Not specified'}
+            </Text>
+          </View>
+
+          {item.notes && (
+            <View style={styles.infoRow}>
+              <Text style={styles.label}>Ghi chú:</Text>
+              <Text style={styles.value}>{item.notes}</Text>
+            </View>
+          )}
+
+          <View style={styles.statusContainer}>
+            <View
+              style={[
+                styles.statusBadge,
+                {backgroundColor: STATUS_COLORS[item.status] || '#999999'},
+              ]}
+            >
+              <Text style={styles.statusText}>
+                {changeLangue[item.status] || 'Không xác định'}
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+      </TouchableOpacity>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <BackButton />

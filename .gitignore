@@ -1,4 +1,5 @@
 android/.gradle/
+src/config/index.ts
 
 # Gradle files
 .gradle/
