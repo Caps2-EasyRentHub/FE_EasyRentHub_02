@@ -43,4 +43,6 @@ export type RootStackParams = {
   Booking: {
     estate: any;
   };
+  Chat: undefined;
+  AllEstates: undefined;
 };

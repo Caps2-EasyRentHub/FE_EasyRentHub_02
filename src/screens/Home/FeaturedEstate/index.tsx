@@ -42,7 +42,7 @@ const FeaturedEstates: React.FC<FeaturedProps> = ({navigation}) => {
   }, []);
 
   const RenderItems = ({item}: {item: EstateDetailProps}) => {
-    return item.status === 'available' ? (
+    return item.status === 'available' && item.status !== 'pending' ? (
       <View style={styles.cardItem}>
         <View>
           <FavoriteButton
@@ -96,7 +96,9 @@ const FeaturedEstates: React.FC<FeaturedProps> = ({navigation}) => {
     <View>
       <View style={styles.itemHeader}>
         <Text style={styles.textHeader}>{t('featured_estates')}</Text>
-        <Text style={styles.textViewAll}>{t('view_all')}</Text>
+        <TouchableOpacity onPress={() => push({name: 'AllEstates'})}>
+          <Text style={styles.textViewAll}>{t('view_all')}</Text>
+        </TouchableOpacity>
       </View>
       {load ? (
         <Splash />

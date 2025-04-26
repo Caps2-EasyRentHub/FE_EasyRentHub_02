@@ -69,6 +69,7 @@ const Booking: React.FC<BookingProps> = ({route}) => {
         `${Config.API_URL}/api/rental/request`,
         {
           estateId: estate._id,
+          userId: idUser,
           startDate: moment(checkIn).format('YYYY-MM-DD'),
           endDate: moment(checkOut).format('YYYY-MM-DD'),
           notes: note,

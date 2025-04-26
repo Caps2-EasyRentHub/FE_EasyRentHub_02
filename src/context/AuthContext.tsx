@@ -2,6 +2,7 @@ import React, {createContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Config} from '@/config';
+import {CommonActions} from '@react-navigation/native';
 
 interface User {
   _id: string;
@@ -34,7 +35,7 @@ interface AuthContextType {
   userToken: string;
   avatarUser: string | null;
   idUser: string | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<LoginResponse>;
   logout: () => void;
 }
 
@@ -51,7 +52,7 @@ export const AuthContext = createContext<AuthContextType>({
   userToken: '',
   avatarUser: null,
   idUser: null,
-  login: async () => {},
+  login: async () => ({access_token: '', user: {_id: '', avatar: '', full_name: '', address: {lat: '', lng: '', road: '', city: '', country: ''}}}),
   logout: () => {},
 });
 
@@ -76,13 +77,13 @@ export const AuthProvider = ({children}: any) => {
 
       const response = await axios.post<LoginResponse>(
         `${Config.API_URL}/api/login`,
-        { email, password },
+        {email, password},
         {
           headers: {
             'Content-Type': 'application/json',
           },
           timeout: 15000,
-        }
+        },
       );
 
       if (!response.data || !response.data.access_token || !response.data.user) {
@@ -115,20 +116,22 @@ export const AuthProvider = ({children}: any) => {
       setCity(response.data.user.address.city);
       
       setStatus(true);
+      return response.data;
     } catch (error) {
       setStatus(false);
       if (axios.isAxiosError(error)) {
-        if (error.code === 'ECONNABORTED') {
-          throw new Error('Connection timeout. Please try again.');
+        if (error.response?.status === 401) {
+          const errorMessage = 'Email hoặc mật khẩu không chính xác';
+          throw new Error(errorMessage);
+        } else if (error.code === 'ECONNABORTED') {
+          throw new Error('Kết nối bị timeout. Vui lòng thử lại.');
         } else if (error.message === 'Network Error') {
-          throw new Error('Network error. Please check your connection.');
-        } else if (error.response?.status === 401) {
-          throw new Error('Invalid email or password.');
+          throw new Error('Lỗi kết nối. Vui lòng kiểm tra kết nối mạng.');
         } else {
-          throw new Error(error.response?.data?.message || 'An error occurred during login.');
+          throw new Error(error.response?.data?.message || 'Đã xảy ra lỗi trong quá trình đăng nhập');
         }
       }
-      throw error;
+      throw new Error('Đã xảy ra lỗi không xác định');
     } finally {
       setIsLoading(false);
     }
@@ -146,6 +149,7 @@ export const AuthProvider = ({children}: any) => {
     AsyncStorage.removeItem('city');
     AsyncStorage.removeItem('country');
     setIsLoading(false);
+    setStatus(false);
   };
 
   const isLoggedIn = async () => {

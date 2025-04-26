@@ -17,6 +17,7 @@ import {AuthContext} from '@/context/AuthContext';
 import {measure} from 'react-native-reanimated';
 import {Config} from '@/config';
 import {Left_Icon} from '@/assets/Svg';
+import BackButton from '@/components/BackButton';
 
 const {city} = getImages();
 
@@ -215,65 +216,48 @@ const BookingHistory = observer(() => {
       </ScrollView>
     </TouchableOpacity>;
 
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.backButton}
-          >
-            <Left_Icon
-              width="20"
-              height="20"
-            />
-            <Text style={styles.headerTitle}>
-              {role === 'landlord' ? 'Lịch sử cho thuê' : 'Lịch sử thuê xe'}
-              {/* Lịch sử thuê xe */}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          data={bookings}
-          renderItem={renderBookingItem}
-          keyExtractor={(item) => item._id}
-          contentContainerStyle={styles.listContainer}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            loading ? (
-              <View style={styles.emptyContainer}>
-                <Text style={styles.emptyText}>Đang tải dữ liệu...</Text>
-              </View>
-            ) : (
-              <View style={styles.emptyContainer}>
-                <Text style={styles.emptyText}>
-                  Không tìm thấy phòng đã đặt
-                </Text>
-              </View>
-            )
-          }
-        />
-      </SafeAreaView>
-    );
-  };
+  return (
+    <SafeAreaView style={styles.container}>
+      <BackButton />
+      <View style={styles.titleView}>
+        <Text style={styles.headerTitle}>Lịch sử thuê phòng</Text>
+      </View>
+      <FlatList
+        data={bookings}
+        renderItem={renderBookingItem}
+        keyExtractor={(item) => item._id}
+        contentContainerStyle={styles.listContainer}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          loading ? (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Đang tải dữ liệu...</Text>
+            </View>
+          ) : (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Không tìm thấy phòng đã đặt</Text>
+            </View>
+          )
+        }
+      />
+    </SafeAreaView>
+  );
 });
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
-  },
-  header: {
-    padding: 16,
     backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+  },
+  titleView: {
+    alignItems: 'center',
+    marginTop: 35,
+    marginBottom: 20,
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333333',
-    width: 150,
-    marginLeft: 6,
+    fontSize: 25,
+    fontFamily: 'Lato-Bold',
+    color: '#252B5C',
   },
   listContainer: {
     padding: 16,
@@ -355,10 +339,6 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     color: '#666666',
-  },
-  backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 });
 

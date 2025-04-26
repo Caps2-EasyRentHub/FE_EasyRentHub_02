@@ -24,17 +24,19 @@ import BookingHistory from '@/screens/Profile/BookingHistory';
 import Booking from '@/screens/Booking';
 import SearchResult from '@/screens/Search/SearchResult';
 import Setting from '@/screens/Profile/Setting';
+import Chat from '@/screens/Chat/Chat';
+import AllEstates from '@/screens/AllEstates';
 
-const AppStack = ({name}: any) => {
-  const Stack = createStackNavigator<RootStackParams>();
+const Stack = createStackNavigator<RootStackParams>();
 
+const AppStack = observer(({name}: {name: string | undefined}) => {
   return (
     <Stack.Navigator
-      initialRouteName={name}
+      initialRouteName={name ? name : 'OnBoarding'}
       screenOptions={{
         headerShown: false,
-      }}
-    >
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}>
       <Stack.Screen
         name="OnBoarding"
         component={Onboarding}
@@ -42,137 +44,89 @@ const AppStack = ({name}: any) => {
       <Stack.Screen
         name="OptionLogin"
         component={OptionLogin}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
-
-      <Stack.Screen
-        name="HomeScreen"
-        component={TabNavigator}
-      />
-
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="Register"
         component={Register}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
+      />
+      <Stack.Screen
+        name="HomeScreen"
+        component={TabNavigator}
       />
       <Stack.Screen
         name="Location"
         component={Location}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
-        }}
       />
       <Stack.Screen
         name="CreateEstate"
         component={CreateEstate}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="AddEstateLocation"
         component={AddEstateLocation}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="AddEstateImages"
         component={AddEstateImages}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="AddEstateInfo"
         component={AddEstateInfo}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="EstateDetail"
         component={EstateDetail}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="AddReview"
         component={AddReview}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="ReviewDetails"
         component={ReviewDetails}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="AllReview"
         component={AllReview}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="TabMenu"
         component={TabMenu}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="TransactionDetail"
         component={TransactionDetail}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="BookingHistory"
         component={BookingHistory}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="Booking"
         component={Booking}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="SearchResult"
         component={SearchResult}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
       />
       <Stack.Screen
         name="Setting"
         component={Setting}
-        options={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
+      />
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
+      />
+      <Stack.Screen
+        name="AllEstates"
+        component={AllEstates}
       />
     </Stack.Navigator>
   );
-};
+});
 
-export default observer(AppStack);
+export default AppStack;

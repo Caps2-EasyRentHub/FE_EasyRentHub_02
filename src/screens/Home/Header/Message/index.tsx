@@ -1,32 +1,72 @@
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
-import Feather from 'react-native-vector-icons/Feather';
-import {BackButton} from '@/components';
-import {getImages} from '@/assets/Images';
-import {Swipeable} from 'react-native-gesture-handler';
-import {Empty} from '@/assets/Svg';
-import {screenWidth} from '@/themes/Responsive';
-import {useTranslation} from 'react-i18next';
-import {navigate, push} from '@/navigation/NavigationUtils';
-import {AuthContext} from '@/context/AuthContext';
-import {Config} from '@/config';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { Chat_Icon } from '@/assets/Svg';
+import { chatService } from '@/services/chatService';
+import { useAuth } from '@/hooks/useAuth';
+import { useNavigation } from '@react-navigation/native';
+import { Chat } from '@/types/chat';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParams } from '@/utils/type';
 
-const Message = () => {
-  const {t} = useTranslation();
-  const [length, setLength] = useState(1);
-  const [online, setOnline] = useState(true);
-  const [seen, setSeen] = useState(true);
-  const {userToken, idUser} = useContext(AuthContext);
-  const [conversation, setConversation] = useState([]);
+type NavigationProp = StackNavigationProp<RootStackParams>;
 
+const Message: React.FC = () => {
+  const { user } = useAuth();
+  const navigation = useNavigation<NavigationProp>();
+  const [unreadCount, setUnreadCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchUnreadCount = useCallback(async () => {
+    if (!user?.id) return;
+    
+    try {
+      setLoading(true);
+      setError(null);
+      const chats = await chatService.getChats(user.id);
+      const totalUnread = chats.reduce((acc: number, chat: Chat) => {
+        return acc + (chat.unreadCount || 0);
+      }, 0);
+      setUnreadCount(totalUnread);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Có lỗi xảy ra khi tải tin nhắn';
+      setError(errorMessage);
+      Alert.alert('Lỗi', errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id]);
+
+  // Fetch initial unread count
   useEffect(() => {
+    fetchUnreadCount();
+  }, [fetchUnreadCount]);
+
+  // Set up real-time updates (polling every 30 seconds)
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchUnreadCount();
+    }, 30000);
+
+    return () => clearInterval(intervalId);
+  }, [fetchUnreadCount]);
+
+  const handleChatPress = () => {
+    navigation.navigate('Chat');
+  };
+
+  return (
+    <TouchableOpacity
+      onPress={handleChatPress}
+      style={styles.container}
+      activeOpacity={0.7}
+      accessibilityRole="button"
+      accessibilityLabel={`Tin nhắn${unreadCount > 0 ? `, Bạn có ${unreadCount} tin nhắn chưa đọc` : ''}`}
+    >
+      <Chat_Icon />
+      {loading ? (
+        <View style={[styles.badge, styles.loadingBadge]}>
+          <Text style={styles.badgeText}>...</Text>
     const getConversations = async () => {
       await fetch(`${Config.API_URL}/api/conversations`, {
         method: 'GET',
@@ -230,209 +270,44 @@ const Message = () => {
             size={20}
           />
         </View>
-      </TouchableOpacity>
-    );
-  };
-  return (
-    <View style={styles.component}>
-      <BackButton />
-      <Text style={styles.favoriteTitle}>{t('message')}</Text>
-      <TouchableOpacity style={styles.btnDelete}>
-        <Feather
-          name="trash"
-          color={'#252B5C'}
-          size={15}
-        />
-      </TouchableOpacity>
-      <Text style={styles.txtAllChat}>All chats</Text>
-      {length === 0 ? (
-        <View style={styles.emptyView}>
-          <Empty />
-          <Text style={styles.titleNormal}>{t('your_favorite')}</Text>
-          <Text style={styles.titleHighlight}>{t('empty')}</Text>
+      ) : unreadCount > 0 && (
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>
+            {unreadCount > 99 ? '99+' : unreadCount}
+          </Text>
         </View>
-      ) : (
-        <FlatList
-          data={conversation}
-          renderItem={(item: any) => renderChat(item)}
-          keyExtractor={(item: any, index: any) => String(index)}
-        />
-        // <FavoriteItems />
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 
-export default Message;
-
 const styles = StyleSheet.create({
-  component: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  favoriteTitle: {
-    color: '#252B5C',
-    fontFamily: 'Lato-Bold',
-    fontSize: 20,
-    marginTop: 35,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  btnDelete: {
+  container: {
+    position: 'relative',
+    padding: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 50,
-    height: 50,
+  },
+  badge: {
     position: 'absolute',
-    top: 24,
-    right: 24,
-    borderRadius: 25,
-    backgroundColor: '#F5F4F8',
-    zIndex: 1,
-  },
-  txtAllChat: {
-    color: '#252B5C',
-    fontFamily: 'Lato-Bold',
-    fontSize: 22,
-    marginTop: 20,
-    marginBottom: 20,
-    marginLeft: 24,
-  },
-  emptyView: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  titleNormal: {
-    fontFamily: 'Lato-Medium',
-    color: '#252B5C',
-    fontSize: 30,
-    marginTop: 14,
-  },
-  titleHighlight: {
-    fontFamily: 'Lato-Bold',
-    color: '#1F4C6B',
-    fontSize: 30,
-  },
-  itemView: {
-    width: screenWidth - 48,
-    height: 70,
-    backgroundColor: '#F5F4F8',
-    marginLeft: 24,
-    marginBottom: 10,
-    borderRadius: 25,
-  },
-  contentView: {
-    flexDirection: 'row',
-  },
-  btnFavoriteView: {
-    left: 8,
-    top: 8,
-  },
-  viewAvatar: {
-    backgroundColor: '#FFFF',
-    width: 50,
-    height: 50,
+    top: 0,
+    right: 0,
+    backgroundColor: '#FF0000',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 50,
-    margin: 10,
+    padding: 2,
   },
-  avatar: {
-    width: 47,
-    height: 47,
-    borderRadius: 25,
+  loadingBadge: {
+    backgroundColor: '#666666',
   },
-  viewIcon: {
-    backgroundColor: '#FFFFFF',
-    width: 12,
-    height: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    right: 12,
-    top: 8,
-    borderRadius: 12,
-  },
-  iconOnline: {
-    backgroundColor: '#8BC83F',
-    width: 8,
-    height: 8,
-    borderRadius: 8,
-  },
-  rightView: {
-    marginTop: 16,
-  },
-  name: {
-    fontFamily: 'Lato-Bold',
-    color: '#252B5C',
-    fontSize: 16,
-    width: screenWidth / 2 - 24 - 48,
-  },
-  ratingView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  text: {
-    color: '#252B5C',
-    fontFamily: 'Lato-Bold',
-    marginLeft: 2,
-    fontSize: 14,
-    width: screenWidth / 2,
-    height: 15,
-    marginTop: 4,
-  },
-  textSeen: {
-    color: '#53587A',
-    fontFamily: 'Lato-Medium',
-    marginLeft: 2,
-    fontSize: 14,
-    width: screenWidth / 2,
-    height: 15,
-    marginTop: 4,
-  },
-  viewTime: {
-    width: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    right: 10,
-    top: 20,
-  },
-  time: {
-    color: '#A1A5C1',
-    fontSize: 12,
-    fontFamily: 'Lato-Regular',
-    marginRight: 2,
-  },
-  btnSeen: {
-    height: 16,
-    width: 16,
-    backgroundColor: '#8BC83F',
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 3,
-  },
-  btnSeenText: {
+  badgeText: {
     color: '#FFFFFF',
     fontSize: 12,
-    fontFamily: 'Lato-Regular',
-    marginRight: 2,
-  },
-  DeleteView: {
-    backgroundColor: '#234F68',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 70,
-    width: 118,
-    marginLeft: -50,
-    marginRight: 24,
-    borderTopRightRadius: 25,
-    borderBottomRightRadius: 25,
-  },
-  trashIcon: {
-    left: 18,
+    fontWeight: 'bold',
   },
 });
+
+export default Message;

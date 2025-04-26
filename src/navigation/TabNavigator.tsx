@@ -5,7 +5,6 @@ import Home from '@/screens/Home';
 import Search from '@/screens/Search';
 import Favorite from '@/screens/Favorite';
 import Profile from '@/screens/Profile';
-import Chat from '@/screens/Chat/Chat';
 
 import {
   House_Active,
@@ -16,8 +15,6 @@ import {
   Profile_Icon,
   Heart_Active,
   Heart_Icon,
-  Chat_Active,
-  Chat_Icon,
 } from '@/assets/Svg';
 
 const Tab = createBottomTabNavigator();
@@ -44,8 +41,6 @@ const TabNavigator = () => {
             iconName = focused ? <Profile_Active /> : <Profile_Icon />;
           } else if (route.name === 'Favorite') {
             iconName = focused ? <Heart_Active /> : <Heart_Icon />;
-          } else if (route.name === 'Chat') {
-            iconName = focused ? <Chat_Active /> : <Chat_Icon />;
           }
 
           return iconName;
@@ -66,13 +61,8 @@ const TabNavigator = () => {
         options={{unmountOnBlur: true}}
       />
       <Tab.Screen
-        name="Chat"
-        component={Chat}
-      />
-      <Tab.Screen
         name="Profile"
         component={Profile}
-        options={{unmountOnBlur: true}}
       />
     </Tab.Navigator>
   );
