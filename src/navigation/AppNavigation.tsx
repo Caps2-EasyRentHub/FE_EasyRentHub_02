@@ -22,7 +22,7 @@ const AppNavigation = () => {
         <View style={styles.container}>
           <AppStack name={userToken ? 'HomeScreen' : undefined} />
         </View>
-      // ) : (
+        // ) : (
         // <Location />
       )}
     </NavigationContainer>

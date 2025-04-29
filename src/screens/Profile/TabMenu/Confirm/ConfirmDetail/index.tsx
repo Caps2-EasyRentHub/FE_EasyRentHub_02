@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -24,32 +25,82 @@ const ConfirmDetail: React.FC<RouteConfirm> = ({route}) => {
   const [checked, setChecked] = useState<string>(transaction.status);
   const {userToken, idUser} = useContext(AuthContext);
   const {t} = useTranslation();
-  const fromDate = moment(transaction.checkIn, 'DD/MM/YYYY');
-  const toDate = moment(transaction.checkOut, 'DD/MM/YYYY');
+
+  const startDate = moment(transaction.startDate).format('DD/MM/YYYY');
+  const endDate = moment(transaction.endDate).format('DD/MM/YYYY');
+  const fromDate = moment(startDate, 'DD/MM/YYYY');
+  const toDate = moment(endDate, 'DD/MM/YYYY');
   const totalDate = toDate.diff(fromDate, 'days');
 
-  const handleStatus = () => {
-    axios
-      .patch(
-        `${Config.API_URL}/api/payment/${transaction._id}`,
-        {
-          status: checked,
-        },
-        {
-          headers: {Authorization: userToken},
-        },
-      )
-      .then((res) => res.json())
-      .catch((e) => {
-        console.log(e);
+  const sumPrice = transaction.rentalPrice * totalDate;
+
+  const handleApproveBooking = () => {
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', userToken);
+
+    const requestOptions = {
+      method: 'PATCH',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(
+      `${Config.API_URL}/api/rental/approve/${transaction._id}`,
+      requestOptions,
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        console.log(result);
+        Alert.alert('Thành công', 'Đã chấp nhận đặt phòng');
+        goBack();
       })
-      .finally(() => goBack());
+      .catch((error) => {
+        console.error(error);
+        Alert.alert('Lỗi', 'Không thể chấp nhận đặt phòng');
+      });
   };
+
+  const handleCancelBooking = () => {
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', userToken);
+
+    const urlencoded = new URLSearchParams();
+
+    const requestOptions = {
+      method: 'PATCH',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow',
+    };
+
+    fetch(
+      `${Config.API_URL}/api/rental/cancel/${transaction._id}`,
+      requestOptions,
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        console.log(result);
+        Alert.alert('Thành công', 'Đã hủy đặt phòng');
+        goBack();
+      })
+      .catch((error) => {
+        console.error(error);
+        Alert.alert('Lỗi', 'Không thể hủy đặt phòng');
+      });
+  };
+
+  const handleStatus = () => {
+    if (checked === '1') {
+      handleApproveBooking();
+    } else if (checked === '2') {
+      handleCancelBooking();
+    }
+  };
+
   const EstateView = () => {
     return (
       <View style={styles.estateView}>
         <View style={styles.estateContent}>
-          {/* <FavoriteButton favorite={transaction.assets.favorite} /> */}
           <Image
             source={{uri: estate.images[0]}}
             style={styles.estateImage}
@@ -69,9 +120,6 @@ const ConfirmDetail: React.FC<RouteConfirm> = ({route}) => {
               </Text>
             </View>
           </View>
-          <View style={styles.typeView}>
-            <Text style={styles.typeText}>{transaction.type}</Text>
-          </View>
         </View>
       </View>
     );
@@ -85,34 +133,26 @@ const ConfirmDetail: React.FC<RouteConfirm> = ({route}) => {
           <View style={styles.tranView}>
             <View style={styles.tranContent}>
               <Text style={styles.tranText}>{t('check_in')}</Text>
-              <Text style={styles.tranText}>{transaction.checkIn}</Text>
+              <Text style={styles.tranText}>{startDate}</Text>
             </View>
             <View style={styles.tranContent}>
               <Text style={styles.tranText}>{t('check_out')}</Text>
-              <Text style={styles.tranText}>{transaction.checkOut}</Text>
+              <Text style={styles.tranText}>{endDate}</Text>
             </View>
             <View style={styles.tranContent}>
               <Text style={styles.tranText}>{t('period_time')}</Text>
               <Text style={styles.tranText}>{totalDate} Days</Text>
             </View>
             <View style={styles.tranContent}>
-              <Text style={styles.tranText}>{t('monthly_payment')}</Text>
-              <Text style={styles.tranText}>{transaction.checkOut}</Text>
-            </View>
-            <View style={styles.tranContent}>
               <Text style={styles.tranText}>{t('note_customer')}</Text>
-              <Text style={styles.tranText}>{transaction.note}</Text>
-            </View>
-            <View style={styles.tranContent}>
-              <Text style={styles.tranText}>{t('discount')}</Text>
-              <Text style={styles.tranText}>-$ {transaction.discount}</Text>
+              <Text style={styles.tranText}>{transaction.notes}</Text>
             </View>
           </View>
         </View>
         <View style={styles.payView}>
           <View style={styles.payContent}>
             <Text style={styles.payText}>{t('total')}</Text>
-            <Text style={styles.payText}>$ {transaction.price}</Text>
+            <Text style={styles.payText}>$ {sumPrice}</Text>
           </View>
         </View>
       </View>
@@ -141,7 +181,7 @@ const ConfirmDetail: React.FC<RouteConfirm> = ({route}) => {
             activeOpacity={1}
             style={styles.radioView}
             onPress={() => {
-              checked === '1' && setChecked('1');
+              setChecked('1');
             }}
           >
             <RadioButton
@@ -152,85 +192,40 @@ const ConfirmDetail: React.FC<RouteConfirm> = ({route}) => {
             <Text
               style={{
                 color: checked === '1' ? '#8BC83F' : '#53587A',
-                opacity: checked === '1' ? 1 : 0.3,
+                opacity: checked === '1' ? 1 : 0.7,
               }}
             >
-              Processing
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={1}
-            style={styles.radioView}
-            onPress={() => {
-              checked < '3' && setChecked('2');
-            }}
-          >
-            <RadioButton
-              value="2"
-              color="#8BC83F"
-              disabled={checked > '2' ? true : false}
-            />
-            <Text
-              style={{
-                color: checked === '2' ? '#8BC83F' : '#53587A',
-                opacity: checked > '2' ? 0.3 : 1,
-              }}
-            >
-              Booked
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={1}
-            style={styles.radioView}
-            onPress={() => {
-              checked < '4' && setChecked('3');
-            }}
-          >
-            <RadioButton
-              value="3"
-              color="#8BC83F"
-              disabled={checked > '3' ? true : false}
-            />
-            <Text
-              style={{
-                color: checked === '3' ? '#8BC83F' : '#53587A',
-                opacity: checked > '3' ? 0.3 : 1,
-              }}
-            >
-              Cancel Booking
+              Chấp nhận
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={1}
             style={[styles.radioView, {marginBottom: 24}]}
             onPress={() => {
-              checked !== '3' && checked < '5' && setChecked('4');
+              setChecked('2');
             }}
           >
             <RadioButton
-              value="4"
+              value="2"
               color="#8BC83F"
-              disabled={checked !== '3' && checked < '5' ? false : true}
             />
             <Text
               style={{
-                color: checked === '4' ? '#8BC83F' : '#53587A',
-                opacity: checked !== '3' && checked < '5' ? 1 : 0.3,
+                color: checked === '2' ? '#8BC83F' : '#53587A',
+                opacity: checked === '2' ? 1 : 0.7,
               }}
             >
-              Complete
+              Hủy
             </Text>
           </TouchableOpacity>
         </RadioButton.Group>
 
-        {transaction.status !== '4' && transaction.status !== '3' && (
-          <TouchableOpacity
-            style={styles.btnReview}
-            onPress={handleStatus}
-          >
-            <Text style={styles.textReview}>{t('Confirm')}</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.btnReview}
+          onPress={handleStatus}
+        >
+          <Text style={styles.textReview}>{t('Xác nhận')}</Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

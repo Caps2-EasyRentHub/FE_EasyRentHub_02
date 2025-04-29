@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  FlatList,
 } from 'react-native';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 import RadioGroup from 'react-native-radio-buttons-group';
@@ -16,136 +17,217 @@ import {Config} from '@/config';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {push} from '@/navigation/NavigationUtils';
 import {screenHeight, screenWidth} from '@/themes/Responsive';
+import {format} from 'date-fns';
 
 const Confirm = () => {
+  const {t} = useTranslation();
+  const {userToken, idUser} = useContext(AuthContext);
+  const [data, setData] = useState<TranSactionProps[]>([]);
+  const [load, setLoad] = useState(true);
+
+  useEffect(() => {
+    console.log('Auth Context: ', {
+      userToken: userToken ? 'exists' : 'null',
+      idUser,
+    });
+  }, [userToken, idUser]);
+
+  useEffect(() => {
+    if (!idUser || !userToken) {
+      console.log('Missing user ID or token');
+      setLoad(false);
+      return;
+    }
+
+    setLoad(true);
+
+    fetch(`${Config.API_URL}/api/rental/tenant-bookings/${idUser}`, {
+      method: 'GET',
+      headers: {Authorization: userToken},
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        console.log('res.bookings');
+        console.log(res.bookings);
+        if (res.bookings && Array.isArray(res.bookings)) {
+          const pendingBookings = res.bookings.filter((tenantBooking) => {
+            // console.log('Booking status:', tenantBooking.status);
+            return tenantBooking.status === 'pending';
+          });
+
+          // console.log('Tất cả bookings:', res.bookings.length);
+          // console.log('Số lượng bookings pending:', pendingBookings.length);
+          setData(pendingBookings);
+        } else {
+          console.log('Không tìm thấy dữ liệu bookings hợp lệ');
+          setData([]);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching bookings:', error);
+        setData([]);
+      })
+      .finally(() => setLoad(false));
+  }, [userToken, idUser]);
+
   const RenderItems = ({item}: {item: TranSactionProps}) => {
-    const {userToken, idUser} = useContext(AuthContext);
-    const [data, setData] = useState<EstateDetailProps | null>(null);
-    const [load, setLoad] = useState(true);
+    const {userToken} = useContext(AuthContext);
+    const [estateData, setEstateData] = useState<EstateDetailProps | null>(
+      null,
+    );
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
-      setLoad(true);
-      fetch(`${Config.API_URL}/api/estate/${item.estateId}`, {
+      if (!item?.estate?._id) {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+
+      fetch(`${Config.API_URL}/api/estate/${item.estate._id}`, {
         method: 'GET',
         headers: {Authorization: userToken},
       })
         .then((res) => res.json())
         .then((res) => {
-          setData(res.estate);
+          if (res.estate) {
+            setEstateData(res.estate);
+          }
         })
-        .finally(() => setLoad(false));
-    }, []);
+        .catch((error) => {
+          console.error('Error fetching estate details:', error);
+        })
+        .finally(() => setLoading(false));
+    }, [item?.estate?._id, userToken]);
+
     const getStatus = (status: string) => {
       switch (status) {
-        case '1':
-          return 'Processing';
-        case '2':
-          return 'Booked';
-        case '3':
-          return 'Cancel Booking';
+        case 'pending':
+          return 'Đang chờ';
+        case 'approved':
+          return 'Đã đặt';
+        case 'cancelled':
+          return 'Đã Hủy';
         default:
-          return 'Complete';
+          return 'Hoàn thành';
       }
     };
     const getColorStatus = (status: string) => {
       switch (status) {
-        case '1':
+        case 'pending':
           return '#fdd43f';
-        case '2':
+        case 'approved':
           return '#1a97f5';
-        case '3':
+        case 'cancelled':
           return '#fc4b6c';
         default:
           return '#39cb7f';
       }
     };
-    return (
-      data &&
-      data._id === idUser && (
-        <TouchableOpacity
-          style={styles.cardItem}
-          onPress={() =>
-            push({
-              name: 'ConfirmDetail',
-              params: {transaction: item, estate: data},
-            })
-          }
+
+    if (loading) {
+      return (
+        <View
+          style={[
+            styles.cardItem,
+            {justifyContent: 'center', alignItems: 'center'},
+          ]}
         >
-          <View style={styles.priceView}>
-            <View style={styles.priceContent}>
-              <Text style={styles.price}>{item.type}</Text>
+          <Splash />
+        </View>
+      );
+    }
+
+    if (!estateData) {
+      return null;
+    }
+
+    return (
+      <TouchableOpacity
+        style={styles.cardItem}
+        onPress={() =>
+          push({
+            name: 'ConfirmDetail',
+            params: {transaction: item, estate: estateData},
+          })
+        }
+      >
+        <View
+          style={[
+            styles.statusView,
+            {backgroundColor: getColorStatus(item.status)},
+          ]}
+        >
+          <View style={styles.priceContent}>
+            <Text style={styles.price}>{getStatus(item.status)}</Text>
+          </View>
+        </View>
+
+        <Image
+          source={{
+            uri:
+              estateData?.images && estateData.images.length > 0
+                ? estateData.images[0]
+                : null,
+          }}
+          style={styles.images}
+          // defaultSource={require('@/assets/Images/no-image.png')}
+        />
+
+        <View style={styles.cardContent}>
+          <Text style={styles.cardName}>{estateData?.name || 'No Name'}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <View style={styles.locationView}>
+              <AntDesign
+                name="clockcircle"
+                color={'#8BC83F'}
+                size={10}
+              />
+              <Text style={styles.location}>
+                {item.startDate
+                  ? format(new Date(item.startDate), 'dd/MM/yyyy')
+                  : item.checkIn
+                  ? format(new Date(item.checkIn), 'dd/MM/yyyy')
+                  : 'N/A'}
+              </Text>
             </View>
           </View>
-
-          <View
-            style={[
-              styles.statusView,
-              {backgroundColor: getColorStatus(item.status)},
-            ]}
-          >
-            <View style={styles.priceContent}>
-              <Text style={styles.price}>{getStatus(item.status)}</Text>
-            </View>
-          </View>
-
-          <Image
-            source={{uri: data?.images[0]}}
-            style={styles.images}
-          />
-
-          <View style={styles.cardContent}>
-            <Text style={styles.cardName}>{data?.name}</Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={styles.locationView}>
-                <AntDesign
-                  name="clockcircle"
-                  color={'#8BC83F'}
-                  size={10}
-                />
-                <Text style={styles.location}>{item.checkIn}</Text>
-              </View>
-            </View>
-          </View>
-        </TouchableOpacity>
-      )
+        </View>
+      </TouchableOpacity>
     );
   };
 
-  const {t} = useTranslation();
-  const {userToken, idUser} = useContext(AuthContext);
-  const [data, setData] = useState<[TranSactionProps] | null>(null);
-  const [load, setLoad] = useState(true);
-
-  useEffect(() => {
-    setLoad(true);
-    fetch(`${Config.API_URL}/api/rental/all-bookings`, {
-      method: 'GET',
-      headers: {Authorization: userToken},
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setData(res.bookings);
-      })
-      .finally(() => setLoad(false));
-  }, []);
   return (
     <ScrollView style={styles.container}>
       <View>
         <Text style={styles.textTitle}>
-          {data && data.length} {t('transactions')}
+          {data.length} {t('transactions')}
         </Text>
+
         <View style={styles.viewRender}>
           {load ? (
-            <Splash />
+            <View style={{marginTop: 50, alignItems: 'center'}}>
+              <Splash />
+              <Text style={{marginTop: 20, textAlign: 'center'}}>
+                Đang tải dữ liệu...
+              </Text>
+            </View>
+          ) : data.length === 0 ? (
+            <Text style={{marginTop: 50, textAlign: 'center'}}>
+              Không có giao dịch nào
+            </Text>
           ) : (
-            data &&
-            data.map((item: TranSactionProps, index: number) => {
-              return (
+            <View style={styles.viewRender}>
+              {data.map((item: TranSactionProps, index: number) => (
                 <RenderItems
                   item={item}
                   key={index}
                 />
-              );
-            })
+              ))}
+            </View>
           )}
         </View>
       </View>
@@ -171,7 +253,7 @@ const styles = StyleSheet.create({
   viewRender: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
   },
   btnFavorite: {
     position: 'absolute',

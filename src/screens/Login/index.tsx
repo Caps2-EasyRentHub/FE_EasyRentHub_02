@@ -89,7 +89,6 @@ const Login = () => {
       if (response.access_token) {
         showSnackbar('Đăng nhập thành công', 'success');
         navigation.navigate('HomeScreen');
-        navigation.navigate('Home');
       }
     } catch (error) {
       showSnackbar('Email hoặc mật khẩu không đúng', 'error');

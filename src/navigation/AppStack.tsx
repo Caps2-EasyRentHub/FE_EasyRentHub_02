@@ -26,6 +26,7 @@ import SearchResult from '@/screens/Search/SearchResult';
 import Setting from '@/screens/Profile/Setting';
 import Chat from '@/screens/Chat/Chat';
 import AllEstates from '@/screens/AllEstates';
+import ConfirmDetail from '@/screens/Profile/TabMenu/Confirm/ConfirmDetail';
 
 const Stack = createStackNavigator<RootStackParams>();
 
@@ -36,7 +37,8 @@ const AppStack = observer(({name}: {name: string | undefined}) => {
       screenOptions={{
         headerShown: false,
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-      }}>
+      }}
+    >
       <Stack.Screen
         name="OnBoarding"
         component={Onboarding}
@@ -124,6 +126,13 @@ const AppStack = observer(({name}: {name: string | undefined}) => {
       <Stack.Screen
         name="AllEstates"
         component={AllEstates}
+      />
+      <Stack.Screen
+        name="ConfirmDetail"
+        component={ConfirmDetail}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
       />
     </Stack.Navigator>
   );

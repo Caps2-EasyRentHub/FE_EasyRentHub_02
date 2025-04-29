@@ -26,6 +26,7 @@ const TabMenu = () => {
         setIsLandlord(landLord);
       } catch (error) {
         console.error('Error checking landlord status:', error);
+        setIsLandlord(false);
       }
     };
 

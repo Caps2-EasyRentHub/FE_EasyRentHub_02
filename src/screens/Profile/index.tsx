@@ -9,13 +9,7 @@ import {
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  Pencil_Icon,
-  Review_Icon,
-  Setting_Icon,
-  Note_Icon,
-} from '@/assets/Svg';
-import {getImages} from '@/assets/Images';
+import {Pencil_Icon, Review_Icon, Setting_Icon, Note_Icon} from '@/assets/Svg';
 import {screenWidth} from '@/themes/Responsive';
 import {ProfileProps, UserData} from '@/utils/interface';
 import TabMenu from './TabMenu';
@@ -29,7 +23,7 @@ const Profile: React.FC<ProfileProps> = () => {
   const {t} = useTranslation();
   const [data, setData] = useState<UserData | null>(null);
   const [lengthEstates, setLengthEstates] = useState<number>(0);
-  
+
   const getProFile = async () => {
     try {
       const response = await fetch(`${Config.API_URL}/api/user/${idUser}`, {
@@ -51,7 +45,7 @@ const Profile: React.FC<ProfileProps> = () => {
   const handleEmailPress = (email: string) => {
     Linking.openURL(`mailto:${email}`);
   };
-  
+
   if (!data) {
     return (
       <SafeAreaView style={styles.component}>
