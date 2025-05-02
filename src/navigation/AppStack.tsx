@@ -27,6 +27,7 @@ import Setting from '@/screens/Profile/Setting';
 import Chat from '@/screens/Chat/Chat';
 import AllEstates from '@/screens/AllEstates';
 import ConfirmDetail from '@/screens/Profile/TabMenu/Confirm/ConfirmDetail';
+import Notification from '@/components/Notification';
 
 const Stack = createStackNavigator<RootStackParams>();
 
@@ -130,6 +131,13 @@ const AppStack = observer(({name}: {name: string | undefined}) => {
       <Stack.Screen
         name="ConfirmDetail"
         component={ConfirmDetail}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+      />
+      <Stack.Screen
+        name="Notification"
+        component={Notification}
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {Config} from '@/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import socketService from './socketService';
 
 export interface LoginResponse {
   access_token: string;
@@ -47,18 +48,18 @@ export const authService = {
     email: string,
     password: string,
     confirmPassword: string,
-    role: 'Tenant' | 'Landlord'
+    role: 'Tenant' | 'Landlord',
   ): Promise<RegisterResponse> {
     try {
       const response = await axios.post<RegisterResponse>(
         `${Config.API_URL}/api/register`,
-        { full_name: fullName, email, password, confirmPassword, role },
+        {full_name: fullName, email, password, confirmPassword, role},
         {
           headers: {
             'Content-Type': 'application/json',
           },
           timeout: 15000,
-        }
+        },
       );
 
       // Store user data in AsyncStorage
@@ -78,28 +79,31 @@ export const authService = {
         } else if (error.message === 'Network Error') {
           throw new Error('Network error. Please check your connection.');
         } else if (error.response?.status === 400) {
-          throw new Error(error.response?.data?.msg || 'Invalid registration data.');
+          throw new Error(
+            error.response?.data?.msg || 'Invalid registration data.',
+          );
         } else {
-          throw new Error(error.response?.data?.msg || 'An error occurred during registration.');
+          throw new Error(
+            error.response?.data?.msg ||
+              'An error occurred during registration.',
+          );
         }
       }
       throw error;
     }
   },
 
-  async login(
-    email: string, 
-    password: string): Promise<LoginResponse> {
+  async login(email: string, password: string): Promise<LoginResponse> {
     try {
       const response = await axios.post<LoginResponse>(
         `${Config.API_URL}/api/login`,
-        { email, password },
+        {email, password},
         {
           headers: {
             'Content-Type': 'application/json',
           },
           timeout: 15000,
-        }
+        },
       );
 
       // Store user data in AsyncStorage
@@ -115,6 +119,10 @@ export const authService = {
         AsyncStorage.setItem('country', response.data.user.address.country),
       ]);
 
+      // Connect to socket and join user
+      await socketService.connect();
+      socketService.joinUser(response.data.user._id);
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -125,7 +133,9 @@ export const authService = {
         } else if (error.response?.status === 401) {
           throw new Error('Invalid email or password.');
         } else {
-          throw new Error(error.response?.data?.message || 'An error occurred during login.');
+          throw new Error(
+            error.response?.data?.message || 'An error occurred during login.',
+          );
         }
       }
       throw error;
@@ -134,9 +144,12 @@ export const authService = {
 
   async logout(): Promise<void> {
     try {
+      socketService.disconnect();
+
       await Promise.all([
         AsyncStorage.removeItem('access_token'),
         AsyncStorage.removeItem('idUser'),
+        AsyncStorage.removeItem('userId'),
         AsyncStorage.removeItem('avatarUser'),
         AsyncStorage.removeItem('full_name'),
         AsyncStorage.removeItem('lat'),
@@ -201,4 +214,4 @@ export const authService = {
       throw error;
     }
   },
-}; 
+};
