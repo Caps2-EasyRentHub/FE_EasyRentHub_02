@@ -80,15 +80,22 @@ const Profile: React.FC<ProfileProps> = () => {
         {data.email}
       </Text>
       <View style={styles.information}>
-        <TouchableOpacity style={styles.btnListing}>
-          <Text style={styles.username}>{lengthEstates}</Text>
-          <Text style={styles.listingText}>{t('listings')}</Text>
+        <TouchableOpacity
+          style={styles.btnListing}
+          onPress={() => navigate({name: 'RevenueScreen'})}
+        >
+          <Text style={{height: 10}} />
+          <Image
+            source={require('@/assets/Images/common/chart_icon.webp')}
+            style={styles.ChartImage}
+          />
+          <Text style={styles.listingText}>{t('Doanh thu')}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.btnListing}
           onPress={() => navigate({name: 'BookingHistory'})}
         >
-          <Text style={{height: 6}} />
+          <Text style={{height: 12}} />
           <Note_Icon />
           <Text style={styles.listingText}>{t('Lịch sử')}</Text>
         </TouchableOpacity>
@@ -186,5 +193,11 @@ const styles = StyleSheet.create({
     flex: 1,
     width: screenWidth - 48,
     marginTop: 20,
+  },
+  ChartImage: {
+    width: 25,
+    height: 25,
+    marginBottom: 6,
+    resizeMode: 'contain',
   },
 });

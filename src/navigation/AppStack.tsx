@@ -28,6 +28,8 @@ import Chat from '@/screens/Chat/Chat';
 import AllEstates from '@/screens/AllEstates';
 import ConfirmDetail from '@/screens/Profile/TabMenu/Confirm/ConfirmDetail';
 import Notification from '@/components/Notification';
+import MonthlyRevenueChart from '@/components/TrackRevenue/MonthlyRevenueChart/MonthlyRevenueChart';
+import RevenueScreen from '@/components/TrackRevenue/MonthlyRevenueChart/RevenueScreen';
 
 const Stack = createStackNavigator<RootStackParams>();
 
@@ -127,6 +129,14 @@ const AppStack = observer(({name}: {name: string | undefined}) => {
       <Stack.Screen
         name="AllEstates"
         component={AllEstates}
+      />
+      <Stack.Screen
+        name="MonthlyRevenueChart"
+        component={MonthlyRevenueChart}
+      />
+      <Stack.Screen
+        name="RevenueScreen"
+        component={RevenueScreen}
       />
       <Stack.Screen
         name="ConfirmDetail"
