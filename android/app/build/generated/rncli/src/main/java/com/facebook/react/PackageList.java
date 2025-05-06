@@ -23,6 +23,8 @@ import com.reactnativecommunity.geolocation.GeolocationPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
 // @react-native-masked-view/masked-view
 import org.reactnative.maskedview.RNCMaskedViewPackage;
+// @react-native-picker/picker
+import com.reactnativecommunity.picker.RNCPickerPackage;
 // react-native-fbsdk-next
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 // react-native-geolocation-service
@@ -96,6 +98,7 @@ public class PackageList {
       new GeolocationPackage(),
       new ReactSliderPackage(),
       new RNCMaskedViewPackage(),
+      new RNCPickerPackage(),
       new FBSDKPackage(),
       new RNFusedLocationPackage(),
       new RNGestureHandlerPackage(),

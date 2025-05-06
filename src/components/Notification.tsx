@@ -63,7 +63,7 @@ const Notification = () => {
     });
 
     socketInstance.on('getNotify', (data) => {
-      // console.log('New notification received:', data);
+      console.log('New notification received:', data);
       setNotifications((prev) => [data, ...prev]);
     });
 
@@ -119,6 +119,7 @@ const Notification = () => {
 
         const result = await response.json();
         console.log('API Response received:', typeof result);
+        console.log('response:', response);
 
         if (result && result.notifies) {
           console.log(
@@ -256,8 +257,8 @@ const Notification = () => {
                 <Image
                   source={{
                     uri:
-                      notification.user.avatar ||
-                      'https://via.placeholder.com/50',
+                      notification.user?.avatar ||
+                      'https://i.pinimg.com/736x/6b/7a/b3/6b7ab3939b7d6c6e8eb302731fa5e832.jpg',
                   }}
                   style={styles.avatar}
                 />
@@ -267,7 +268,7 @@ const Notification = () => {
                 <View style={styles.mainContent}>
                   <Text style={styles.notificationTitle}>
                     <Text style={styles.boldText}>
-                      {notification.user.full_name}
+                      {notification.user?.full_name}
                     </Text>
                     <Text style={styles.regularText}> {notification.text}</Text>
                   </Text>

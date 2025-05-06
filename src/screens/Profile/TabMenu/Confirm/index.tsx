@@ -49,8 +49,8 @@ const Confirm = () => {
         return res.json();
       })
       .then((res) => {
-        console.log('res.bookings');
-        console.log(res.bookings);
+        // console.log('res.bookings');
+        // console.log(res.bookings);
         if (res.bookings && Array.isArray(res.bookings)) {
           const pendingBookings = res.bookings.filter((tenantBooking) => {
             // console.log('Booking status:', tenantBooking.status);

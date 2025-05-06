@@ -30,6 +30,8 @@ import ConfirmDetail from '@/screens/Profile/TabMenu/Confirm/ConfirmDetail';
 import Notification from '@/components/Notification';
 import MonthlyRevenueChart from '@/components/TrackRevenue/MonthlyRevenueChart/MonthlyRevenueChart';
 import RevenueScreen from '@/components/TrackRevenue/MonthlyRevenueChart/RevenueScreen';
+import MaintenanceList from '@/screens/Profile/TabMenu/Maintenance/MaintenanceList';
+import MaintenanceDetail from '@/screens/Profile/TabMenu/Maintenance/MaintenanceDetail';
 
 const Stack = createStackNavigator<RootStackParams>();
 
@@ -137,6 +139,15 @@ const AppStack = observer(({name}: {name: string | undefined}) => {
       <Stack.Screen
         name="RevenueScreen"
         component={RevenueScreen}
+      />
+      <Stack.Screen
+        name="MaintenanceList"
+        component={MaintenanceList}
+      />
+      <Stack.Screen
+        name="MaintenanceDetail"
+        component={MaintenanceDetail}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="ConfirmDetail"

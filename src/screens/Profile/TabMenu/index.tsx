@@ -7,6 +7,7 @@ import {screenWidth} from '@/themes/Responsive';
 import Confirm from './Confirm';
 import {AuthContext} from '@/context/AuthContext';
 import {Config} from '@/config';
+import MaintenanceList from './Maintenance/MaintenanceList';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -71,9 +72,15 @@ const TabMenu = () => {
         },
       })}
     >
+      {!isLandlord && (
+        <Tab.Screen
+          name="Trạng thái"
+          component={Transaction}
+        />
+      )}
       <Tab.Screen
-        name="Trạng thái"
-        component={Transaction}
+        name="Bảo trì"
+        component={MaintenanceList}
       />
       {isLandlord && (
         <Tab.Screen
