@@ -14,7 +14,7 @@ import notificationStore from '@/stores/NotificationStore';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '@/utils/type';
-import {format, formatDistanceToNow} from 'date-fns';
+import {formatDistanceToNow} from 'date-fns';
 import {vi} from 'date-fns/locale';
 import {io} from 'socket.io-client';
 import Icon from 'react-native-vector-icons/Ionicons';

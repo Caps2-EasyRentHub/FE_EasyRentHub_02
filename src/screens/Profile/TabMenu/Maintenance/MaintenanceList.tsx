@@ -94,12 +94,33 @@ const PriorityBadge = ({priority}) => {
 };
 
 const MaintenanceList = () => {
-  const {userToken} = useContext(AuthContext);
+  const {userToken, idUser} = useContext(AuthContext);
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
   const [maintenanceRequests, setMaintenanceRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
+  const [isLandlord, setIsLandlord] = useState(false);
+
+  // Check if the user is a landlord
+  useEffect(() => {
+    const checkIfLandlord = async () => {
+      try {
+        const response = await fetch(`${Config.API_URL}/api/user/${idUser}`, {
+          method: 'GET',
+          headers: {Authorization: userToken},
+        });
+        const data = await response.json();
+        const userIsLandlord = data?.user?.role === 'Landlord';
+        setIsLandlord(userIsLandlord);
+      } catch (error) {
+        console.error('Error checking landlord status:', error);
+        setIsLandlord(false);
+      }
+    };
+
+    checkIfLandlord();
+  }, [idUser, userToken]);
 
   const fetchMaintenanceRequests = async () => {
     try {
@@ -115,10 +136,12 @@ const MaintenanceList = () => {
         redirect: 'follow',
       };
 
-      const response = await fetch(
-        `${Config.API_URL}/api/maintenance/landlord`,
-        requestOptions,
-      );
+      // Use different endpoints based on user role
+      const endpoint = isLandlord
+        ? `${Config.API_URL}/api/maintenance/landlord`
+        : `${Config.API_URL}/api/maintenance/tenant`;
+
+      const response = await fetch(endpoint, requestOptions);
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -138,8 +161,11 @@ const MaintenanceList = () => {
   };
 
   useEffect(() => {
-    fetchMaintenanceRequests();
-  }, [userToken]);
+    // Only fetch data after we've determined the user role
+    if (isLandlord !== null) {
+      fetchMaintenanceRequests();
+    }
+  }, [isLandlord, userToken]);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -147,7 +173,11 @@ const MaintenanceList = () => {
   };
 
   const handlePressRequest = (requestId) => {
-    navigation.navigate('MaintenanceDetail', {requestId});
+    if (isLandlord) {
+      navigation.navigate('MaintenanceDetail', {requestId});
+    } else {
+      navigation.navigate('TenantMaintenanceDetail', {requestId});
+    }
   };
 
   const formatDate = (dateString) => {
@@ -220,7 +250,7 @@ const MaintenanceList = () => {
             style={styles.estateName}
             numberOfLines={1}
           >
-            {item.estateName || 'Bất động sản'}
+            {item.estate?.name || item.estateName || 'Bất động sản'}
           </Text>
         </View>
         <StatusBadge status={item.status} />
@@ -251,7 +281,7 @@ const MaintenanceList = () => {
             style={styles.tenantName}
             numberOfLines={1}
           >
-            {item.tenant ? 'Người thuê' : 'Chưa xác định'}
+            {isLandlord ? 'Người thuê' : 'Yêu cầu của bạn'}
           </Text>
         </View>
       </View>
@@ -291,12 +321,14 @@ const MaintenanceList = () => {
       ) : maintenanceRequests.length === 0 ? (
         <View style={styles.emptyContainer}>
           {/* <Image
-            source={require('@/assets/Images/common/empty_maintenance.png')}
+            source={require('@/assets/Images/common/empty_notify.jpg')}
             style={styles.emptyImage}
           /> */}
           <Text style={styles.emptyTitle}>Không có yêu cầu bảo trì</Text>
           <Text style={styles.emptyDescription}>
-            Hiện tại bạn không có yêu cầu bảo trì nào từ người thuê
+            {isLandlord
+              ? 'Hiện tại bạn không có yêu cầu bảo trì nào từ người thuê'
+              : 'Bạn chưa gửi yêu cầu bảo trì nào'}
           </Text>
           <TouchableOpacity
             style={styles.refreshButton}
@@ -386,15 +418,17 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   emptyImage: {
-    width: 200,
-    height: 200,
-    marginBottom: 24,
+    width: 100,
+    height: 100,
+    paddingTop: 24,
+    marginTop: 100,
   },
   emptyTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#1F2937',
     marginBottom: 8,
+    marginTop: 10,
   },
   emptyDescription: {
     fontSize: 16,
@@ -486,6 +520,12 @@ const styles = StyleSheet.create({
   tenantInfo: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  tenantAvatar: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    marginRight: 6,
   },
   tenantName: {
     fontSize: 12,

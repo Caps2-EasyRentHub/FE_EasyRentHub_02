@@ -78,20 +78,25 @@ const TabMenu = () => {
           component={Transaction}
         />
       )}
-      <Tab.Screen
-        name="Bảo trì"
-        component={MaintenanceList}
-      />
+      {!isLandlord && (
+        <Tab.Screen
+          name="Bảo trì"
+          component={MaintenanceList}
+        />
+      )}
+
       {isLandlord && (
         <Tab.Screen
           name="Danh sách"
           component={Listing}
         />
       )}
-      <Tab.Screen
-        name="Xác nhận"
-        component={Confirm}
-      />
+      {isLandlord && (
+        <Tab.Screen
+          name="Xác nhận"
+          component={Confirm}
+        />
+      )}
     </Tab.Navigator>
   );
 };

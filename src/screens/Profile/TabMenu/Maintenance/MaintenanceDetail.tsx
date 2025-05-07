@@ -23,6 +23,7 @@ import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Modal from 'react-native-modal';
 import ImagePicker from 'react-native-image-crop-picker';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const MaintenanceDetail = () => {
   const route = useRoute();
@@ -394,6 +395,10 @@ const MaintenanceDetail = () => {
     });
   };
 
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
   const handleImagePress = (index) => {
     setCurrentImageIndex(index);
     setShowImageViewer(true);
@@ -449,9 +454,15 @@ const MaintenanceDetail = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <BackButton />
-        <Text style={styles.title}>Chi tiết bảo trì</Text>
-        <View style={{width: 40}} />
+        <TouchableOpacity onPress={handleGoBack}>
+          <Icon
+            name="chevron-back"
+            size={24}
+            color="#000"
+          />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Chi tiết bảo trì</Text>
+        <TouchableOpacity></TouchableOpacity>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -1396,6 +1407,12 @@ const styles = StyleSheet.create({
   imageIndicatorText: {
     color: '#FFFFFF',
     fontSize: 14,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#000000',
+    marginLeft: -20,
   },
 });
 
