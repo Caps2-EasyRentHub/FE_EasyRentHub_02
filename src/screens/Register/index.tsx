@@ -5,13 +5,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import BackButton from '@/components/BackButton';
 import {Email_Icon} from '@/assets/Svg';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {screenWidth} from '@/themes/Responsive';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '@/utils/type';
 import {navigate} from '@/navigation/NavigationUtils';
@@ -26,11 +26,14 @@ const Register = () => {
   const [fullName, setFullName] = useState('');
   const [showPassword, setShowPassword] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<'Landlord' | 'Tenant'>('Tenant');
 
   // Thêm state cho Snackbar
   const [visible, setVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarType, setSnackbarType] = useState<'success' | 'error'>('success');
+  const [snackbarType, setSnackbarType] = useState<'success' | 'error'>(
+    'success',
+  );
 
   const showSnackbar = (message: string, type: 'success' | 'error') => {
     setSnackbarMessage(message);
@@ -47,6 +50,29 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
+
+  // Reset form khi màn hình được focus
+  useFocusEffect(
+    useCallback(() => {
+      const resetForm = () => {
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setFullName('');
+        setShowPassword(true);
+        setLoading(false);
+        setRole('Tenant');
+        setErrors({
+          fullName: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        });
+      };
+
+      resetForm();
+    }, []),
+  );
 
   const validateForm = () => {
     const newErrors = {
@@ -79,7 +105,7 @@ const Register = () => {
     }
 
     setErrors(newErrors);
-    return Object.values(newErrors).every(error => error === '');
+    return Object.values(newErrors).every((error) => error === '');
   };
 
   const handleRegister = async () => {
@@ -94,16 +120,17 @@ const Register = () => {
         email,
         password,
         confirmPassword,
-        'Tenant'
+        'Tenant',
       );
       showSnackbar('Đăng ký thành công!', 'success');
       setTimeout(() => {
         navigate({name: 'Login'});
       }, 1500);
     } catch (error: any) {
-      const errorMessage = error.message === 'This user name already exits' 
-        ? 'Người dùng đã tồn tại' 
-        : error.message || 'Đăng ký thất bại';
+      const errorMessage =
+        error.message === 'This user name already exits'
+          ? 'Người dùng đã tồn tại'
+          : error.message || 'Đăng ký thất bại';
       showSnackbar(errorMessage, 'error');
     } finally {
       setLoading(false);
@@ -117,7 +144,7 @@ const Register = () => {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          marginTop: 124,
+          marginTop: 100,
           marginLeft: 24,
         }}
       >
@@ -130,7 +157,7 @@ const Register = () => {
           tài khoản của bạn
         </Text>
       </View>
-      <View style={{marginTop: 74}}>
+      <View style={{marginTop: 40}}>
         <View style={styles.icon}>
           <FontAwesome
             name="user-o"
@@ -156,7 +183,7 @@ const Register = () => {
           <Text style={styles.errorText}>{errors.fullName}</Text>
         ) : null}
       </View>
-      <View style={{marginTop: 25}}>
+      <View style={{marginTop: 20}}>
         <View style={styles.icon}>
           <Email_Icon color={errors.email ? '#FF3B30' : '#252B5C'} />
         </View>
@@ -180,7 +207,37 @@ const Register = () => {
           <Text style={styles.errorText}>{errors.email}</Text>
         ) : null}
       </View>
-      <View style={{marginTop: 25}}>
+
+      <View style={{marginTop: 15, marginHorizontal: 24}}>
+        {/* <Text style={[styles.text, {marginBottom: 10}]}>Bạn là:</Text> */}
+        <View style={styles.roleContainer}>
+          <TouchableOpacity
+            style={styles.roleButton}
+            onPress={() => setRole('Landlord')}
+            activeOpacity={0.7}
+          >
+            <View style={styles.radioButton}>
+              {role === 'Landlord' && (
+                <View style={styles.radioButtonSelected} />
+              )}
+            </View>
+            <Text style={styles.roleText}>Chủ trọ</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.roleButton}
+            onPress={() => setRole('Tenant')}
+            activeOpacity={0.7}
+          >
+            <View style={styles.radioButton}>
+              {role === 'Tenant' && <View style={styles.radioButtonSelected} />}
+            </View>
+            <Text style={styles.roleText}>Thuê trọ</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={{marginTop: 20}}>
         <View style={styles.icon}>
           <Feather
             name="lock"
@@ -207,7 +264,7 @@ const Register = () => {
           <Text style={styles.errorText}>{errors.password}</Text>
         ) : null}
       </View>
-      <View style={{marginTop: 25}}>
+      <View style={{marginTop: 20}}>
         <View style={styles.icon}>
           <Feather
             name="lock"
@@ -254,7 +311,7 @@ const Register = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={{alignItems: 'center', marginTop: 24}}>
+      <View style={{alignItems: 'center', marginTop: 20}}>
         <TouchableOpacity
           style={{
             flexDirection: 'row',
@@ -282,14 +339,27 @@ const Register = () => {
           </Text>
         </TouchableOpacity>
 
-        <View style={{marginTop: 20, flexDirection: 'row'}}>
-          <Text style={[styles.text, {fontSize: 14, color: '#53587A', fontFamily: 'Lato-Regular'}]}>
+        <View style={{marginTop: 15, flexDirection: 'row'}}>
+          <Text
+            style={[
+              styles.text,
+              {fontSize: 14, color: '#53587A', fontFamily: 'Lato-Regular'},
+            ]}
+          >
             Đã có tài khoản?{' '}
           </Text>
           <TouchableOpacity
             activeOpacity={0.6}
-            onPress={() => navigate({name: 'Login'})}>
-            <Text style={[styles.text, {fontSize: 14, color: '#1F4C6B', fontFamily: 'Lato-Bold'}]}>Đăng nhập</Text>
+            onPress={() => navigate({name: 'Login'})}
+          >
+            <Text
+              style={[
+                styles.text,
+                {fontSize: 14, color: '#1F4C6B', fontFamily: 'Lato-Bold'},
+              ]}
+            >
+              Đăng nhập
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -299,21 +369,26 @@ const Register = () => {
         onDismiss={onDismissSnackBar}
         duration={3000}
         style={{
-          backgroundColor: snackbarMessage === 'This user name already exits' 
-            ? '#F5F4F8' 
-            : snackbarType === 'success' 
-              ? '#4CAF50' 
+          backgroundColor:
+            snackbarMessage === 'This user name already exits'
+              ? '#F5F4F8'
+              : snackbarType === 'success'
+              ? '#4CAF50'
               : '#FF3B30',
         }}
         action={{
           label: 'Đóng',
           onPress: onDismissSnackBar,
-        }}>
-        <Text style={{ 
-          color: snackbarMessage === 'This user name already exits' 
-            ? '#252B5C' 
-            : '#FFFFFF' 
-        }}>
+        }}
+      >
+        <Text
+          style={{
+            color:
+              snackbarMessage === 'This user name already exits'
+                ? '#252B5C'
+                : '#FFFFFF',
+          }}
+        >
           {snackbarMessage}
         </Text>
       </Snackbar>
@@ -362,5 +437,39 @@ const styles = StyleSheet.create({
     marginLeft: 24,
     marginTop: 4,
     fontFamily: 'Lato-Regular',
+  },
+  roleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  roleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F4F8',
+    padding: 15,
+    borderRadius: 10,
+    width: '48%',
+  },
+  radioButton: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#8BC83F',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  radioButtonSelected: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#8BC83F',
+  },
+  roleText: {
+    fontSize: 14,
+    fontFamily: 'Lato-Bold',
+    color: '#252B5C',
   },
 });
