@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useContext, useRef, useEffect, useState} from 'react';
-import {EstateDetailProps, Featured, Likes, UserData} from '@/utils/interface';
+import {EstateDetailProps, Featured, UserData} from '@/utils/interface';
 import {screenWidth} from '@/themes/Responsive';
 import {BackButton} from '@/components';
 import FavoriteButton from '@/components/FavoriteButton';
@@ -61,34 +61,14 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
 
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
   const AnimatedHeader = Animated.createAnimatedComponent(View);
-  const DynamicHeader = ({value}: any) => {
-    const animatedHeaderHeight = value.interpolate({
-      inputRange: [0, 85],
-      outputRange: [0, 85],
-      extrapolate: 'clamp',
-      useNativeDriver: false,
-    });
-    return (
-      <AnimatedHeader style={[styles.header, {height: animatedHeaderHeight}]} />
-    );
-  };
 
   return load ? (
     <Splash />
   ) : (
     data && user && (
       <View style={styles.component}>
-        <DynamicHeader value={scrollOffsetY} />
-
         <View style={styles.btnHeader}>
           <BackButton />
-          <FavoriteButton
-            size={50}
-            favorite={
-              data.likes.find((item: any) => item._id === idUser) ? true : false
-            }
-            id={data._id}
-          />
         </View>
 
         <ScrollView
@@ -106,7 +86,10 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
             />
             <View style={styles.imgArrayView}>
               {data.images.slice(1, 3).map((item: string, index: number) => (
-                <View key={index} style={styles.insideImg}>
+                <View
+                  key={index}
+                  style={styles.insideImg}
+                >
                   <Image
                     source={{uri: item}}
                     style={styles.imgArray}
@@ -116,13 +99,23 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
             </View>
             {data.images.length > 3 && (
               <View style={styles.countImage}>
-                <Text style={{fontSize: 18, fontFamily: 'Lato-Regular', color: '#FFFFFF'}}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: 'Lato-Regular',
+                    color: '#FFFFFF',
+                  }}
+                >
                   +{data.images.length - 3}
                 </Text>
               </View>
             )}
             <View style={styles.ratingView}>
-              <Entypo name="star" color={'#FFC42D'} size={16} />
+              <Entypo
+                name="star"
+                color={'#FFC42D'}
+                size={16}
+              />
               <Text style={styles.ratingText}>3</Text>
             </View>
           </View>
@@ -130,13 +123,17 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
           <View style={styles.nameView}>
             <Text style={styles.nameStyle}>{data.name}</Text>
             <View>
-              <Text style={styles.priceStyle}>$ {data.price}</Text>
-              <Text style={styles.perText}>{t('month')}</Text>
+              <Text style={styles.priceStyle}>{data.price}đ/tháng</Text>
+              {/* <Text style={styles.perText}>{t('month')}</Text> */}
             </View>
           </View>
 
           <View style={styles.locationContainer}>
-            <FontAwesome6 name="location-dot" color={'#1F4C6B'} size={14} />
+            <FontAwesome6
+              name="location-dot"
+              color={'#1F4C6B'}
+              size={14}
+            />
             <Text style={styles.locationStyle}>
               {data.address.road}, {data.address.quarter}, {data.address.city}
             </Text>
@@ -181,7 +178,11 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
           <Text style={styles.locationTitle}>{t('location')}</Text>
           <View style={styles.locationView}>
             <View style={styles.locationIcon}>
-              <Octicons name="location" color={'#53587A'} size={16} />
+              <Octicons
+                name="location"
+                color={'#53587A'}
+                size={16}
+              />
             </View>
             <Text style={styles.locationText}>
               {data.address.road}, {data.address.quarter}, {data.address.city}
@@ -189,19 +190,26 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
           </View>
 
           <View style={styles.maps}>
-            <Maps user={user} estate={data} />
+            <Maps
+              user={user}
+              estate={data}
+            />
           </View>
 
           <Reviews estate={data} />
-          
+
           {nearby && (
-            <NearbyEstate detail={true} id={data._id} />
+            <NearbyEstate
+              detail={true}
+              id={data._id}
+            />
           )}
 
           {data.user._id !== idUser && (
             <TouchableOpacity
               style={styles.bookButton}
-              onPress={() => push({name: 'Booking', params: {estate: data}})}>
+              onPress={() => push({name: 'Booking', params: {estate: data}})}
+            >
               <Text style={styles.bookButtonText}>{t('book_room')}</Text>
             </TouchableOpacity>
           )}
@@ -236,10 +244,8 @@ const styles = StyleSheet.create({
   images: {
     width: '100%',
     height: 400,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
   },
   imgArrayView: {
     flexDirection: 'column',
@@ -323,8 +329,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   perText: {
-    color: '#53587A', 
-    fontSize: 14, 
+    color: '#53587A',
+    fontSize: 14,
     fontFamily: 'Lato-Regular',
     marginTop: 4,
     textAlign: 'right',
