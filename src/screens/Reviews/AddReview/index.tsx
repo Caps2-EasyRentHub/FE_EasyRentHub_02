@@ -425,7 +425,7 @@ const AddReview = ({route}: any) => {
           >
             <Text style={styles.txtFinish}>
               {needsMaintenance
-                ? 'Đánh giá & Gửi yêu cầu bảo trì'
+                ? 'Đánh giá & Bảo trì'
                 : t('Đánh giá')}
             </Text>
           </TouchableOpacity>

@@ -78,13 +78,11 @@ const TabMenu = () => {
           component={Transaction}
         />
       )}
-      {!isLandlord && (
-        <Tab.Screen
-          name="Bảo trì"
-          component={MaintenanceList}
-        />
-      )}
 
+      <Tab.Screen
+        name="Bảo trì"
+        component={MaintenanceList}
+      />
       {isLandlord && (
         <Tab.Screen
           name="Danh sách"

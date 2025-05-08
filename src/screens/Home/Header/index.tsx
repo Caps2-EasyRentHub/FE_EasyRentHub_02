@@ -26,8 +26,18 @@ const Header = ({load}: any) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        setRoad(res.user.address.road);
-        setCity(res.user.address.city);
+        if (res && res.user && res.user.address) {
+          setRoad(res.user.address.road);
+          setCity(res.user.address.city);
+        } else {
+          console.log('User or address data is missing:', res);
+          setRoad('Address not available');
+          setCity('');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error);
+        setRoad('Error loading address');
       })
       .finally(() => setIsLoad(false));
   }, [load]);
