@@ -54,7 +54,9 @@ const AllEstates = () => {
       <View style={styles.cardItem}>
         <View style={styles.btnFavorite}>
           <FavoriteButton
-            favorite={item.likes.find((like: any) => like === idUser) ? true : false}
+            favorite={
+              item.likes.find((like: any) => like === idUser) ? true : false
+            }
             id={item._id}
           />
         </View>
@@ -68,21 +70,33 @@ const AllEstates = () => {
           </View>
         </View>
 
-        <Image source={{uri: item.images[0]}} style={styles.images} />
+        <Image
+          source={{uri: item.images[0]}}
+          style={styles.images}
+        />
 
         <TouchableOpacity
           style={styles.cardContent}
           onPress={() =>
             push({name: 'EstateDetail', params: {id: item._id, nearby: true}})
-          }>
+          }
+        >
           <Text style={styles.cardName}>{item.name}</Text>
           <View style={{flexDirection: 'row'}}>
             <View style={styles.ratingView}>
-              <Entypo name="star" color={'#FFC42D'} size={10} />
+              <Entypo
+                name="star"
+                color={'#FFC42D'}
+                size={10}
+              />
               <Text style={styles.rating}>{item.rating_star}</Text>
             </View>
             <View style={styles.locationView}>
-              <FontAwesome6 name="location-dot" color={'#234F68'} size={9} />
+              <FontAwesome6
+                name="location-dot"
+                color={'#234F68'}
+                size={9}
+              />
               <Text style={styles.location}>
                 {item.address.road}, {item.address.city}
               </Text>
@@ -106,7 +120,10 @@ const AllEstates = () => {
         <ScrollView>
           <View style={styles.estatesContainer}>
             {data.map((item, index) => (
-              <RenderEstateItem key={index} item={item} />
+              <RenderEstateItem
+                key={index}
+                item={item}
+              />
             ))}
           </View>
         </ScrollView>
@@ -133,6 +150,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Lato-Bold',
     fontSize: 24,
+    marginTop: 12,
     color: '#252B5C',
     flex: 1,
     textAlign: 'center',
@@ -156,9 +174,12 @@ const styles = StyleSheet.create({
   },
   btnFavorite: {
     position: 'absolute',
-    right: 8,
-    top: 8,
-    zIndex: 1,
+    right: 45,
+    top: 3,
+    zIndex: 2,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 20,
+    padding: 2,
   },
   priceView: {
     position: 'absolute',
@@ -227,4 +248,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllEstates; 
+export default AllEstates;
