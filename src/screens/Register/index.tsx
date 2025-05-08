@@ -120,7 +120,7 @@ const Register = () => {
         email,
         password,
         confirmPassword,
-        'Tenant',
+        role,
       );
       showSnackbar('Đăng ký thành công!', 'success');
       setTimeout(() => {
