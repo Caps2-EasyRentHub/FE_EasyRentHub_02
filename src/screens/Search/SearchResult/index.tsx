@@ -140,7 +140,7 @@ const SearchResult = ({route}: any) => {
       </TouchableOpacity>
       <View>
         <TextInput
-          placeholder="Search House, Apartment, etc"
+          placeholder="Tìm phòng trọ, tìm địa chỉ, ..."
           style={[
             styles.input,
             {fontFamily: search ? 'Lato-Bold' : 'Lato-Regular'},
@@ -158,9 +158,9 @@ const SearchResult = ({route}: any) => {
         </View>
       </View>
       <View style={styles.viewFound}>
-        <Text style={styles.textFound}>Found</Text>
+        <Text style={styles.textFound}>Tìm thấy</Text>
         <Text style={styles.numFound}> {data ? data.length : 0} </Text>
-        <Text style={styles.textFound}>estates</Text>
+        <Text style={styles.textFound}>kết quả</Text>
       </View>
       {load ? (
         <Splash />
@@ -220,7 +220,7 @@ const SearchResult = ({route}: any) => {
         <Text style={styles.txtLocation}>{t('location')}</Text>
         <View>
           <TextInput
-            placeholder="Address filtering"
+            placeholder="Lọc theo vị trí"
             style={[
               styles.input,
               {fontFamily: search ? 'Lato-Bold' : 'Lato-Regular'},
@@ -423,8 +423,8 @@ const styles = StyleSheet.create({
   btnReset: {
     paddingVertical: 19,
     paddingHorizontal: 30,
-    borderRadius: 35,
-    backgroundColor: '#1F4C6B',
+    borderRadius: 20,
+    backgroundColor: '#8BC83F',
   },
   txtReset: {
     color: '#FFFFFF',

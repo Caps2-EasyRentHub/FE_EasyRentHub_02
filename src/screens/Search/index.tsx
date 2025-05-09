@@ -165,16 +165,23 @@ const Search = () => {
       </View>
 
       <View style={styles.view2}>
-        <View style={{position: 'absolute', zIndex: 1, top: 89}}>
-          <View style={styles.icon}>
+        <View style={{position: 'absolute', zIndex: 1, top: 30}}>
+          <View
+            style={styles.icon}
+            accessible={false}
+            importantForAccessibility="no"
+          >
             <Feather
               name="search"
               size={20}
               color={'#252B5C'}
+              accessibilityLabel="Biểu tượng tìm kiếm"
+              accessible={false}
+              importantForAccessibility="no"
             />
           </View>
           <TextInput
-            placeholder="Search House, Apartment, etc..."
+            placeholder="Tìm phòng trọ, tìm địa chỉ, ..."
             style={[
               styles.input,
               {fontFamily: search ? 'Lato-Bold' : 'Lato-Regular'},
@@ -185,10 +192,16 @@ const Search = () => {
                 name: 'SearchResult',
                 params: {result: search},
               });
+              setSearch('');
             }}
             placeholderTextColor={'#A1A5C1'}
             onChangeText={(text) => setSearch(text)}
             value={search}
+            accessibilityLabel="Ô tìm kiếm phòng trọ, địa chỉ, ..."
+            accessible={true}
+            importantForAccessibility="yes"
+            autoCorrect={false}
+            autoCapitalize="none"
           />
         </View>
         {Array.isArray(estate) &&
@@ -203,11 +216,18 @@ const Search = () => {
                     params: {id: item._id, nearby: true},
                   })
                 }
+                accessibilityRole="button"
+                accessibilityLabel={`Xem chi tiết ${item.name}`}
+                accessible={true}
+                importantForAccessibility="yes"
               >
                 <View style={styles.contentView}>
                   <Image
                     source={{uri: item.images[0]}}
                     style={styles.imgItem}
+                    accessibilityLabel={`Ảnh của ${item.name}`}
+                    accessible={true}
+                    importantForAccessibility="yes"
                   />
                   <View style={styles.rightView}>
                     <Text style={styles.nameEstate}>{item.name}</Text>
