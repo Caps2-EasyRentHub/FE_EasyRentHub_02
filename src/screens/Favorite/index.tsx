@@ -32,6 +32,7 @@ const Favorite = () => {
   const [data, setData] = useState<EstateDetailProps[]>([]);
   const {userToken, idUser} = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {
     setRefreshing(true);
@@ -102,10 +103,8 @@ const Favorite = () => {
                   </Text>
                 </View>
                 <View style={styles.priceView}>
-                  <Text style={styles.price}>$ </Text>
-                  <Text style={styles.price}>{item.price}</Text>
-                  <Text style={styles.stay}> /</Text>
-                  <Text style={styles.stay}>tháng</Text>
+                  <Text style={styles.price}>{item.price}đ</Text>
+                  <Text style={styles.stay}> /tháng</Text>
                 </View>
               </View>
             </View>
@@ -114,26 +113,27 @@ const Favorite = () => {
       );
     });
   };
-  const handleUnFavorite = async (item: any) => {
+  const handleDelete = async (item: EstateDetailProps) => {
     try {
+      setIsDeleting(true);
       await fetch(`${Config.API_URL}/api/estate/${item._id}/unlike`, {
         method: 'PATCH',
         headers: {Authorization: userToken},
       });
-
       setData((prevData) =>
         prevData.filter((estate) => estate._id !== item._id),
       );
-
     } catch (error) {
       console.error('Lỗi khi xóa khỏi yêu thích:', error);
+    } finally {
+      setIsDeleting(false);
     }
   };
   const RightSwipe = (item: any) => {
     return (
       <TouchableOpacity
         style={styles.DeleteView}
-        onPress={() => handleUnFavorite(item)}
+        onPress={() => handleDelete(item)}
       >
         <View style={styles.trashIcon}>
           <Feather
@@ -145,13 +145,18 @@ const Favorite = () => {
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={styles.component}>
       <Text style={styles.favoriteTitle}>{t('my_favorite')}</Text>
-      <TouchableOpacity style={styles.btnDelete}>
+      <TouchableOpacity
+        style={[styles.btnDelete, isDeleting && styles.btnDeleteDisabled]}
+        onPress={() => handleDelete(data[0])}
+        disabled={isDeleting || data.length === 0}
+      >
         <Feather
           name="trash"
-          color={'#252B5C'}
+          color={isDeleting || data.length === 0 ? '#A0A0A0' : '#252B5C'}
           size={15}
         />
       </TouchableOpacity>
@@ -314,5 +319,8 @@ const styles = StyleSheet.create({
   },
   trashIcon: {
     left: 18,
+  },
+  btnDeleteDisabled: {
+    opacity: 0.5,
   },
 });
