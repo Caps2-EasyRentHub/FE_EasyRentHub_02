@@ -19,9 +19,6 @@ import {vi} from 'date-fns/locale';
 import {io} from 'socket.io-client';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-// const SOCKET_URL = 'http://192.168.1.2:5000';
-// const API_URL = 'http://192.168.1.2:5000/api/notifies';
-
 interface Notification {
   _id: string;
   content: string;
@@ -65,6 +62,25 @@ const Notification = () => {
     socketInstance.on('getNotify', (data) => {
       console.log('New notification received:', data);
       setNotifications((prev) => [data, ...prev]);
+    });
+
+    socketInstance.on('maintenanceRequest', (data) => {
+      console.log('Maintenance request notification:', data);
+
+      const newNotification = {
+        _id: data._id || Date.now().toString(),
+        content: data.title || 'Yêu cầu bảo trì mới',
+        createdAt: data.createdAt || new Date().toISOString(),
+        isRead: false,
+        recipients: data.recipients || [idUser],
+        text: data.text || 'có yêu cầu bảo trì mới',
+        updatedAt: data.updatedAt || new Date().toISOString(),
+        url: `/maintenance/${data.maintenanceId}`,
+        user: data.user || {full_name: 'Người dùng'},
+        image: data.image || null,
+      };
+
+      setNotifications((prev) => [newNotification, ...prev]);
     });
 
     // socketInstance.on('onlineUsers', (users) => {
@@ -162,10 +178,15 @@ const Notification = () => {
 
   const handleNavigate = (url: string) => {
     if (url && url.startsWith('/rental-details/')) {
-      const id = url.split('/rental-details/')[1];
-      if (id) {
-        navigation.navigate('EstateDetail', {id});
-      }
+      navigation.navigate('Profile', {
+        screen: 'TabMenu',
+        params: {screen: 'Trạng thái'},
+      });
+    } else if (url && url.startsWith('/maintenance/')) {
+      navigation.navigate('Profile', {
+        screen: 'MaintenanceList',
+        params: {screen: 'Bảo trì'},
+      });
     }
   };
 
@@ -318,6 +339,7 @@ const Notification = () => {
           </TouchableOpacity>
         </View>
       )}
+
     </View>
   );
 };
