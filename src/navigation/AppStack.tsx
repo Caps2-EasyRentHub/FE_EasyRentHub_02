@@ -33,6 +33,7 @@ import RevenueScreen from '@/components/TrackRevenue/MonthlyRevenueChart/Revenue
 import MaintenanceList from '@/screens/Profile/TabMenu/Maintenance/MaintenanceList';
 import MaintenanceDetail from '@/screens/Profile/TabMenu/Maintenance/MaintenanceDetail';
 import TenantMaintenanceDetail from '@/screens/Profile/TabMenu/Maintenance/TenantMaintenanceDetail';
+import EditListing from '@/screens/Profile/TabMenu/Listing/EditListing/index';
 
 const Stack = createStackNavigator<RootStackParams>();
 
@@ -153,6 +154,11 @@ const AppStack = observer(({name}: {name: string | undefined}) => {
       <Stack.Screen
         name="TenantMaintenanceDetail"
         component={TenantMaintenanceDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditListing"
+        component={EditListing}
         options={{headerShown: false}}
       />
       <Stack.Screen
