@@ -24,7 +24,7 @@ import {AuthContext} from '@/context/AuthContext';
 const Search = () => {
   const {t} = useTranslation();
   const [search, setSearch] = useState('');
-  // const [address, setAddress] = useState<any>([]);
+  const [address, setAddress] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [changeLocation, setChangeLocation] = useState({
     latitude: 16.055061228490178,
@@ -67,14 +67,6 @@ const Search = () => {
     }
   }, [idEstate]);
 
-  const handleFavorite = (id: any) => {
-    if (id === idUser) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const safeParseFloat = (value: any): number => {
     try {
       if (value === undefined || value === null) {
@@ -82,13 +74,11 @@ const Search = () => {
         return 0;
       }
 
-      // Nếu là string, parse
       if (typeof value === 'string') {
         const parsed = parseFloat(value);
         return isNaN(parsed) ? 0 : parsed;
       }
 
-      // Nếu đã là number, trả về luôn
       if (typeof value === 'number') {
         return isNaN(value) ? 0 : value;
       }
@@ -98,6 +88,38 @@ const Search = () => {
     } catch (error) {
       console.error('Error parsing float:', error);
       return 0;
+    }
+  };
+
+  const handleAddressSearch = async () => {
+    if (!address) return;
+
+    try {
+      const geocodeResponse = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          address,
+        )}`,
+      );
+      const geocodeData = await geocodeResponse.json();
+
+      if (geocodeData && geocodeData.length > 0) {
+        const lat = geocodeData[0].lat;
+        const lng = geocodeData[0].lon;
+
+        push({
+          name: 'SearchResult',
+          params: {
+            lat: lat,
+            lng: lng,
+            address: address,
+          },
+        });
+        setAddress('');
+      } else {
+        console.warn('No coordinates found for this address');
+      }
+    } catch (error) {
+      console.error('Error searching address:', error);
     }
   };
 
@@ -166,42 +188,33 @@ const Search = () => {
 
       <View style={styles.view2}>
         <View style={{position: 'absolute', zIndex: 1, top: 30}}>
-          <View
-            style={styles.icon}
-            accessible={false}
-            importantForAccessibility="no"
-          >
+          <View style={styles.icon}>
             <Feather
               name="search"
               size={20}
               color={'#252B5C'}
-              accessibilityLabel="Biểu tượng tìm kiếm"
-              accessible={false}
-              importantForAccessibility="no"
             />
           </View>
           <TextInput
-            placeholder="Tìm phòng trọ, tìm địa chỉ, ..."
+            placeholder="Nhập địa chỉ..."
             style={[
               styles.input,
-              {fontFamily: search ? 'Lato-Bold' : 'Lato-Regular'},
+              {fontFamily: address ? 'Lato-Bold' : 'Lato-Regular'},
             ]}
             returnKeyType="search"
-            onSubmitEditing={() => {
-              push({
-                name: 'SearchResult',
-                params: {result: search},
-              });
-              setSearch('');
-            }}
+            onSubmitEditing={handleAddressSearch}
             placeholderTextColor={'#A1A5C1'}
-            onChangeText={(text) => setSearch(text)}
-            value={search}
-            accessibilityLabel="Ô tìm kiếm phòng trọ, địa chỉ, ..."
+            onChangeText={(text) => setAddress(text)}
+            value={address}
+            accessibilityLabel="Ô tìm kiếm địa chỉ"
             accessible={true}
             importantForAccessibility="yes"
             autoCorrect={false}
             autoCapitalize="none"
+            clearButtonMode="while-editing"
+            textContentType="streetAddressLine1"
+            editable={true}
+            selectTextOnFocus={true}
           />
         </View>
         {Array.isArray(estate) &&

@@ -15,110 +15,190 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {Error, Filter} from '@/assets/Svg';
-import {getImages} from '@/assets/Images';
 import {push} from '@/navigation/NavigationUtils';
-import FavoriteButton from '@/components/FavoriteButton';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import Slider from '@react-native-community/slider';
 import {Config} from '@/config';
 import {AuthContext} from '@/context/AuthContext';
 import {EstateItems} from '@/utils/interface';
 import Splash from '@/components/Splash';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 const SearchResult = ({route}: any) => {
-  const {result} = route.params;
+  const {lat, lng, address} = route.params;
   const {t} = useTranslation();
-  const [search, setSearch] = useState(result);
-  const [location, setLocation] = useState('');
-  const {userToken, idUser} = useContext(AuthContext);
+  const [search, setSearch] = useState(address || '');
+  const {userToken} = useContext(AuthContext);
   const [data, setData] = useState<EstateItems[]>([]);
+  const [originalData, setOriginalData] = useState<EstateItems[]>([]);
   const [load, setLoad] = useState(true);
 
-  useEffect(() => {
-    setLoad(true);
+  const [priceRange, setPriceRange] = useState({
+    min: 0,
+    max: 10000000,
+  });
+  const [currentPriceRange, setCurrentPriceRange] = useState([0, 10000000]);
+  const [bedrooms, setBedrooms] = useState(0);
+  const [bathrooms, setBathrooms] = useState(0);
+  const [floors, setFloors] = useState(0);
+  const [currentPrice, setCurrentPrice] = useState(0);
 
-    fetch(`${Config.API_URL}/api/searchEstates?name=${search}`, {
-      method: 'GET',
-      headers: {Authorization: userToken},
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
+  const handleAddressSearch = async (searchAddress: string) => {
+    if (!searchAddress) {
+      try {
+        const response = await fetch(
+          `${Config.API_URL}/api/recommend?lat=${lat}&lng=${lng}`,
+          {
+            method: 'GET',
+            headers: {Authorization: userToken},
+          },
+        );
+        const res = await response.json();
         if (!res.estates) {
-          console.warn('No estates returned from API');
           setData([]);
+          setOriginalData([]);
         } else {
           setData(res.estates);
+          setOriginalData(res.estates);
         }
-      })
-      .catch((error) => {
-        // Xử lý lỗi
-        console.error('Error fetching search results:', error);
-        setData([]); // Đặt data là mảng rỗng khi có lỗi
-      })
-      .finally(() => setLoad(false));
-  }, [search]);
+      } catch (error) {
+        console.error('Error fetching estates:', error);
+        setData([]);
+        setOriginalData([]);
+      } finally {
+        setLoad(false);
+      }
+      return;
+    }
+
+    setLoad(true);
+    try {
+      const geocodeResponse = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          searchAddress,
+        )}`,
+      );
+      const geocodeData = await geocodeResponse.json();
+
+      if (geocodeData && geocodeData.length > 0) {
+        const newLat = geocodeData[0].lat;
+        const newLng = geocodeData[0].lon;
+
+        const response = await fetch(
+          `${Config.API_URL}/api/recommend?lat=${newLat}&lng=${newLng}`,
+          {
+            method: 'GET',
+            headers: {Authorization: userToken},
+          },
+        );
+        const res = await response.json();
+        if (!res.estates) {
+          setData([]);
+          setOriginalData([]);
+        } else {
+          setData(res.estates);
+          setOriginalData(res.estates);
+        }
+      } else {
+        console.warn('No coordinates found for this address');
+        setData([]);
+        setOriginalData([]);
+      }
+    } catch (error) {
+      console.error('Error searching address:', error);
+      setData([]);
+      setOriginalData([]);
+    } finally {
+      setLoad(false);
+    }
+  };
+
+  const handleFilter = () => {
+    setLoad(true);
+    const filteredData = originalData.filter((item: EstateItems) => {
+      const priceInRange =
+        item.price >= currentPriceRange[0] &&
+        item.price <= currentPriceRange[1];
+
+      const bedroomMatch = bedrooms === 0 || item.property.bedroom === bedrooms;
+      const bathroomMatch =
+        bathrooms === 0 || item.property.bathroom === bathrooms;
+      const floorMatch = floors === 0 || item.property.floors === floors;
+
+      return priceInRange && bedroomMatch && bathroomMatch && floorMatch;
+    });
+
+    setData(filteredData);
+    setLoad(false);
+    handleClosePress();
+  };
+
+  const handleResetFilter = () => {
+    setCurrentPriceRange([0, 10000000]);
+    setBedrooms(0);
+    setBathrooms(0);
+    setFloors(0);
+    setData(originalData);
+    handleClosePress();
+  };
+
+  useEffect(() => {
+    handleAddressSearch('');
+  }, [lat, lng]);
+
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const snapPoints = useMemo(() => ['50%'], []);
+  const snapPoints = useMemo(() => ['75%'], []);
 
   const handleOpenPress = () => bottomSheetRef.current?.expand();
   const handleClosePress = () => bottomSheetRef.current?.close();
 
   const RenderItems = ({item}: {item: EstateItems}) => {
     return (
-      item.status === 'available' && (
-        <View style={styles.cardItem}>
-          <View style={styles.btnFavorite}>
-            {/* <FavoriteButton favorite={item.assets.favorite} /> */}
+      <View style={styles.cardItem}>
+        <View style={styles.priceView}>
+          <View style={styles.priceContent}>
+            <Text style={styles.price}>$ </Text>
+            <Text style={styles.price}>{item.price}</Text>
+            <Text style={styles.stay}> /</Text>
+            <Text style={styles.stay}>month</Text>
           </View>
-
-          <View style={styles.priceView}>
-            <View style={styles.priceContent}>
-              <Text style={styles.price}>$ </Text>
-              <Text style={styles.price}>{item.price}</Text>
-              <Text style={styles.stay}> /</Text>
-              <Text style={styles.stay}>month</Text>
-            </View>
-          </View>
-
-          <Image
-            source={{uri: item.images[0]}}
-            style={styles.images}
-          />
-
-          <TouchableOpacity
-            style={styles.cardContent}
-            onPress={() =>
-              push({name: 'EstateDetail', params: {id: item._id, nearby: true}})
-            }
-          >
-            <Text style={styles.cardName}>{item.name}</Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={styles.ratingView}>
-                <Entypo
-                  name="star"
-                  color={'#FFC42D'}
-                  size={10}
-                />
-                <Text style={styles.rating}>3</Text>
-              </View>
-              <View style={styles.locationView}>
-                <FontAwesome6
-                  name="location-dot"
-                  color={'#234F68'}
-                  size={9}
-                />
-                <Text style={styles.location}>
-                  {item.address.road}, {item.address.city},{' '}
-                  {item.address.country}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
         </View>
-      )
+
+        <Image
+          source={{uri: item.images[0]}}
+          style={styles.images}
+        />
+
+        <TouchableOpacity
+          style={styles.cardContent}
+          onPress={() =>
+            push({name: 'EstateDetail', params: {id: item._id, nearby: true}})
+          }
+        >
+          <Text style={styles.cardName}>{item.name}</Text>
+          <View style={{flexDirection: 'row'}}>
+            <View style={styles.ratingView}>
+              <Entypo
+                name="star"
+                color={'#FFC42D'}
+                size={10}
+              />
+              <Text style={styles.rating}>3</Text>
+            </View>
+            <View style={styles.locationView}>
+              <FontAwesome6
+                name="location-dot"
+                color={'#234F68'}
+                size={9}
+              />
+              <Text style={styles.location}>
+                {item.address.road}, {item.address.city}, {item.address.country}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -140,27 +220,34 @@ const SearchResult = ({route}: any) => {
       </TouchableOpacity>
       <View>
         <TextInput
-          placeholder="Tìm phòng trọ, tìm địa chỉ, ..."
+          placeholder="Nhập địa chỉ để tìm phòng trọ gần đó..."
           style={[
             styles.input,
             {fontFamily: search ? 'Lato-Bold' : 'Lato-Regular'},
           ]}
           placeholderTextColor={'#A1A5C1'}
-          onChangeText={(text) => setSearch(text)}
+          onChangeText={setSearch}
+          onSubmitEditing={() => handleAddressSearch(search)}
           value={search}
+          clearButtonMode="while-editing"
+          editable={true}
+          selectTextOnFocus={true}
+          returnKeyType="search"
         />
-        <View style={styles.icon}>
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={() => handleAddressSearch(search)}
+        >
           <Feather
             name="search"
             size={20}
             color={'#252B5C'}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.viewFound}>
-        <Text style={styles.textFound}>Tìm thấy</Text>
+        <Text style={styles.textFound}>Kết quả</Text>
         <Text style={styles.numFound}> {data ? data.length : 0} </Text>
-        <Text style={styles.textFound}>kết quả</Text>
       </View>
       {load ? (
         <Splash />
@@ -204,39 +291,115 @@ const SearchResult = ({route}: any) => {
       >
         <View style={styles.titleBts}>
           <Text style={styles.txtFilter}>{t('filter')}</Text>
-          <TouchableOpacity style={styles.btnReset}>
-            <Text style={styles.txtReset}>{t('reset')}</Text>
-          </TouchableOpacity>
         </View>
-        <Text style={styles.txtLocation}>{t('price')}</Text>
 
-        <Slider
-          style={{width: 200, height: 40}}
-          minimumValue={0}
-          maximumValue={1}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
-        />
-        <Text style={styles.txtLocation}>{t('location')}</Text>
-        <View>
-          <TextInput
-            placeholder="Lọc theo vị trí"
-            style={[
-              styles.input,
-              {fontFamily: search ? 'Lato-Bold' : 'Lato-Regular'},
-            ]}
-            placeholderTextColor={'#A1A5C1'}
-            onChangeText={(text) => setLocation(text)}
-            value={location}
-          />
-          <View style={styles.icon}>
-            <Feather
-              name="search"
-              size={20}
-              color={'#252B5C'}
-            />
+        <ScrollView style={styles.filterScrollView}>
+          <View style={styles.filterContainer}>
+            <View style={styles.priceRangeContainer}>
+              <View style={styles.priceHeader}>
+                <Text style={styles.filterLabel}>Khoảng giá:</Text>
+              </View>
+              <View style={styles.priceValues}>
+                <Text style={styles.priceValue}>
+                  Từ: {currentPriceRange[0].toLocaleString('vi-VN')}đ
+                </Text>
+                <Text style={styles.priceValue}>
+                  Đến: {currentPriceRange[1].toLocaleString('vi-VN')}đ
+                </Text>
+              </View>
+              <MultiSlider
+                values={[currentPriceRange[0], currentPriceRange[1]]}
+                min={0}
+                max={10000000}
+                step={100000}
+                sliderLength={screenWidth - 80}
+                onValuesChange={(values) => setCurrentPriceRange(values)}
+                markerStyle={{
+                  backgroundColor: '#234F68',
+                  height: 20,
+                  width: 20,
+                }}
+                selectedStyle={{
+                  backgroundColor: '#234F68',
+                }}
+                trackStyle={{
+                  height: 4,
+                }}
+              />
+              <View style={styles.priceRange}>
+                <Text style={styles.priceRangeText}>0đ</Text>
+                <Text style={styles.priceRangeText}>10.000.000đ</Text>
+              </View>
+            </View>
+
+            <Text style={styles.filterTitle}>{t('property')}</Text>
+            <View style={styles.propertyFilters}>
+              <View style={styles.filterItem}>
+                <Text style={styles.filterLabel}>{t('bedrooms')}</Text>
+                <View style={styles.counterContainer}>
+                  <TouchableOpacity
+                    style={styles.counterBtn}
+                    onPress={() => setBedrooms(Math.max(0, bedrooms - 1))}
+                  >
+                    <Text style={styles.counterBtnText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.counterText}>{bedrooms}</Text>
+                  <TouchableOpacity
+                    style={styles.counterBtn}
+                    onPress={() => setBedrooms(bedrooms + 1)}
+                  >
+                    <Text style={styles.counterBtnText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={styles.filterItem}>
+                <Text style={styles.filterLabel}>{t('bathrooms')}</Text>
+                <View style={styles.counterContainer}>
+                  <TouchableOpacity
+                    style={styles.counterBtn}
+                    onPress={() => setBathrooms(Math.max(0, bathrooms - 1))}
+                  >
+                    <Text style={styles.counterBtnText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.counterText}>{bathrooms}</Text>
+                  <TouchableOpacity
+                    style={styles.counterBtn}
+                    onPress={() => setBathrooms(bathrooms + 1)}
+                  >
+                    <Text style={styles.counterBtnText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={styles.filterItem}>
+                <Text style={styles.filterLabel}>{t('floors')}</Text>
+                <View style={styles.counterContainer}>
+                  <TouchableOpacity
+                    style={styles.counterBtn}
+                    onPress={() => setFloors(Math.max(0, floors - 1))}
+                  >
+                    <Text style={styles.counterBtnText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.counterText}>{floors}</Text>
+                  <TouchableOpacity
+                    style={styles.counterBtn}
+                    onPress={() => setFloors(floors + 1)}
+                  >
+                    <Text style={styles.counterBtnText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={styles.applyButton}
+              onPress={handleFilter}
+            >
+              <Text style={styles.applyButtonText}>{t('Đặt lại')}</Text>
+            </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </BottomSheet>
     </View>
   );
@@ -382,8 +545,6 @@ const styles = StyleSheet.create({
     right: 16,
     position: 'absolute',
     zIndex: 1,
-    // width: 75,
-    // height: 25,
     backgroundColor: 'rgba(35,79,104,.69)',
     borderRadius: 8,
   },
@@ -414,6 +575,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 24,
     alignItems: 'center',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E3E3E7',
   },
   txtFilter: {
     color: '#252B5C',
@@ -437,5 +601,99 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 24,
     marginTop: 30,
+  },
+  filterScrollView: {
+    flexGrow: 1,
+  },
+  filterContainer: {
+    padding: 24,
+    paddingBottom: 100,
+  },
+  filterTitle: {
+    color: '#252B5C',
+    fontFamily: 'Lato-Bold',
+    fontSize: 18,
+    marginBottom: 16,
+  },
+  priceRangeContainer: {
+    marginBottom: 24,
+    paddingHorizontal: 16,
+  },
+  priceHeader: {
+    marginBottom: 8,
+  },
+  filterLabel: {
+    color: '#252B5C',
+    fontFamily: 'Lato-Bold',
+    fontSize: 16,
+  },
+  priceValues: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  priceValue: {
+    color: '#234F68',
+    fontFamily: 'Lato-Bold',
+    fontSize: 14,
+  },
+  priceRange: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  priceRangeText: {
+    color: '#53587A',
+    fontFamily: 'Lato-Regular',
+    fontSize: 12,
+  },
+  slider: {
+    width: '100%',
+    height: 40,
+  },
+  propertyFilters: {
+    marginTop: 16,
+  },
+  filterItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  counterContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  counterBtn: {
+    width: 32,
+    height: 32,
+    backgroundColor: '#F5F4F8',
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  counterBtnText: {
+    color: '#234F68',
+    fontSize: 20,
+    fontFamily: 'Lato-Bold',
+  },
+  counterText: {
+    color: '#252B5C',
+    fontFamily: 'Lato-Bold',
+    fontSize: 16,
+    marginHorizontal: 16,
+  },
+  applyButton: {
+    backgroundColor: '#8BC83F',
+    borderRadius: 10,
+    height: 54,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 24,
+  },
+  applyButtonText: {
+    color: '#FFFFFF',
+    fontFamily: 'Lato-Bold',
+    fontSize: 16,
   },
 });
