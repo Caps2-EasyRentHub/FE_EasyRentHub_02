@@ -7,6 +7,7 @@ import {PaperProvider} from 'react-native-paper';
 import socketService from './services/socketService';
 // import Toast from 'react-native-toast-message';
 // import {ChatProvider} from './context/ChatContext';
+import {SubscriptionProvider} from './context/SubscriptionContext';
 
 const App = () => {
   useEffect(() => {
@@ -21,12 +22,14 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <PaperProvider>
-        {/* <ChatProvider> */}
-        <AppNavigation />
-        {/* <Toast /> */}
-        {/* </ChatProvider> */}
-      </PaperProvider>
+      <SubscriptionProvider>
+        <PaperProvider>
+          {/* <ChatProvider> */}
+          <AppNavigation />
+          {/* <Toast /> */}
+          {/* </ChatProvider> */}
+        </PaperProvider>
+      </SubscriptionProvider>
     </AuthProvider>
   );
 };

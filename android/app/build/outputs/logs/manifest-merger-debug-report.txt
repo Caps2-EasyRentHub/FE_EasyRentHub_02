@@ -23,6 +23,7 @@ MERGED from [:react-native-reanimated] D:\University\Caps2\EasyRentHub\New_EasyR
 MERGED from [:react-native-safe-area-context] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-screens] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-screens\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [:react-native-svg] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-svg\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-19:12
 MERGED from [com.facebook.react:react-android:0.72.17] C:\Users\HP\.gradle\caches\transforms-3\45255ea1baeaa6e3ff85a05849a7b88e\transformed\jetified-react-android-0.72.17-debug\AndroidManifest.xml:2:1-7:12
 MERGED from [com.facebook.flipper:flipper-network-plugin:0.182.0] C:\Users\HP\.gradle\caches\transforms-3\2aefe0182e2c03c4338905b36299f32b\transformed\jetified-flipper-network-plugin-0.182.0\AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.182.0] C:\Users\HP\.gradle\caches\transforms-3\cc257600d6c7c455dbfd2404ebb2afb0\transformed\jetified-flipper-fresco-plugin-0.182.0\AndroidManifest.xml:8:1-15:12
@@ -72,6 +73,7 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] C:\Users\HP\.gradle\c
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\318a05c1178f81796e41ebab480a613c\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\4311a350971ee51b59efa8cb2e11a069\transformed\jetified-core-ktx-1.10.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\HP\.gradle\caches\transforms-3\0d8946397d8ea5c747ada03737254bfc\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.webkit:webkit:1.4.0] C:\Users\HP\.gradle\caches\transforms-3\39c269db11bb84f7452946dcdf6ee33c\transformed\webkit-1.4.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\HP\.gradle\caches\transforms-3\4190f9c769943345a637669465638f81\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\HP\.gradle\caches\transforms-3\51e466fd506340e7607a8798e117ca46\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\HP\.gradle\caches\transforms-3\32129e6c1e673095a4e81e43e62f1562\transformed\recyclerview-1.1.0\AndroidManifest.xml:17:1-24:12
@@ -189,6 +191,8 @@ MERGED from [:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\Ne
 MERGED from [:react-native-image-crop-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:5-29:19
 MERGED from [:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-17:19
 MERGED from [:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-17:19
+MERGED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-17:19
+MERGED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-17:19
 MERGED from [com.facebook.android:facebook-android-sdk:18.0.3] C:\Users\HP\.gradle\caches\transforms-3\0ba0bea71e1e309fc388aa75a8dba794\transformed\jetified-facebook-android-sdk-18.0.3\AndroidManifest.xml:14:5-15:19
 MERGED from [com.facebook.android:facebook-android-sdk:18.0.3] C:\Users\HP\.gradle\caches\transforms-3\0ba0bea71e1e309fc388aa75a8dba794\transformed\jetified-facebook-android-sdk-18.0.3\AndroidManifest.xml:14:5-15:19
 MERGED from [com.facebook.android:facebook-login:18.0.3] C:\Users\HP\.gradle\caches\transforms-3\5cbd242881eade2f34bb69a8d0904b0f\transformed\jetified-facebook-login-18.0.3\AndroidManifest.xml:14:5-15:19
@@ -372,6 +376,8 @@ MERGED from [:react-native-screens] D:\University\Caps2\EasyRentHub\New_EasyRent
 MERGED from [:react-native-screens] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-screens\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-svg] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-svg\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [:react-native-svg] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-svg\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [com.facebook.react:react-android:0.72.17] C:\Users\HP\.gradle\caches\transforms-3\45255ea1baeaa6e3ff85a05849a7b88e\transformed\jetified-react-android-0.72.17-debug\AndroidManifest.xml:5:5-44
 MERGED from [com.facebook.react:react-android:0.72.17] C:\Users\HP\.gradle\caches\transforms-3\45255ea1baeaa6e3ff85a05849a7b88e\transformed\jetified-react-android-0.72.17-debug\AndroidManifest.xml:5:5-44
 MERGED from [com.facebook.flipper:flipper-network-plugin:0.182.0] C:\Users\HP\.gradle\caches\transforms-3\2aefe0182e2c03c4338905b36299f32b\transformed\jetified-flipper-network-plugin-0.182.0\AndroidManifest.xml:11:5-13:41
@@ -470,6 +476,8 @@ MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\HP\.gradle\caches\transform
 MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\4311a350971ee51b59efa8cb2e11a069\transformed\jetified-core-ktx-1.10.1\AndroidManifest.xml:5:5-44
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\HP\.gradle\caches\transforms-3\0d8946397d8ea5c747ada03737254bfc\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.2.0] C:\Users\HP\.gradle\caches\transforms-3\0d8946397d8ea5c747ada03737254bfc\transformed\coordinatorlayout-1.2.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.webkit:webkit:1.4.0] C:\Users\HP\.gradle\caches\transforms-3\39c269db11bb84f7452946dcdf6ee33c\transformed\webkit-1.4.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.webkit:webkit:1.4.0] C:\Users\HP\.gradle\caches\transforms-3\39c269db11bb84f7452946dcdf6ee33c\transformed\webkit-1.4.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\HP\.gradle\caches\transforms-3\4190f9c769943345a637669465638f81\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\HP\.gradle\caches\transforms-3\4190f9c769943345a637669465638f81\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\HP\.gradle\caches\transforms-3\51e466fd506340e7607a8798e117ca46\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
@@ -634,6 +642,16 @@ ADDED from [:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_Easy
 		ADDED from [:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
 	android:name
 		ADDED from [:react-native-image-picker] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-63
+provider#com.reactnativecommunity.webview.RNCWebViewFileProvider
+ADDED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
+	android:grantUriPermissions
+		ADDED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
+	android:authorities
+		ADDED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-64
+	android:exported
+		ADDED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
+	android:name
+		ADDED from [:react-native-webview] D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-83
 uses-permission#android.permission.ACCESS_WIFI_STATE
 ADDED from [com.facebook.flipper:flipper:0.182.0] C:\Users\HP\.gradle\caches\transforms-3\9d92ca3e86a0efc12f6eb5b65d7d6a9b\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:5-76
 	android:name

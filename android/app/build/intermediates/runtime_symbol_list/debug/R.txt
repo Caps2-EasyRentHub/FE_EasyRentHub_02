@@ -7385,6 +7385,7 @@ int styleable ucrop_UCropView_ucrop_show_frame 10
 int styleable ucrop_UCropView_ucrop_show_grid 11
 int styleable ucrop_UCropView_ucrop_show_oval_crop_frame 12
 int xml ad_services_config 0x7f130000
-int xml imagepicker_provider_paths 0x7f130001
-int xml ivpusic_imagepicker_provider_paths 0x7f130002
-int xml rn_dev_preferences 0x7f130003
+int xml file_provider_paths 0x7f130001
+int xml imagepicker_provider_paths 0x7f130002
+int xml ivpusic_imagepicker_provider_paths 0x7f130003
+int xml rn_dev_preferences 0x7f130004

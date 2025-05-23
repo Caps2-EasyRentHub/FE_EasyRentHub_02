@@ -34,6 +34,11 @@ import MaintenanceList from '@/screens/Profile/TabMenu/Maintenance/MaintenanceLi
 import MaintenanceDetail from '@/screens/Profile/TabMenu/Maintenance/MaintenanceDetail';
 import TenantMaintenanceDetail from '@/screens/Profile/TabMenu/Maintenance/TenantMaintenanceDetail';
 import EditListing from '@/screens/Profile/TabMenu/Listing/EditListing/index';
+import { UpgradeScreen } from '@/screens/Subscription/UpgradeScreen';
+import { PaymentWebView } from '@/screens/Subscription/PaymentWebView';
+import { PaymentHistoryScreen } from '@/screens/Subscription/PaymentHistoryScreen';
+import { PaymentSuccessScreen } from '@/screens/Subscription/PaymentSuccessScreen';
+import { PaymentCancelScreen } from '@/screens/Subscription/PaymentCancelScreen';
 
 const Stack = createStackNavigator<RootStackParams>();
 
@@ -160,6 +165,46 @@ const AppStack = observer(({name}: {name: string | undefined}) => {
         name="EditListing"
         component={EditListing}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="UpgradeSubscription"
+        component={UpgradeScreen}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+      />
+      <Stack.Screen
+        name="PaymentWebView"
+        component={PaymentWebView}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+      />
+      <Stack.Screen
+        name="PaymentHistory"
+        component={PaymentHistoryScreen}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+      />
+      <Stack.Screen
+        name="PaymentSuccess"
+        component={PaymentSuccessScreen}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+      />
+      <Stack.Screen
+        name="PaymentCancel"
+        component={PaymentCancelScreen}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
       />
       <Stack.Screen
         name="ConfirmDetail"

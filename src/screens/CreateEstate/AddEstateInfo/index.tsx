@@ -19,11 +19,16 @@ import Loading from '@/components/Loading';
 import axios from 'axios';
 import {Config} from '@/config';
 import {AuthContext} from '@/context/AuthContext';
+import {useSubscription} from '@/context/SubscriptionContext';
+import {useNavigation} from '@react-navigation/native';
 
 const AddEstateInfo = ({route}: any) => {
   const {data} = route.params;
   const {userToken} = useContext(AuthContext);
+  const {refreshSubscription} = useSubscription();
   const {t} = useTranslation();
+  const navigation = useNavigation();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [active, setActive] = useState(true);
   const [sell, setSell] = useState(0);
@@ -36,7 +41,6 @@ const AddEstateInfo = ({route}: any) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-
   const snapPoints = useMemo(() => ['50%'], []);
 
   const handleCreateEstate = async () => {
@@ -67,32 +71,45 @@ const AddEstateInfo = ({route}: any) => {
         status: 'available',
       });
 
-      const requestOptions = {
+      // Sử dụng fetch với async/await để dễ xử lý
+      const response = await fetch(`${Config.API_URL}/api/estates`, {
         method: 'POST',
         headers: myHeaders,
         body: raw,
-        redirect: 'follow',
-      };
+      });
 
-      fetch(`${Config.API_URL}/api/estates`, requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-          setLoading(false);
-          if (result) {
-            bottomSheetRef.current?.snapToIndex(0);
-            setSuccess(true);
-          } else {
-            Alert.alert(
-              t('error'),
-              result.message || t('something_went_wrong'),
-            );
+      const result = await response.json();
+
+      if (response.ok && result) {
+        try {
+          // Gọi API để ghi nhận việc sử dụng (đăng bài) và giảm số lượng bài còn lại
+          const usageResponse = await fetch(`${Config.API_URL}/api/payment/record-usage-payment`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': userToken
+            }
+          });
+          
+          // Cập nhật lại thông tin subscription sau khi đăng bài
+          if (usageResponse.ok) {
+            setIsRefreshing(true);
+            await refreshSubscription();
+            setIsRefreshing(false);
           }
-        })
-        .catch((error) => {
-          console.error(error);
-          setLoading(false);
-          Alert.alert(t('error'), t('something_went_wrong'));
-        });
+        } catch (usageError) {
+          console.error('Failed to record usage:', usageError);
+          // Tiếp tục hiển thị thành công ngay cả khi ghi nhận sử dụng thất bại
+        }
+        
+        bottomSheetRef.current?.snapToIndex(0);
+        setSuccess(true);
+      } else {
+        Alert.alert(
+          t('error'),
+          result.message || t('something_went_wrong'),
+        );
+      }
     } catch (error) {
       console.error('Error:', error);
       Alert.alert(t('error'), t('something_went_wrong'));
@@ -100,7 +117,16 @@ const AddEstateInfo = ({route}: any) => {
       setLoading(false);
     }
   };
-  const handleClosePress = () => bottomSheetRef.current?.close();
+
+  // Thêm hàm xử lý khi đóng bottomSheet thành công
+  const handleClosePress = useCallback(() => {
+    if (success) {
+      // Quay lại màn hình CreateEstate để cập nhật subscription status
+      navigation.navigate('CreateEstate');
+    } else {
+      bottomSheetRef.current?.close();
+    }
+  }, [success, navigation]);
 
   return (
     <View style={styles.component}>
@@ -230,6 +256,7 @@ const AddEstateInfo = ({route}: any) => {
         index={-1}
         snapPoints={snapPoints}
         enablePanDownToClose
+        onClose={handleClosePress}
         backdropComponent={(props) => (
           <BottomSheetBackdrop
             {...props}
@@ -246,19 +273,23 @@ const AddEstateInfo = ({route}: any) => {
             </Text>
             <Text style={styles.titleHighlight}>{t('published')}</Text>
             <View style={styles.btnModalGroup}>
-              <TouchableOpacity style={styles.btnAddMoreModal}>
-                <Text
-                  style={styles.txtAddMoreModal}
-                  onPress={() => navigate({name: 'CreateEstate'})}
-                >
-                  {t('add_more')}
-                </Text>
+              <TouchableOpacity
+                style={styles.btnCancel}
+                onPress={() => {
+                  bottomSheetRef.current?.close();
+                  push({name: 'HomeScreen'});
+                }}
+              >
+                <Text style={styles.txtCancel}>{t('go_home')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.btnFinishModal}
-                onPress={() => navigate({name: 'Profile'})}
+                style={styles.btnDone}
+                onPress={() => {
+                  bottomSheetRef.current?.close();
+                  push({name: 'CreateEstate'});
+                }}
               >
-                <Text style={styles.txtFinishModal}>{t('finish')}</Text>
+                <Text style={styles.txtDone}>{t('add_another')}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -266,25 +297,17 @@ const AddEstateInfo = ({route}: any) => {
           <View style={styles.contentContainer}>
             <Error />
             <Text style={[styles.titleNormal, {marginTop: 24}]}>
-              {t('aw_snap')}
+              {t('something_went_wrong')}
             </Text>
-            <Text style={styles.titleHighlight}>{t('error')}</Text>
-            <View style={styles.btnModalGroup}>
-              <TouchableOpacity
-                style={styles.btnAddMoreModal}
-                onPress={handleClosePress}
-              >
-                <Text style={styles.txtAddMoreModal}>{t('close')}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.btnFinishModal}>
-                <Text
-                  style={styles.txtFinishModal}
-                  onPress={handleCreateEstate}
-                >
-                  {t('retry')}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <Text style={styles.titleHighlight}>{t('try_again')}</Text>
+            <TouchableOpacity
+              style={[styles.btnReview, {marginTop: 50}]}
+              onPress={() => {
+                bottomSheetRef.current?.close();
+              }}
+            >
+              <Text style={styles.textReview}>{t('try_again')}</Text>
+            </TouchableOpacity>
           </View>
         )}
       </BottomSheet>
@@ -460,7 +483,7 @@ const styles = StyleSheet.create({
     bottom: 24,
     position: 'absolute',
   },
-  btnAddMoreModal: {
+  btnCancel: {
     width: screenWidth / 2 - 29,
     height: 70,
     backgroundColor: '#F5F4F8',
@@ -469,7 +492,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  btnFinishModal: {
+  btnDone: {
     width: screenWidth / 2 - 29,
     height: 70,
     backgroundColor: '#8BC83F',
@@ -478,14 +501,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  txtAddMoreModal: {
+  txtCancel: {
     color: '#252B5C',
     fontFamily: 'Lato-Bold',
     fontSize: 18,
   },
-  txtFinishModal: {
+  txtDone: {
     color: '#FFFFFF',
     fontFamily: 'Lato-Bold',
     fontSize: 18,
+  },
+  btnReview: {
+    backgroundColor: '#8BC83F',
+    borderRadius: 10,
+    paddingVertical: 17.5,
+    paddingHorizontal: 24,
+    marginLeft: 75,
+    marginTop: 50,
+    width: screenWidth - 150,
+    height: 65,
+  },
+  textReview: {
+    fontFamily: 'Lato-Bold',
+    color: '#FFF',
+    fontSize: 16,
   },
 });

@@ -79,3 +79,4 @@ com.zentro.app-packaged_res-77 D:\University\Caps2\EasyRentHub\New_EasyRentHub\F
 com.zentro.app-packaged_res-78 D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
 com.zentro.app-packaged_res-79 D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-svg\android\build\intermediates\packaged_res\debug
 com.zentro.app-packaged_res-80 D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-vector-icons\android\build\intermediates\packaged_res\debug
+com.zentro.app-packaged_res-81 D:\University\Caps2\EasyRentHub\New_EasyRentHub\FE_EasyRentHub_02\node_modules\react-native-webview\android\build\intermediates\packaged_res\debug
