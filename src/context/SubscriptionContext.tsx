@@ -43,10 +43,6 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
       setLoading(true);
       const response = await paymentService.getSubscription(auth.userToken);
       
-      if (__DEV__) {
-        console.log('Subscription status:', response);
-      }
-      
       if (response) {
         if (response.subscription) {
           setSubscription(response.subscription);

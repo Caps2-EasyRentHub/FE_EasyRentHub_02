@@ -6,8 +6,8 @@ import {HomeProps} from '@/utils/interface';
 import TopLocation from './TopLocation';
 import FeaturedEstates from './FeaturedEstate';
 import Header from './Header';
-import NearbyEstate from './NearbyEstate';
 import {ScrollView} from 'react-native-virtualized-view';
+import Recommendations from './Recommendations';
 
 const Home: React.FC<HomeProps> = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -35,10 +35,7 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
       >
         <TopLocation />
         <FeaturedEstates navigation={navigation} />
-        <NearbyEstate
-          detail={false}
-          id=""
-        />
+        <Recommendations />
       </ScrollView>
     </View>
   );

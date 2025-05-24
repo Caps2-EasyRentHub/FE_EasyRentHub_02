@@ -101,11 +101,7 @@ const NearbyEstate = ({detail, id}: {detail: boolean; id: string}) => {
   };
   return (
     <View>
-      {detail ? (
         <Text style={styles.textHeader}>{t('nearby_location')}</Text>
-      ) : (
-        <Text style={styles.textHeader}>{t('explore_nearby_estates')}</Text>
-      )}
       {load ? (
         <Splash />
       ) : (
