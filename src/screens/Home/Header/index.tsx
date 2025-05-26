@@ -109,36 +109,15 @@ const Header = ({load}: any) => {
           style={styles.notification}
           onPress={() =>
             navigate({
-              name: 'Message',
+              name: 'Chat',
             })
           }
         >
-          <AntDesign
-            name="message1"
+          <Feather
+            name="message-square"
             size={20}
             color={'#252B5C'}
           />
-          <View
-            style={{
-              backgroundColor: '#FFFFFF',
-              width: 12,
-              height: 12,
-              justifyContent: 'center',
-              alignItems: 'center',
-              position: 'absolute',
-              right: 12,
-              top: 8,
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: '#FD5F4A',
-                width: 6,
-                height: 6,
-                borderRadius: 6,
-              }}
-            />
-          </View>
         </TouchableOpacity>
       </View>
     </View>

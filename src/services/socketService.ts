@@ -93,6 +93,10 @@ class SocketService {
   getSocket = (): Socket | null => {
     return this.socket;
   };
+
+  sendMessage(data: any) {
+    this.socket?.emit('send_message', data);
+  }
 }
 
 const socketService = new SocketService();
