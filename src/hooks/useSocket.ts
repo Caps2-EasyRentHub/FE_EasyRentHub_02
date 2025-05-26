@@ -17,6 +17,7 @@ export const useSocket = () => {
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
   const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
   const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
     const connect = async () => {
@@ -50,6 +51,12 @@ export const useSocket = () => {
       socket.on('disconnect', disconnectListener);
     }
 
+    // Lắng nghe tin nhắn chat
+    const messageListener = (message: any) => {
+      setMessages((prev) => [...prev, message]);
+    };
+    socketService.addListener('receive_message', messageListener);
+
     return () => {
       socketService.removeListener('notification', notificationListener);
       socketService.removeListener('onlineUsers', onlineUsersListener);
@@ -58,11 +65,17 @@ export const useSocket = () => {
         socket.off('connect', connectListener);
         socket.off('disconnect', disconnectListener);
       }
+      socketService.removeListener('receive_message', messageListener);
     };
   }, []);
 
   const joinUser = (userId: string) => {
     socketService.joinUser(userId);
+  };
+
+  const sendMessage = (data: any) => {
+    socketService.sendMessage(data);
+    setMessages((prev) => [...prev, { ...data, self: true }]);
   };
 
   return {
@@ -71,5 +84,7 @@ export const useSocket = () => {
     isConnected,
     joinUser,
     socket: socketService.getSocket(),
+    messages,
+    sendMessage,
   };
 };

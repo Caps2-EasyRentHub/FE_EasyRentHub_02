@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,165 +9,88 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Chat_Icon } from '@/assets/Svg';
-
-// Tạm thời sử dụng dữ liệu mẫu
-const MOCK_CHATS = [
-  {
-    id: '1',
-    participant: {
-      id: 'user1',
-      name: 'Nguyễn Văn A',
-      avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-    },
-    lastMessage: {
-      id: 'msg1',
-      senderId: 'user1',
-      receiverId: 'currentUser',
-      content: 'Chào bạn, phòng trọ còn không?',
-      timestamp: new Date(),
-      isRead: false,
-    },
-    unreadCount: 1,
-  },
-  {
-    id: '2',
-    participant: {
-      id: 'user2',
-      name: 'Trần Thị B',
-      avatar: 'https://randomuser.me/api/portraits/women/2.jpg',
-    },
-    lastMessage: {
-      id: 'msg2',
-      senderId: 'currentUser',
-      receiverId: 'user2',
-      content: 'Cảm ơn bạn, tôi sẽ đến xem vào ngày mai',
-      timestamp: new Date(Date.now() - 86400000), // 1 ngày trước
-      isRead: true,
-    },
-    unreadCount: 0,
-  },
-];
-
-const MOCK_MESSAGES = {
-  '1': [
-    {
-      id: 'msg1-1',
-      senderId: 'user1',
-      receiverId: 'currentUser',
-      content: 'Chào bạn, phòng trọ còn không?',
-      timestamp: new Date(Date.now() - 3600000), // 1 giờ trước
-      isRead: false,
-    },
-    {
-      id: 'msg1-2',
-      senderId: 'currentUser',
-      receiverId: 'user1',
-      content: 'Chào bạn, phòng vẫn còn. Bạn muốn đến xem không?',
-      timestamp: new Date(Date.now() - 3500000),
-      isRead: true,
-    },
-    {
-      id: 'msg1-3',
-      senderId: 'user1',
-      receiverId: 'currentUser',
-      content: 'Vâng, tôi muốn đến xem vào ngày mai. Bạn có thể cho địa chỉ cụ thể không?',
-      timestamp: new Date(Date.now() - 3400000),
-      isRead: false,
-    },
-  ],
-  '2': [
-    {
-      id: 'msg2-1',
-      senderId: 'user2',
-      receiverId: 'currentUser',
-      content: 'Chào bạn, tôi đã xem phòng của bạn. Phòng rất đẹp và phù hợp với tôi.',
-      timestamp: new Date(Date.now() - 86400000), // 1 ngày trước
-      isRead: true,
-    },
-    {
-      id: 'msg2-2',
-      senderId: 'currentUser',
-      receiverId: 'user2',
-      content: 'Cảm ơn bạn, tôi sẽ đến xem vào ngày mai',
-      timestamp: new Date(Date.now() - 86300000),
-      isRead: true,
-    },
-  ],
-};
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useAuth} from '@/hooks/useAuth';
+import {useSocket} from '@/hooks/useSocket';
+import axios from 'axios';
+import {Config} from '@/config';
+import Feather from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
 
 const ChatScreen = () => {
-  const [selectedChat, setSelectedChat] = useState(null);
+  const {user} = useAuth();
+  const {messages, sendMessage, joinUser} = useSocket();
+  const [selectedChat, setSelectedChat] = useState<any>(null);
   const [messageInput, setMessageInput] = useState('');
-  const [chats, setChats] = useState(MOCK_CHATS);
-  const [messages, setMessages] = useState([]);
+  const [chats, setChats] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
-    if (selectedChat) {
-      setLoading(true);
-      // Giả lập tải tin nhắn
-      setTimeout(() => {
-        setMessages(MOCK_MESSAGES[selectedChat.id] || []);
-        setLoading(false);
-      }, 500);
+    if (user?.id) {
+      joinUser(user.id);
     }
-  }, [selectedChat]);
+  }, [user?.id]);
+
+  useEffect(() => {
+    if (user?.id) {
+      setLoading(true);
+      axios
+        .get(`${Config.API_URL}/api/messages/conversations/${user.id}`)
+        .then((res) => {
+          setChats(res.data || []);
+        })
+        .catch(() => setChats([]))
+        .finally(() => setLoading(false));
+    }
+  }, [user?.id]);
+
+  // Khi chọn chat, có thể filter messages theo participant
+  const filteredMessages = selectedChat
+    ? messages.filter(
+        (msg) =>
+          (msg.senderId === user.id &&
+            msg.receiverId === selectedChat.participant.id) ||
+          (msg.senderId === selectedChat.participant.id &&
+            msg.receiverId === user.id),
+      )
+    : [];
 
   const handleSendMessage = () => {
     if (messageInput.trim() && selectedChat) {
-      const newMessage = {
-        id: `msg-${Date.now()}`,
-        senderId: 'currentUser',
+      sendMessage({
+        senderId: user.id,
         receiverId: selectedChat.participant.id,
-        content: messageInput.trim(),
-        timestamp: new Date(),
-        isRead: false,
-      };
-
-      setMessages([...messages, newMessage]);
-      setMessageInput('');
-
-      // Cập nhật tin nhắn cuối cùng trong danh sách chat
-      const updatedChats = chats.map(chat => {
-        if (chat.id === selectedChat.id) {
-          return {
-            ...chat,
-            lastMessage: newMessage,
-            unreadCount: 0,
-          };
-        }
-        return chat;
+        text: messageInput.trim(),
+        mediaUrl: '',
+        mediaType: 'text',
       });
-
-      setChats(updatedChats);
-      setSelectedChat(updatedChats.find(chat => chat.id === selectedChat.id));
+      setMessageInput('');
     }
   };
 
-  const formatTime = (date) => {
+  const formatTime = (date: any) => {
     const now = new Date();
     const messageDate = new Date(date);
-    
-    // Nếu là hôm nay, hiển thị giờ:phút
     if (messageDate.toDateString() === now.toDateString()) {
-      return messageDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return messageDate.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
     }
-    
-    // Nếu là hôm qua, hiển thị "Hôm qua"
     const yesterday = new Date(now);
     yesterday.setDate(yesterday.getDate() - 1);
     if (messageDate.toDateString() === yesterday.toDateString()) {
       return 'Hôm qua';
     }
-    
-    // Nếu là ngày khác, hiển thị ngày/tháng
-    return messageDate.toLocaleDateString([], { day: '2-digit', month: '2-digit' });
+    return messageDate.toLocaleDateString([], {
+      day: '2-digit',
+      month: '2-digit',
+    });
   };
 
-  const renderMessage = ({ item }) => {
-    const isCurrentUser = item.senderId === 'currentUser';
+  const renderMessage = ({item}: {item: any}) => {
+    const isCurrentUser = item.senderId === user.id;
     return (
       <View
         style={[
@@ -187,7 +110,7 @@ const ChatScreen = () => {
               isCurrentUser ? styles.currentUserText : styles.otherUserText,
             ]}
           >
-            {item.content}
+            {item.text || item.content}
           </Text>
           <Text
             style={[
@@ -202,20 +125,23 @@ const ChatScreen = () => {
     );
   };
 
-  const renderChatItem = ({ item }) => (
+  const renderChatItem = ({item}: {item: any}) => (
     <TouchableOpacity
       style={styles.chatItem}
       onPress={() => setSelectedChat(item)}
     >
       <View style={styles.avatarContainer}>
         <Image
-          source={{ uri: item.participant.avatar }}
+          source={{uri: item.participant.avatar}}
           style={styles.avatar}
         />
       </View>
       <View style={styles.chatInfo}>
         <Text style={styles.chatName}>{item.participant.name}</Text>
-        <Text style={styles.lastMessage} numberOfLines={1}>
+        <Text
+          style={styles.lastMessage}
+          numberOfLines={1}
+        >
           {item.lastMessage.content}
         </Text>
       </View>
@@ -235,7 +161,10 @@ const ChatScreen = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#1F4C6B" />
+        <ActivityIndicator
+          size="large"
+          color="#1F4C6B"
+        />
       </View>
     );
   }
@@ -253,7 +182,7 @@ const ChatScreen = () => {
             </TouchableOpacity>
             <View style={styles.headerUserInfo}>
               <Image
-                source={{ uri: selectedChat.participant.avatar }}
+                source={{uri: selectedChat.participant.avatar}}
                 style={styles.headerAvatar}
               />
               <Text style={styles.headerUserName}>
@@ -263,9 +192,9 @@ const ChatScreen = () => {
           </View>
           <FlatList
             style={styles.messagesList}
-            data={messages}
+            data={filteredMessages.slice().reverse()}
             renderItem={renderMessage}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id || item._id}
             inverted
           />
           <View style={styles.inputContainer}>
@@ -286,8 +215,27 @@ const ChatScreen = () => {
         </View>
       ) : (
         <View style={styles.chatListContainer}>
-          <View style={styles.header}>
-            <Text style={styles.headerTitle}>Tin nhắn</Text>
+          <View style={styles.headerRow}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                height: 60,
+                width: 50,
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 2,
+              }}
+              accessibilityLabel="Quay lại"
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Feather name="chevron-left" size={28} color="#222" />
+            </TouchableOpacity>
+            <View style={styles.headerCenter}>
+              <Text style={styles.headerTitle}>Tin nhắn</Text>
+            </View>
           </View>
           <FlatList
             data={chats}
@@ -314,11 +262,24 @@ const styles = StyleSheet.create({
   chatListContainer: {
     flex: 1,
   },
-  header: {
-    padding: 16,
+  headerRow: {
+    position: 'relative',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
+  },
+  headerCenter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    pointerEvents: 'none',
   },
   headerTitle: {
     fontSize: 20,
@@ -479,4 +440,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen; 
+export default ChatScreen;
