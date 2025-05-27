@@ -33,8 +33,6 @@ import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.swmansion.gesturehandler.RNGestureHandlerPackage;
 // react-native-image-crop-picker
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
-// react-native-image-picker
-import com.imagepicker.ImagePickerPackage;
 // react-native-maps
 import com.rnmaps.maps.MapsPackage;
 // react-native-pager-view
@@ -105,7 +103,6 @@ public class PackageList {
       new RNFusedLocationPackage(),
       new RNGestureHandlerPackage(),
       new PickerPackage(),
-      new ImagePickerPackage(),
       new MapsPackage(),
       new PagerViewPackage(),
       new ReanimatedPackage(),

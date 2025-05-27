@@ -6,15 +6,18 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {getImages} from '@/assets/Images';
 import {Email_Icon} from '@/assets/Svg';
 import Feather from 'react-native-vector-icons/Feather';
 import Separator from '@/components/Separator';
 import GoogleButton from '@/components/GoogleButton';
 import FacebookButton from '@/components/FacebookButton';
-import {screenWidth} from '@/themes/Responsive';
+import {screenWidth, screenHeight} from '@/themes/Responsive';
 import {useTranslation} from 'react-i18next';
 import {navigate} from '@/navigation/NavigationUtils';
 import Loading from '@/components/Loading';
@@ -22,13 +25,18 @@ import {useAuth} from '@/hooks/useAuth';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Snackbar} from 'react-native-paper';
-import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import FaceAuthModal from '@/components/FaceAuthModal';
+import {faceAuthService} from '@/services/faceAuthService';
+import Toast from 'react-native-toast-message';
 
 type RootStackParamList = {
   Login: undefined;
   OptionLogin: undefined;
   Home: undefined;
   Register: undefined;
+  HomeScreen: undefined;
+  FaceAuthScreen: undefined;
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
@@ -42,20 +50,30 @@ const Login = () => {
   const {t} = useTranslation();
   const navigation = useNavigation<NavigationProp>();
 
-  // State cho validation
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  // State cho Snackbar
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackbarType] = useState<'success' | 'error'>('success');
+
+  const [showFaceRegistrationModal, setShowFaceRegistrationModal] = useState(false);
+  const [isFirstLogin, setIsFirstLogin] = useState(false);
 
   const showSnackbar = (message: string, type: 'success' | 'error') => {
     setSnackbarMessage(message);
     setSnackbarType(type);
     setSnackbarVisible(true);
   };
+
+  useEffect(() => {
+    const checkFirstLogin = async () => {
+      const firstLoginFlag = await AsyncStorage.getItem('firstLogin');
+      setIsFirstLogin(firstLoginFlag === 'true');
+    };
+    
+    checkFirstLogin();
+  }, []);
 
   const validateForm = () => {
     let isValid = true;
@@ -81,47 +99,78 @@ const Login = () => {
     return isValid;
   };
 
+  const checkFaceRegistration = async () => {
+    try {
+      console.log('Checking if user has registered face');
+      setIsLoading(true);
+      
+      const registrationStatus = await faceAuthService.checkRegistrationStatus();
+      console.log('Face registration status:', registrationStatus);
+      
+      if (!registrationStatus.isRegistered) {
+        console.log('User has not registered face, navigating to FaceAuthScreen');
+        await AsyncStorage.setItem('firstLogin', 'true');
+        navigation.navigate('FaceAuthScreen');
+      } else {
+        console.log('User has registered face, navigating to HomeScreen');
+        await AsyncStorage.setItem('firstLogin', 'false');
+        await AsyncStorage.setItem('hasFaceRegistered', 'true');
+        navigation.navigate('HomeScreen');
+      }
+    } catch (error) {
+      console.error('Error checking face registration:', error);
+      navigation.navigate('HomeScreen');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleLogin = async () => {
     if (!validateForm()) return;
 
     try {
+      setIsLoading(true);
       const response = await login(email, password);
+      
       if (response.access_token) {
         showSnackbar('Đăng nhập thành công', 'success');
-        navigation.navigate('HomeScreen');
+        
+        checkFaceRegistration();
       }
     } catch (error) {
       showSnackbar('Email hoặc mật khẩu không đúng', 'error');
+      setIsLoading(false);
     }
   };
 
-  return (
-    <View style={styles.container}>
-      {isLoading && <Loading />}
-      <View style={{zIndex: isLoading ? 0 : 1}}>
-        {/* Không hiển thị nút Back */}
-      </View>
+  const handleFaceRegistrationSuccess = () => {
+    setShowFaceRegistrationModal(false);
+    AsyncStorage.setItem('firstLogin', 'false');
+    navigation.navigate('HomeScreen');
+  };
 
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}>
+      {isLoading && <Loading />}
+      <ScrollView 
+        contentContainerStyle={styles.scrollContainer} 
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled">
       <Image
         source={getImages().city}
         style={styles.headerImage}
+          resizeMode="cover"
       />
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginTop: 10,
-          marginLeft: 29,
-        }}>
-        <Text
-          style={{color: '#252B5C', fontFamily: 'Lato-Medium', fontSize: 25}}>
-          {t('let')}{' '}
-        </Text>
-        <Text style={{color: '#1F4C6B', fontFamily: 'Lato-Bold', fontSize: 25}}>
-          {t('sign_in')}
-        </Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleMedium}>{t('let')}{' '}</Text>
+          <Text style={styles.titleBold}>{t('sign_in')}</Text>
       </View>
-      <View style={{marginTop: 74}}>
+        
+        <View style={styles.formContainer}>
+          <View style={styles.inputContainer}>
         <View style={styles.icon}>
           <Email_Icon color="#252B5C" />
         </View>
@@ -144,7 +193,8 @@ const Login = () => {
         />
         {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
       </View>
-      <View style={{marginTop: 15}}>
+          
+          <View style={styles.inputContainer}>
         <View style={styles.icon}>
           <Feather name="lock" size={20} color={'#252B5C'} />
         </View>
@@ -169,13 +219,8 @@ const Login = () => {
           <Text style={styles.errorText}>{passwordError}</Text>
         ) : null}
       </View>
-      <View
-        style={{
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          marginHorizontal: 24,
-          marginTop: 10,
-        }}>
+          
+          <View style={styles.optionsContainer}>
         <TouchableOpacity>
           <Text style={styles.text}>{t('forgot_password')}?</Text>
         </TouchableOpacity>
@@ -187,8 +232,7 @@ const Login = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={{marginTop: 50}}>
-        <View style={{alignItems: 'center'}}>
+          
           <TouchableOpacity
             onPress={handleLogin}
             style={styles.btnLogin}
@@ -200,32 +244,27 @@ const Login = () => {
               <Text style={styles.txtLogin}>{t('login')}</Text>
             )}
           </TouchableOpacity>
-        </View>
-      </View>
-      <View style={{marginTop: 10}}>
+          
         <Separator />
-      </View>
-      <View style={{flexDirection: 'row'}}>
+          
+          <View style={styles.socialButtonsContainer}>
         <GoogleButton />
         <FacebookButton />
       </View>
+          
       <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginVertical: 35,
-          marginBottom: 50,
-        }}
+            style={styles.registerContainer}
         activeOpacity={0.5}
         onPress={() => navigate({name: 'Register'})}>
-        <Text
-          style={{fontSize: 14, color: '#53587A', fontFamily: 'Lato-Regular'}}>
+            <Text style={styles.registerText}>
           {t('no_account')}?{' '}
         </Text>
-        <Text style={{fontSize: 14, color: '#1F4C6B', fontFamily: 'Lato-Bold'}}>
+            <Text style={styles.registerBoldText}>
           {t('register')}
         </Text>
       </TouchableOpacity>
+        </View>
+      </ScrollView>
 
       {/* Snackbar */}
       <Snackbar
@@ -241,7 +280,17 @@ const Login = () => {
         }}>
         {snackbarMessage}
       </Snackbar>
-    </View>
+
+      {/* Face Registration Modal */}
+      <FaceAuthModal
+        isVisible={showFaceRegistrationModal}
+        onClose={() => {
+          setShowFaceRegistrationModal(false);
+          navigation.navigate('HomeScreen');
+        }}
+        onRegisterSuccess={handleFaceRegistrationSuccess}
+      />
+    </KeyboardAvoidingView>
   );
 };
 
@@ -252,20 +301,42 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  indicator: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 20,
   },
   headerImage: {
-    height: 175,
-    zIndex: -1,
+    height: Math.min(screenHeight * 0.25, 175),
+    width: '100%',
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    marginLeft: 29,
+  },
+  titleMedium: {
+    color: '#252B5C', 
+    fontFamily: 'Lato-Medium', 
+    fontSize: 25
+  },
+  titleBold: {
+    color: '#1F4C6B', 
+    fontFamily: 'Lato-Bold', 
+    fontSize: 25
+  },
+  formContainer: {
+    width: '100%',
+    paddingHorizontal: 12,
+    marginTop: Math.min(screenHeight * 0.05, 30),
+  },
+  inputContainer: {
+    marginBottom: 15,
   },
   input: {
     color: '#252B5C',
     fontSize: 15,
-    height: 70,
+    height: Math.min(screenHeight * 0.08, 70),
     marginHorizontal: 24,
     paddingHorizontal: 46,
     borderRadius: 10,
@@ -287,17 +358,28 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     flex: 1,
-    top: 25,
+    top: '25%',
     left: 40,
+    zIndex: 1,
+  },
+  optionsContainer: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginHorizontal: 24,
+    marginTop: 10,
+    marginBottom: 20,
   },
   btnLogin: {
     flexDirection: 'row',
     width: screenWidth - 96,
-    height: 63,
+    height: Math.min(screenHeight * 0.07, 63),
     backgroundColor: '#8BC83F',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 20,
   },
   txtLogin: {
     color: '#FFFFFF',
@@ -309,5 +391,26 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: 'Lato-Black',
     color: '#234F68',
+  },
+  socialButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 15,
+  },
+  registerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 25,
+    marginBottom: 15,
+  },
+  registerText: {
+    fontSize: 14,
+    color: '#53587A',
+    fontFamily: 'Lato-Regular'
+  },
+  registerBoldText: {
+    fontSize: 14,
+    color: '#1F4C6B', 
+    fontFamily: 'Lato-Bold'
   },
 });

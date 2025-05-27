@@ -4,19 +4,24 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import React, {useState, useCallback} from 'react';
 import BackButton from '@/components/BackButton';
 import {Email_Icon} from '@/assets/Svg';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {screenWidth} from '@/themes/Responsive';
+import {screenWidth, screenHeight} from '@/themes/Responsive';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '@/utils/type';
 import {navigate} from '@/navigation/NavigationUtils';
 import {authService} from '@/services/authService';
 import {Snackbar} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Config} from '@/config';
 
 const Register = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
@@ -28,7 +33,6 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState<'Landlord' | 'Tenant'>('Tenant');
 
-  // Thêm state cho Snackbar
   const [visible, setVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarType, setSnackbarType] = useState<'success' | 'error'>(
@@ -43,7 +47,6 @@ const Register = () => {
 
   const onDismissSnackBar = () => setVisible(false);
 
-  // Thêm state cho validation
   const [errors, setErrors] = useState({
     fullName: '',
     email: '',
@@ -51,7 +54,6 @@ const Register = () => {
     confirmPassword: '',
   });
 
-  // Reset form khi màn hình được focus
   useFocusEffect(
     useCallback(() => {
       const resetForm = () => {
@@ -115,6 +117,7 @@ const Register = () => {
 
     try {
       setLoading(true);
+
       const response = await authService.register(
         fullName,
         email,
@@ -122,7 +125,9 @@ const Register = () => {
         confirmPassword,
         role,
       );
-      showSnackbar('Đăng ký thành công!', 'success');
+
+      showSnackbar('Đăng ký tài khoản thành công!', 'success');
+      
       setTimeout(() => {
         navigate({name: 'Login'});
       }, 1500);
@@ -138,26 +143,21 @@ const Register = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled">
       <BackButton />
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginTop: 100,
-          marginLeft: 24,
-        }}
-      >
-        <Text
-          style={{color: '#252B5C', fontFamily: 'Lato-Medium', fontSize: 25}}
-        >
-          Tạo{' '}
-        </Text>
-        <Text style={{color: '#1F4C6B', fontFamily: 'Lato-Bold', fontSize: 25}}>
-          tài khoản của bạn
-        </Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.textMedium}>Tạo{' '}</Text>
+          <Text style={styles.textBold}>tài khoản của bạn</Text>
       </View>
-      <View style={{marginTop: 40}}>
+        
+        <View style={styles.formContainer}>
+          <View style={styles.inputWrapper}>
         <View style={styles.icon}>
           <FontAwesome
             name="user-o"
@@ -183,7 +183,8 @@ const Register = () => {
           <Text style={styles.errorText}>{errors.fullName}</Text>
         ) : null}
       </View>
-      <View style={{marginTop: 20}}>
+          
+          <View style={styles.inputWrapper}>
         <View style={styles.icon}>
           <Email_Icon color={errors.email ? '#FF3B30' : '#252B5C'} />
         </View>
@@ -208,14 +209,11 @@ const Register = () => {
         ) : null}
       </View>
 
-      <View style={{marginTop: 15, marginHorizontal: 24}}>
-        {/* <Text style={[styles.text, {marginBottom: 10}]}>Bạn là:</Text> */}
         <View style={styles.roleContainer}>
           <TouchableOpacity
             style={styles.roleButton}
             onPress={() => setRole('Landlord')}
-            activeOpacity={0.7}
-          >
+              activeOpacity={0.7}>
             <View style={styles.radioButton}>
               {role === 'Landlord' && (
                 <View style={styles.radioButtonSelected} />
@@ -227,17 +225,15 @@ const Register = () => {
           <TouchableOpacity
             style={styles.roleButton}
             onPress={() => setRole('Tenant')}
-            activeOpacity={0.7}
-          >
+              activeOpacity={0.7}>
             <View style={styles.radioButton}>
               {role === 'Tenant' && <View style={styles.radioButtonSelected} />}
             </View>
             <Text style={styles.roleText}>Thuê trọ</Text>
           </TouchableOpacity>
-        </View>
       </View>
 
-      <View style={{marginTop: 20}}>
+          <View style={styles.inputWrapper}>
         <View style={styles.icon}>
           <Feather
             name="lock"
@@ -264,7 +260,8 @@ const Register = () => {
           <Text style={styles.errorText}>{errors.password}</Text>
         ) : null}
       </View>
-      <View style={{marginTop: 20}}>
+          
+          <View style={styles.inputWrapper}>
         <View style={styles.icon}>
           <Feather
             name="lock"
@@ -291,78 +288,50 @@ const Register = () => {
           <Text style={styles.errorText}>{errors.confirmPassword}</Text>
         ) : null}
       </View>
-      <View
-        style={{
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          marginHorizontal: 24,
-          marginTop: 10,
-        }}
-      >
+          
+          <View style={styles.optionsContainer}>
         <TouchableOpacity>
           <Text style={styles.text}>Điều khoản dịch vụ</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setShowPassword(!showPassword)}
-          activeOpacity={0.6}
-        >
+              activeOpacity={0.6}>
           <Text style={styles.text}>
             {showPassword ? 'Hiện ' : 'Ẩn '}mật khẩu
           </Text>
         </TouchableOpacity>
       </View>
-      <View style={{alignItems: 'center', marginTop: 20}}>
+          
+          <View style={styles.noteContainer}>
+            <Text style={styles.noteText}>
+              Lưu ý: Sau khi đăng ký, bạn sẽ được yêu cầu xác thực khuôn mặt khi đăng nhập lần đầu. Xác thực khuôn mặt là bắt buộc để sử dụng các tính năng đăng bài cho thuê và đặt phòng.
+            </Text>
+          </View>
+          
         <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            width: screenWidth - 96,
-            height: 63,
-            backgroundColor: '#8BC83F',
-            borderRadius: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
-            opacity: loading ? 0.7 : 1,
-          }}
+            style={[styles.registerButton, loading ? styles.disabledButton : null]}
           activeOpacity={0.7}
           onPress={handleRegister}
-          disabled={loading}
-        >
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontSize: 16,
-              fontFamily: 'Lato-Bold',
-              padding: 6,
-            }}
-          >
+            disabled={loading}>
+            <Text style={styles.registerButtonText}>
             {loading ? 'Đang đăng ký...' : 'Đăng ký'}
           </Text>
         </TouchableOpacity>
 
-        <View style={{marginTop: 15, flexDirection: 'row'}}>
-          <Text
-            style={[
-              styles.text,
-              {fontSize: 14, color: '#53587A', fontFamily: 'Lato-Regular'},
-            ]}
-          >
+          <View style={styles.loginLinkContainer}>
+            <Text style={styles.loginText}>
             Đã có tài khoản?{' '}
           </Text>
           <TouchableOpacity
             activeOpacity={0.6}
-            onPress={() => navigate({name: 'Login'})}
-          >
-            <Text
-              style={[
-                styles.text,
-                {fontSize: 14, color: '#1F4C6B', fontFamily: 'Lato-Bold'},
-              ]}
-            >
+              onPress={() => navigate({name: 'Login'})}>
+              <Text style={styles.loginBoldText}>
               Đăng nhập
             </Text>
           </TouchableOpacity>
         </View>
       </View>
+      </ScrollView>
 
       <Snackbar
         visible={visible}
@@ -370,29 +339,19 @@ const Register = () => {
         duration={3000}
         style={{
           backgroundColor:
-            snackbarMessage === 'This user name already exits'
-              ? '#F5F4F8'
-              : snackbarType === 'success'
+            snackbarType === 'success'
               ? '#4CAF50'
               : '#FF3B30',
         }}
         action={{
           label: 'Đóng',
           onPress: onDismissSnackBar,
-        }}
-      >
-        <Text
-          style={{
-            color:
-              snackbarMessage === 'This user name already exits'
-                ? '#252B5C'
-                : '#FFFFFF',
-          }}
-        >
+        }}>
+        <Text style={{color: '#FFFFFF'}}>
           {snackbarMessage}
         </Text>
       </Snackbar>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -403,10 +362,38 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+  scrollContainer: {
+    flexGrow: 1,
+    paddingBottom: 30,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: Math.min(screenHeight * 0.1, 80),
+    marginLeft: 24,
+    marginBottom: 20,
+  },
+  textMedium: {
+    color: '#252B5C',
+    fontFamily: 'Lato-Medium', 
+    fontSize: 25
+  },
+  textBold: {
+    color: '#1F4C6B', 
+    fontFamily: 'Lato-Bold', 
+    fontSize: 25
+  },
+  formContainer: {
+    width: '100%',
+    paddingHorizontal: 12,
+  },
+  inputWrapper: {
+    marginBottom: 15,
+  },
   input: {
     color: '#252B5C',
     fontSize: 15,
-    height: 70,
+    height: Math.min(screenHeight * 0.08, 70),
     marginHorizontal: 24,
     paddingHorizontal: 46,
     borderRadius: 10,
@@ -423,8 +410,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     flex: 1,
-    top: 25,
+    top: '30%',
     left: 40,
+    zIndex: 1,
   },
   text: {
     fontSize: 12,
@@ -436,12 +424,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 24,
     marginTop: 4,
+    marginBottom: 5,
     fontFamily: 'Lato-Regular',
   },
   roleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
+    marginHorizontal: 24,
+    marginVertical: 15,
   },
   roleButton: {
     flexDirection: 'row',
@@ -471,5 +461,62 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Lato-Bold',
     color: '#252B5C',
+  },
+  optionsContainer: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginHorizontal: 24,
+    marginVertical: 10,
+  },
+  noteContainer: {
+    marginHorizontal: 24,
+    marginVertical: 15,
+    padding: 15,
+    backgroundColor: '#F5F8FF',
+    borderRadius: 10,
+    borderLeftWidth: 4,
+    borderLeftColor: '#1F4C6B',
+  },
+  noteText: {
+    fontSize: 14,
+    fontFamily: 'Lato-Regular',
+    color: '#53587A',
+    lineHeight: 20,
+  },
+  registerButton: {
+    flexDirection: 'row',
+    width: screenWidth - 96,
+    height: Math.min(screenHeight * 0.07, 63),
+    backgroundColor: '#8BC83F',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 15,
+  },
+  disabledButton: {
+    opacity: 0.7,
+  },
+  registerButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontFamily: 'Lato-Bold',
+    padding: 6,
+  },
+  loginLinkContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 25,
+    marginBottom: 15,
+  },
+  loginText: {
+    fontSize: 14,
+    color: '#53587A',
+    fontFamily: 'Lato-Regular',
+  },
+  loginBoldText: {
+    fontSize: 14,
+    color: '#1F4C6B',
+    fontFamily: 'Lato-Bold',
   },
 });

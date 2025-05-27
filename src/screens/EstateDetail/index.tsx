@@ -198,12 +198,12 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
 
           <Reviews estate={data} />
 
-          {nearby && (
+          {/* {nearby && (
             <NearbyEstate
               detail={true}
               id={data._id}
             />
-          )}
+          )} */}
 
           {data.user._id !== idUser && (
             <TouchableOpacity

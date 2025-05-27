@@ -2,6 +2,8 @@ import axios from 'axios';
 import {Config} from '@/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import socketService from './socketService';
+import {faceAuthService} from '@/services/faceAuthService';
+import {Platform} from 'react-native';
 
 export interface LoginResponse {
   access_token: string;
@@ -62,7 +64,6 @@ export const authService = {
         },
       );
 
-      // Store user data in AsyncStorage
       await Promise.all([
         AsyncStorage.setItem('access_token', response.data.access_token),
         AsyncStorage.setItem('idUser', response.data.user._id),
@@ -106,7 +107,6 @@ export const authService = {
         },
       );
 
-      // Store user data in AsyncStorage
       await Promise.all([
         AsyncStorage.setItem('access_token', response.data.access_token),
         AsyncStorage.setItem('idUser', response.data.user._id),
@@ -119,7 +119,6 @@ export const authService = {
         AsyncStorage.setItem('country', response.data.user.address.country),
       ]);
 
-      // Connect to socket and join user
       await socketService.connect();
       socketService.joinUser(response.data.user._id);
 
@@ -157,6 +156,7 @@ export const authService = {
         AsyncStorage.removeItem('road'),
         AsyncStorage.removeItem('city'),
         AsyncStorage.removeItem('country'),
+        AsyncStorage.removeItem('face_verified_timestamp'),
       ]);
     } catch (error) {
       console.error('Error during logout:', error);
@@ -211,6 +211,90 @@ export const authService = {
       };
     } catch (error) {
       console.error('Error getting stored user data:', error);
+      throw error;
+    }
+  },
+
+  async registerWithFaceAuth(
+    fullName: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    role: 'Tenant' | 'Landlord',
+    faceImagePath: string,
+  ): Promise<RegisterResponse> {
+    try {
+      const response = await this.register(
+        fullName,
+        email,
+        password,
+        confirmPassword,
+        role,
+      );
+
+      const formData = new FormData();
+      formData.append('image', {
+        uri: faceImagePath,
+        type: 'image/jpeg',
+        name: 'face_image.jpg',
+      });
+
+      await axios.post(
+        `${Config.API_URL}/api/face-auth/register`,
+        formData,
+        {
+          headers: {
+            Authorization: response.access_token,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status !== 401) {
+        console.error('Face registration failed, but user account created:', error);
+        throw new Error('Face registration failed, but your account was created. Please try registering your face later.');
+      }
+      throw error;
+    }
+  },
+
+  async registerWithFace(userData, faceImagePath) {
+    try {
+      const response = await this.register(
+        userData.fullName,
+        userData.email,
+        userData.password,
+        userData.confirmPassword,
+        userData.role,
+      );
+
+      if (faceImagePath) {
+        const formData = new FormData();
+        formData.append('image', {
+          uri: Platform.OS === 'android' ? `file://${faceImagePath}` : faceImagePath,
+          type: 'image/jpeg',
+          name: 'face_image.jpg',
+        });
+
+        await axios.post(
+          `${Config.API_URL}/api/face-auth/register`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': `Bearer ${response.access_token}`,
+            },
+          },
+        );
+
+        console.log('Face registered successfully');
+      }
+
+      return response;
+    } catch (error) {
+      console.error('Error in registerWithFace:', error);
       throw error;
     }
   },

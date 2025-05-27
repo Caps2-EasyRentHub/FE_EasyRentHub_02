@@ -39,6 +39,7 @@ import { PaymentWebView } from '@/screens/Subscription/PaymentWebView';
 import { PaymentHistoryScreen } from '@/screens/Subscription/PaymentHistoryScreen';
 import { PaymentSuccessScreen } from '@/screens/Subscription/PaymentSuccessScreen';
 import { PaymentCancelScreen } from '@/screens/Subscription/PaymentCancelScreen';
+import FaceAuthScreen from '@/screens/FaceAuthScreen';
 
 const Stack = createStackNavigator<RootStackParams>();
 
@@ -219,6 +220,11 @@ const AppStack = observer(({name}: {name: string | undefined}) => {
         options={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
+      />
+      <Stack.Screen 
+        name="FaceAuthScreen" 
+        component={FaceAuthScreen} 
+        options={{headerShown: false}} 
       />
     </Stack.Navigator>
   );

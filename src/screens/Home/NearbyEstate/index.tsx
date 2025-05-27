@@ -32,15 +32,14 @@ const NearbyEstate = ({detail, id}: {detail: boolean; id: string}) => {
     })
       .then((res) => res.json())
       .then((res) => {
+        console.log('res.estates: ', res.estates);
         setData(res.estates);
       })
       .finally(() => setLoad(false));
   }, []);
 
   const RenderItems = ({item}: {item: EstateItems}) => {
-    return item._id === id
-      ? null
-      : item.status === 'available' && item.status !== 'pending' && (
+    return (
           <View style={styles.cardItem}>
             <View style={styles.btnFavorite}>
               <FavoriteButton
@@ -97,7 +96,7 @@ const NearbyEstate = ({detail, id}: {detail: boolean; id: string}) => {
               </View>
             </TouchableOpacity>
           </View>
-        );
+    )
   };
   return (
     <View>
@@ -192,8 +191,6 @@ const styles = StyleSheet.create({
     right: 16,
     position: 'absolute',
     zIndex: 1,
-    // width: 75,
-    // height: 25,
     backgroundColor: 'rgba(35,79,104,.69)',
     borderRadius: 8,
   },

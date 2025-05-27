@@ -5,9 +5,9 @@ import {languageStore} from './stores';
 import {AuthProvider} from './context/AuthContext';
 import {PaperProvider} from 'react-native-paper';
 import socketService from './services/socketService';
-// import Toast from 'react-native-toast-message';
-// import {ChatProvider} from './context/ChatContext';
+import Toast from 'react-native-toast-message';
 import {SubscriptionProvider} from './context/SubscriptionContext';
+// import {ChatProvider} from './context/ChatContext';
 
 const App = () => {
   useEffect(() => {
@@ -26,7 +26,8 @@ const App = () => {
         <PaperProvider>
           {/* <ChatProvider> */}
           <AppNavigation />
-          {/* <Toast /> */}
+          <Toast />
+
           {/* </ChatProvider> */}
         </PaperProvider>
       </SubscriptionProvider>

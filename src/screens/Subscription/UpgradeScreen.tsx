@@ -27,8 +27,38 @@ export const UpgradeScreen = () => {
     refreshSubscription();
   }, []);
 
+  const canActivateFreePlan = () => {
+    if (!subscription) return true;
+
+    if (subscription.planType === 'FREE') {
+      const startDate = new Date(subscription.startDate);
+      const currentDate = new Date();
+      const oneMonthFromStart = new Date(startDate);
+      oneMonthFromStart.setMonth(oneMonthFromStart.getMonth() + 1);
+
+      if (currentDate < oneMonthFromStart && subscription.postsRemaining === 0) {
+        return false;
+      }
+      
+      if (currentDate < oneMonthFromStart) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const handleUpgradeFree = async () => {
     try {
+      if (!canActivateFreePlan()) {
+        Alert.alert(
+          t('not_eligible'),
+          t('free_plan_monthly_limit'),
+          [{ text: 'OK' }]
+        );
+        return;
+      }
+
       setLoading(true);
       const payment = await createPayment('FREE');
       
@@ -87,6 +117,8 @@ export const UpgradeScreen = () => {
   const isFreePlanActive = subscription?.planType === 'FREE' && subscription?.status === 'ACTIVE' && subscription?.postsRemaining > 0;
   const isWeeklyPlanActive = subscription?.planType === 'WEEKLY' && subscription?.status === 'ACTIVE';
 
+  const isFreePlanLocked = subscription?.planType === 'FREE' && !canActivateFreePlan();
+
   return (
     <ScrollView style={styles.container}>
       <BackButton />
@@ -99,6 +131,12 @@ export const UpgradeScreen = () => {
           </View>
         )}
         
+        {isFreePlanLocked && (
+          <View style={[styles.activeBadge, styles.lockedBadge]}>
+            <Text style={styles.activeBadgeText}>{t('Giới hạn')}</Text>
+          </View>
+        )}
+
         <View style={styles.planHeader}>
           <Text style={styles.planTitle}>{t('free_plan')}</Text>
           <Text style={styles.planPrice}>{t('free')}</Text>
@@ -114,28 +152,26 @@ export const UpgradeScreen = () => {
         <TouchableOpacity
           style={[
             styles.planButton, 
-            {backgroundColor: isFreePlanActive ? '#6B7280' : '#4B5563'}
+            {
+              backgroundColor: isFreePlanActive || isFreePlanLocked 
+                ? '#6B7280' 
+                : '#4B5563'
+            }
           ]}
           onPress={handleUpgradeFree}
-          disabled={loading || isFreePlanActive}>
+          disabled={loading || isFreePlanActive || isFreePlanLocked}>
           {loading ? (
             <ActivityIndicator color="#FFFFFF" />
           ) : (
             <Text style={styles.planButtonText}>
               {isFreePlanActive 
-                ? t('current_plan') 
-                : subscription?.planType === 'FREE' && subscription?.postsRemaining === 0
-                  ? t('get_5_more_posts')
+                ? t('current_plan')
+                : isFreePlanLocked
+                  ? t('Miễn phí')
                   : t('choose_plan')}
             </Text>
           )}
         </TouchableOpacity>
-        
-        {isFreePlanActive && (
-          <Text style={styles.postsRemainingText}>
-            {t('posts_remaining_count', {count: subscription.postsRemaining})}
-          </Text>
-        )}
       </View>
 
       <View style={[styles.planCard, isWeeklyPlanActive ? styles.activePlanCard : styles.weeklyPlan]}>
@@ -148,7 +184,7 @@ export const UpgradeScreen = () => {
         <View style={styles.planHeader}>
           <Text style={styles.planTitle}>{t('weekly_plan')}</Text>
           <Text style={styles.planPrice}>{formatCurrency(19000)}</Text>
-          <Text style={styles.planPeriod}>{t('per_week')}</Text>
+          <Text style={styles.planPeriod}>{t('Một tuần')}</Text>
         </View>
 
         <View style={styles.benefitsList}>
@@ -298,4 +334,13 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     fontSize: 12,
   },
+  lockedBadge: {
+    backgroundColor: '#DC2626',
+  },
+  lockMessage: {
+    color: '#DC2626',
+    textAlign: 'center',
+    marginTop: 8,
+    fontSize: 12,
+  }
 });
