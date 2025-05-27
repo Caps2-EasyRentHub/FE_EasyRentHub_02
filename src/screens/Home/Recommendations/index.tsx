@@ -39,7 +39,7 @@ const Recommendations = () => {
         };
 
         const response = await fetch(
-          "http://192.168.1.180:5000/api/recommendations/content-based",
+          `${Config.API_URL}/api/recommendations/content-based`,
           requestOptions
         );
 

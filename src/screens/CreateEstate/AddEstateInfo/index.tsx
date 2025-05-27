@@ -7,7 +7,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import React, {useState, useCallback, useMemo, useRef, useContext} from 'react';
+import React, {useState, useCallback, useMemo, useRef, useContext, useEffect} from 'react';
 import {BackButton} from '@/components';
 import {useTranslation} from 'react-i18next';
 import {screenHeight, screenWidth} from '@/themes/Responsive';
@@ -39,6 +39,7 @@ const AddEstateInfo = ({route}: any) => {
   const [price, setPrice] = useState<number>(0);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [priceRecommendation, setPriceRecommendation] = useState(null);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['50%'], []);
@@ -71,7 +72,6 @@ const AddEstateInfo = ({route}: any) => {
         status: 'available',
       });
 
-      // Sử dụng fetch với async/await để dễ xử lý
       const response = await fetch(`${Config.API_URL}/api/estates`, {
         method: 'POST',
         headers: myHeaders,
@@ -82,7 +82,6 @@ const AddEstateInfo = ({route}: any) => {
 
       if (response.ok && result) {
         try {
-          // Gọi API để ghi nhận việc sử dụng (đăng bài) và giảm số lượng bài còn lại
           const usageResponse = await fetch(`${Config.API_URL}/api/payment/record-usage-payment`, {
             method: 'POST',
             headers: {
@@ -91,7 +90,6 @@ const AddEstateInfo = ({route}: any) => {
             }
           });
           
-          // Cập nhật lại thông tin subscription sau khi đăng bài
           if (usageResponse.ok) {
             setIsRefreshing(true);
             await refreshSubscription();
@@ -99,7 +97,6 @@ const AddEstateInfo = ({route}: any) => {
           }
         } catch (usageError) {
           console.error('Failed to record usage:', usageError);
-          // Tiếp tục hiển thị thành công ngay cả khi ghi nhận sử dụng thất bại
         }
         
         bottomSheetRef.current?.snapToIndex(0);
@@ -118,15 +115,62 @@ const AddEstateInfo = ({route}: any) => {
     }
   };
 
-  // Thêm hàm xử lý khi đóng bottomSheet thành công
   const handleClosePress = useCallback(() => {
     if (success) {
-      // Quay lại màn hình CreateEstate để cập nhật subscription status
       navigation.navigate('CreateEstate');
     } else {
       bottomSheetRef.current?.close();
     }
   }, [success, navigation]);
+
+  const fetchPriceRecommendation = async () => {
+    try {
+      console.log('data', data);
+      if (!data?.address?.lat || !data?.address?.lng || !data?.address?.city) {
+        setPriceRecommendation({
+          success: false,
+          message: 'Vui lòng nhập đầy đủ thông tin địa chỉ để sử dụng tính năng gợi ý giá'
+        });
+        return;
+      }
+
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", userToken);
+
+      const raw = JSON.stringify({
+        userLocation: {
+          lat: data.address.lat,
+          lng: data.address.lng,
+          city: data.address.city
+        },
+        propertyFeatures: {
+          bedroom: bedroom,
+          bathroom: bathroom,
+          floors: floors
+        }
+      });
+
+      const response = await fetch(`${Config.API_URL}/api/price-recommendation-by-location`, {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+      });
+
+      const result = await response.json();
+      setPriceRecommendation(result);
+    } catch (error) {
+      console.error('Error fetching price recommendation:', error);
+      setPriceRecommendation({
+        success: false,
+        message: 'Đã có lỗi xảy ra khi lấy thông tin gợi ý giá'
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchPriceRecommendation();
+  }, [bedroom, bathroom, floors]);
 
   return (
     <View style={styles.component}>
@@ -142,31 +186,6 @@ const AddEstateInfo = ({route}: any) => {
         <View style={styles.titleView}>
           <Text style={styles.titleHighlight}>{t('almost_finish')}</Text>
           <Text style={styles.titleNormal}>{t('complete_listing')}</Text>
-        </View>
-        <View>
-          <Text style={styles.inputTitle}>{t('price')}</Text>
-          <View>
-            <TextInput
-              style={styles.sellInput}
-              keyboardType="numeric"
-              onChangeText={(value) => {
-                if (value === '') {
-                  setPrice(null);
-                } else {
-                  const parsedValue = parseFloat(value);
-                  setPrice(isNaN(parsedValue) ? null : parsedValue);
-                }
-              }}
-              placeholder="Nhập giá"
-            />
-            <View style={styles.dollarIcon}>
-              <FontAwesome
-                name="dollar"
-                color={'#252B5C'}
-                size={16}
-              />
-            </View>
-          </View>
         </View>
         <View style={styles.propertyView}>
           <Text style={styles.sellTitle}>{t('property')}</Text>
@@ -243,6 +262,52 @@ const AddEstateInfo = ({route}: any) => {
             </View>
           </View>
         </View>
+        <View>
+          <Text style={styles.inputTitle}>{t('price')}</Text>
+          <View>
+            <TextInput
+              style={styles.sellInput}
+              keyboardType="numeric"
+              onChangeText={(value) => {
+                if (value === '') {
+                  setPrice(null);
+                } else {
+                  const parsedValue = parseFloat(value);
+                  setPrice(isNaN(parsedValue) ? null : parsedValue);
+                }
+              }}
+              placeholder="Nhập giá"
+            />
+            <View style={styles.dollarIcon}>
+              <FontAwesome
+                name="dollar"
+                color={'#252B5C'}
+                size={16}
+              />
+            </View>
+          </View>
+        </View>
+        {priceRecommendation && (
+          <View style={styles.recommendationContainer}>
+            <Text style={styles.recommendationTitle}>{t('price_recommendation')}</Text>
+            {priceRecommendation.success ? (
+              <>
+                <Text style={styles.recommendationText}>
+                  {priceRecommendation.explanation}
+                </Text>
+                <View style={styles.priceRangeContainer}>
+                  <Text style={styles.priceRangeText}>
+                    {`${(priceRecommendation.recommendedPriceRange.min / 1000000).toFixed(1)} - ${(priceRecommendation.recommendedPriceRange.max / 1000000).toFixed(1)} triệu`}
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <Text style={[styles.recommendationText, styles.errorText]}>
+                {priceRecommendation.message}
+              </Text>
+            )}
+          </View>
+        )}
         <TouchableOpacity
           style={styles.btnFinish}
           activeOpacity={0.8}
@@ -373,7 +438,7 @@ const styles = StyleSheet.create({
     height: 70,
     backgroundColor: '#F5F4F8',
     marginLeft: 24,
-    marginTop: 20,
+    marginTop: 10,
     borderRadius: 25,
     paddingLeft: 16,
     color: '#252B5C',
@@ -525,5 +590,39 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato-Bold',
     color: '#FFF',
     fontSize: 16,
+  },
+  inputTitle: {
+    color: '#252B5C',
+    fontFamily: 'Lato-Bold',
+    fontSize: 16,
+    marginLeft: 26,
+  },
+  recommendationContainer: {
+    marginTop: 20,
+    padding: 20,
+    backgroundColor: '#F5F4F8',
+    borderRadius: 10,
+  },
+  recommendationTitle: {
+    fontFamily: 'Lato-Bold',
+    color: '#252B5C',
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  recommendationText: {
+    fontFamily: 'Lato-Medium',
+    color: '#252B5C',
+    fontSize: 16,
+  },
+  priceRangeContainer: {
+    marginTop: 10,
+  },
+  priceRangeText: {
+    fontFamily: 'Lato-Bold',
+    color: '#252B5C',
+    fontSize: 16,
+  },
+  errorText: {
+    color: '#FF6B6B',
   },
 });

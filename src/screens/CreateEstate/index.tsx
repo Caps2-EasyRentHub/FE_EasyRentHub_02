@@ -9,7 +9,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {BackButton} from '@/components';
 import {useTranslation} from 'react-i18next';
 import {screenWidth} from '@/themes/Responsive';
@@ -18,40 +18,95 @@ import {push} from '@/navigation/NavigationUtils';
 import {useSubscription} from '@/context/SubscriptionContext';
 import {useFocusEffect} from '@react-navigation/native';
 import {PlanType} from '@/types/subscription';
+import FaceCapture from '@/components/FaceCapture';
+import {useFaceAuth, FaceAuthPurpose} from '@/hooks/useFaceAuth';
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CreateEstate = () => {
   const {t} = useTranslation();
   const {subscription, refreshSubscription, canCreatePost, postsRemaining} = useSubscription();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [nameEstates, setNameEstates] = useState<string>('');
+  const [houseNumber, setHouseNumber] = useState<string>('');
+  const [faceVerified, setFaceVerified] = useState<boolean>(false);
+  
+  useEffect(() => {
+    const checkFaceVerification = async () => {
+      try {
+        const token = await AsyncStorage.getItem('access_token');
+        if (!token) {
+          setFaceVerified(false);
+          return;
+        }
+        
+        const lastVerified = await AsyncStorage.getItem('face_verified_timestamp');
+        const verificationPeriod = 5 * 60 * 1000;
+        
+        if (lastVerified && (Date.now() - parseInt(lastVerified)) < verificationPeriod) {
+          setFaceVerified(true);
+        } else {
+          setFaceVerified(false);
+        }
+      } catch (error) {
+        console.error('Error checking face verification status:', error);
+        setFaceVerified(false);
+      }
+    };
+    
+    checkFaceVerification();
+  }, []);
+  
+  const {
+    isModalVisible,
+    showFaceAuthModal,
+    hideFaceAuthModal,
+    handleFaceCapture,
+    handleFaceCaptureError,
+  } = useFaceAuth({
+    onSuccess: (response) => {
+      console.log('CreateEstate: Face auth success callback, response:', response);
+      setFaceVerified(true);
+      
+      try {
+        AsyncStorage.setItem('face_verified_timestamp', Date.now().toString());
+        console.log('CreateEstate: Saved verification timestamp to AsyncStorage');
+      } catch (error) {
+        console.error('CreateEstate: Error saving verification status:', error);
+      }
+      
+      Toast.show({
+        type: 'success',
+        text1: t('Xác thực thành công'),
+        text2: t('Bạn có thể tiếp tục đăng bài'),
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+      
+      console.log('CreateEstate: Setting timeout to proceed with post creation');
+      setTimeout(() => {
+        proceedWithPostCreation();
+      }, 1500);
+    },
+    onError: (error) => {
+      console.log('CreateEstate: Face auth error callback:', error);
+      setFaceVerified(false);
+      Toast.show({
+        type: 'error',
+        text1: t('Xác thực thất bại'),
+        text2: error,
+        position: 'bottom',
+        visibilityTime: 3000,
+      });
+    },
+  });
   
   const handlePress = () => {
     Keyboard.dismiss();
   };
-  
-  const [nameEstates, setNameEstates] = useState<string>('');
-  const [houseNumber, setHouseNumber] = useState<string>('');
 
-  const handleNext = () => {
-    if (!canCreatePost()) {
-      Alert.alert(
-        t('subscription_limit'),
-        subscription?.planType === 'FREE'
-          ? t('free_plan_limit_reached')
-          : t('weekly_plan_limit_reached'),
-        [
-          {
-            text: t('cancel'),
-            style: 'cancel',
-          },
-          {
-            text: t('upgrade_now'),
-            onPress: () => push({name: 'UpgradeSubscription'}),
-          },
-        ]
-      );
-      return;
-    }
-
+  const proceedWithPostCreation = () => {
+    console.log('CreateEstate: Proceeding with post creation');
     push({
       name: 'AddEstateLocation',
       params: {
@@ -62,13 +117,31 @@ const CreateEstate = () => {
       },
     });
   };
+  
+  const handleNext = () => {
+    console.log('CreateEstate: handleNext called');
+    if (!canCreatePost()) {
+      console.log('CreateEstate: Cannot create post due to subscription limits');
+      return;
+    }
+    
+    console.log('CreateEstate: Checking if already verified:', faceVerified);
+    if (faceVerified) {
+      console.log('CreateEstate: Already verified, proceeding directly');
+      proceedWithPostCreation();
+    } else {
+      console.log('CreateEstate: Not verified yet, showing face auth modal');
+      showFaceAuthModal(FaceAuthPurpose.VERIFY);
+    }
+  };
 
   const renderSubscriptionBanner = () => {
     if (!subscription) return null;
-
+    
     let remainingPosts = postsRemaining;
     
-    const isActive = subscription.status === 'ACTIVE';
+    const isActive = remainingPosts > 0;
+    
     const bgColor = isActive ? '#E6F7FF' : '#FFEBEB';
     const textColor = isActive ? '#0077B6' : '#DC2626';
     const borderColor = isActive ? '#BDE0FE' : '#FECACA';
@@ -99,14 +172,14 @@ const CreateEstate = () => {
               {remainingPosts}
             </Text>
             <Text style={styles.postsLabel}>
-              {t('posts_available')}
+              {t('bài viết còn lại')}
             </Text>
           </View>
         </View>
         
         {(!isActive || remainingPosts < 2) && (
           <Text style={styles.upgradeTipText}>
-            {t('tap_to_upgrade')}
+            {t('nâng_cấp')}
           </Text>
         )}
       </TouchableOpacity>
@@ -130,21 +203,24 @@ const CreateEstate = () => {
           </View>
 
           <View>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={(text) => setNameEstates(text)}
-              placeholder={t('enter_estate_name')}
-            />
-            <View style={styles.viewIcon}>
-              <House_Icon />
+            <Text style={styles.inputLabel}>{t('Tên phòng')}</Text>
+            <View>
+              <TextInput
+                style={styles.textInput}
+                onChangeText={(text) => setNameEstates(text)}
+                placeholder={t('Nhập tên phòng')}
+              />
+              <View style={styles.viewIcon}>
+                <House_Icon />
+              </View>
             </View>
           </View>
           <View style={styles.inputContainer}>
-            <Text style={styles.inputLabel}>{t('house_number')}</Text>
+            <Text style={styles.inputLabel}>{t('Số nhà')}</Text>
             <TextInput
               style={styles.textInput}
               onChangeText={(text) => setHouseNumber(text)}
-              placeholder={t('enter_house_number')}
+              placeholder={t('Nhập số nhà')}
               keyboardType="numeric"
             />
           </View>
@@ -164,6 +240,23 @@ const CreateEstate = () => {
             >
               <Text style={[styles.txtSell, {fontSize: 20}]}>{t('next')}</Text>
             </TouchableOpacity>
+          )}
+          
+          <FaceCapture
+            isVisible={isModalVisible}
+            onClose={hideFaceAuthModal}
+            onSuccess={handleFaceCapture}
+            onError={handleFaceCaptureError}
+            title={t('Face Verification')}
+            subtitle={t('Please verify your identity to post a rental property')}
+          />
+          
+          {faceVerified && (
+            <View style={styles.verificationBadge}>
+              <Text style={styles.verificationText}>
+                {t('Xác thực khuôn mặt thành công')}
+              </Text>
+            </View>
           )}
         </View>
       </TouchableWithoutFeedback>
@@ -299,7 +392,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: 26,
+    bottom: 0,
     position: 'absolute',
     left: 70,
   },
@@ -313,6 +406,20 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginTop: 20,
   },
+  verificationBadge: {
+    backgroundColor: '#E6F7F0',
+    padding: 10,
+    borderRadius: 8,
+    borderColor: '#8BC83F',
+    borderWidth: 1,
+    margin: 16,
+    marginBottom: 100,
+    alignItems: 'center',
+  },
+  verificationText: {
+    color: '#8BC83F',
+    fontWeight: 'bold',
+  }
 });
 
 export default CreateEstate;
