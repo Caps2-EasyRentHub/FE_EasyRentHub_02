@@ -15,6 +15,7 @@ import {AuthContext} from '@/context/AuthContext';
 import {useSubscription} from '@/context/SubscriptionContext';
 import {formatCurrency} from '@/utils/format';
 import {BackButton} from '@/components';
+import {formatDate} from '@/utils/format';
 
 export const UpgradeScreen = () => {
   const {t} = useTranslation();
@@ -36,10 +37,13 @@ export const UpgradeScreen = () => {
       const oneMonthFromStart = new Date(startDate);
       oneMonthFromStart.setMonth(oneMonthFromStart.getMonth() + 1);
 
-      if (currentDate < oneMonthFromStart && subscription.postsRemaining === 0) {
+      if (
+        currentDate < oneMonthFromStart &&
+        subscription.postsRemaining === 0
+      ) {
         return false;
       }
-      
+
       if (currentDate < oneMonthFromStart) {
         return false;
       }
@@ -51,32 +55,24 @@ export const UpgradeScreen = () => {
   const handleUpgradeFree = async () => {
     try {
       if (!canActivateFreePlan()) {
-        Alert.alert(
-          t('not_eligible'),
-          t('free_plan_monthly_limit'),
-          [{ text: 'OK' }]
-        );
+        Alert.alert(t('not_eligible'), t('free_plan_monthly_limit'), [
+          {text: 'OK'},
+        ]);
         return;
       }
 
       setLoading(true);
       const payment = await createPayment('FREE');
-      
+
       if (payment) {
         await refreshSubscription();
-        Alert.alert(
-          t('success'),
-          t('free_plan_activated'),
-          [{ text: 'OK', onPress: () => navigation.goBack() }]
-        );
+        Alert.alert(t('success'), t('free_plan_activated'), [
+          {text: 'OK', onPress: () => navigation.goBack()},
+        ]);
       }
     } catch (error) {
       console.error('Free plan activation failed:', error);
-      Alert.alert(
-        t('error'),
-        t('free_plan_activation_failed'),
-        [{ text: 'OK' }]
-      );
+      Alert.alert(t('error'), t('free_plan_activation_failed'), [{text: 'OK'}]);
     } finally {
       setLoading(false);
     }
@@ -86,51 +82,53 @@ export const UpgradeScreen = () => {
     try {
       setLoading(true);
       const payment = await createPayment('WEEKLY');
-      
+
       console.log('Payment response upgrade weekly:', payment);
-      
+
       if (payment?.paymentUrl) {
         navigation.navigate('PaymentWebView', {
           paymentUrl: payment.paymentUrl,
           paymentId: payment.paymentId,
-          amount: payment.amount || 19000
+          amount: payment.amount || 19000,
         });
       } else {
-        Alert.alert(
-          t('error'),
-          t('payment_url_missing'),
-          [{ text: 'OK' }]
-        );
+        Alert.alert(t('error'), t('payment_url_missing'), [{text: 'OK'}]);
       }
     } catch (error) {
       console.error('Payment creation failed:', error);
-      Alert.alert(
-        t('error'),
-        t('payment_creation_failed'),
-        [{ text: 'OK' }]
-      );
+      Alert.alert(t('error'), t('payment_creation_failed'), [{text: 'OK'}]);
     } finally {
       setLoading(false);
     }
   };
 
-  const isFreePlanActive = subscription?.planType === 'FREE' && subscription?.status === 'ACTIVE' && subscription?.postsRemaining > 0;
-  const isWeeklyPlanActive = subscription?.planType === 'WEEKLY' && subscription?.status === 'ACTIVE';
+  const isFreePlanActive =
+    subscription?.planType === 'FREE' &&
+    subscription?.status === 'ACTIVE' &&
+    subscription?.postsRemaining > 0;
+  const isWeeklyPlanActive =
+    subscription?.planType === 'WEEKLY' && subscription?.status === 'ACTIVE';
 
-  const isFreePlanLocked = subscription?.planType === 'FREE' && !canActivateFreePlan();
+  const isFreePlanLocked =
+    subscription?.planType === 'FREE' && !canActivateFreePlan();
 
   return (
     <ScrollView style={styles.container}>
       <BackButton />
       <Text style={styles.title}>{t('choose_subscription_plan')}</Text>
-      
-      <View style={[styles.planCard, isFreePlanActive ? styles.activePlanCard : styles.freePlan]}>
+
+      <View
+        style={[
+          styles.planCard,
+          isFreePlanActive ? styles.activePlanCard : styles.freePlan,
+        ]}
+      >
         {isFreePlanActive && (
           <View style={styles.activeBadge}>
             <Text style={styles.activeBadgeText}>{t('active')}</Text>
           </View>
         )}
-        
+
         {isFreePlanLocked && (
           <View style={[styles.activeBadge, styles.lockedBadge]}>
             <Text style={styles.activeBadgeText}>{t('Giới hạn')}</Text>
@@ -144,43 +142,50 @@ export const UpgradeScreen = () => {
 
         <View style={styles.benefitsList}>
           <Text style={styles.benefitsTitle}>{t('plan_benefits')}:</Text>
-          <Text style={styles.benefitItem}>• {t('limited_posts', {count: 5})}</Text>
+          <Text style={styles.benefitItem}>
+            • {t('limited_posts', {count: 5})}
+          </Text>
           <Text style={styles.benefitItem}>• {t('standard_features')}</Text>
           <Text style={styles.benefitItem}>• {t('no_expiry')}</Text>
         </View>
 
         <TouchableOpacity
           style={[
-            styles.planButton, 
+            styles.planButton,
             {
-              backgroundColor: isFreePlanActive || isFreePlanLocked 
-                ? '#6B7280' 
-                : '#4B5563'
-            }
+              backgroundColor:
+                isFreePlanActive || isFreePlanLocked ? '#6B7280' : '#4B5563',
+            },
           ]}
           onPress={handleUpgradeFree}
-          disabled={loading || isFreePlanActive || isFreePlanLocked}>
+          disabled={loading || isFreePlanActive || isFreePlanLocked}
+        >
           {loading ? (
             <ActivityIndicator color="#FFFFFF" />
           ) : (
             <Text style={styles.planButtonText}>
-              {isFreePlanActive 
+              {isFreePlanActive
                 ? t('current_plan')
                 : isFreePlanLocked
-                  ? t('Miễn phí')
-                  : t('choose_plan')}
+                ? t('Miễn phí')
+                : t('choose_plan')}
             </Text>
           )}
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.planCard, isWeeklyPlanActive ? styles.activePlanCard : styles.weeklyPlan]}>
+      <View
+        style={[
+          styles.planCard,
+          isWeeklyPlanActive ? styles.activePlanCard : styles.weeklyPlan,
+        ]}
+      >
         {isWeeklyPlanActive && (
           <View style={styles.activeBadge}>
             <Text style={styles.activeBadgeText}>{t('active')}</Text>
           </View>
         )}
-        
+
         <View style={styles.planHeader}>
           <Text style={styles.planTitle}>{t('weekly_plan')}</Text>
           <Text style={styles.planPrice}>{formatCurrency(19000)}</Text>
@@ -189,37 +194,42 @@ export const UpgradeScreen = () => {
 
         <View style={styles.benefitsList}>
           <Text style={styles.benefitsTitle}>{t('plan_benefits')}:</Text>
-          <Text style={styles.benefitItem}>• {t('unlimited_posts_first_days', {count: 4})}</Text>
-          <Text style={styles.benefitItem}>• {t('max_5_posts_per_day_later')}</Text>
+          <Text style={styles.benefitItem}>
+            • {t('unlimited_posts_first_days', {count: 4})}
+          </Text>
+          <Text style={styles.benefitItem}>
+            • {t('max_5_posts_per_day_later')}
+          </Text>
           <Text style={styles.benefitItem}>• {t('valid_7_days')}</Text>
           <Text style={styles.benefitItem}>• {t('premium_features')}</Text>
         </View>
 
         <TouchableOpacity
           style={[
-            styles.planButton, 
-            {backgroundColor: isWeeklyPlanActive ? '#10B981' : '#059669'}
+            styles.planButton,
+            {backgroundColor: isWeeklyPlanActive ? '#10B981' : '#059669'},
           ]}
           onPress={handleUpgradeWeekly}
-          disabled={loading || isWeeklyPlanActive}>
+          disabled={loading || isWeeklyPlanActive}
+        >
           {loading ? (
             <ActivityIndicator color="#FFFFFF" />
           ) : (
             <Text style={styles.planButtonText}>
-              {isWeeklyPlanActive 
-                ? t('current_plan') 
-                : t('upgrade_now')}
+              {isWeeklyPlanActive ? t('current_plan') : t('upgrade_now')}
             </Text>
           )}
         </TouchableOpacity>
-        
+
         {isWeeklyPlanActive && (
           <View>
             <Text style={styles.postsRemainingText}>
-              {t('posts_remaining_today_count', {count: 5 - subscription.postsUsedToday})}
+              {t('posts_remaining_today_count', {
+                count: 5 - subscription.postsUsedToday,
+              })}
             </Text>
             <Text style={styles.expiryText}>
-              {t('expires_on', {date: new Date(subscription.endDate).toLocaleDateString()})}
+              {t('expires_on', {date: formatDate(subscription.endDate)})}
             </Text>
           </View>
         )}
@@ -342,5 +352,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 8,
     fontSize: 12,
-  }
+  },
 });

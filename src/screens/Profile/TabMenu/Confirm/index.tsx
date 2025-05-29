@@ -6,8 +6,15 @@ import {
   TouchableOpacity,
   View,
   FlatList,
+  RefreshControl,
 } from 'react-native';
-import React, {useContext, useEffect, useMemo, useState} from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+} from 'react';
 import RadioGroup from 'react-native-radio-buttons-group';
 import Splash from '@/components/Splash';
 import {EstateDetailProps, TranSactionProps} from '@/utils/interface';
@@ -24,53 +31,61 @@ const Confirm = () => {
   const {userToken, idUser} = useContext(AuthContext);
   const [data, setData] = useState<TranSactionProps[]>([]);
   const [load, setLoad] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    console.log('Auth Context: ', {
-      userToken: userToken ? 'exists' : 'null',
-      idUser,
-    });
-  }, [userToken, idUser]);
-
-  useEffect(() => {
+  const fetchData = useCallback(async () => {
     if (!idUser || !userToken) {
       console.log('Missing user ID or token');
       setLoad(false);
       return;
     }
 
-    setLoad(true);
+    try {
+      const response = await fetch(
+        `${Config.API_URL}/api/rental/tenant-bookings/${idUser}`,
+        {
+          method: 'GET',
+          headers: {Authorization: userToken},
+        },
+      );
 
-    fetch(`${Config.API_URL}/api/rental/tenant-bookings/${idUser}`, {
-      method: 'GET',
-      headers: {Authorization: userToken},
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res) => {
-        // console.log('res.bookings');
-        // console.log(res.bookings);
-        if (res.bookings && Array.isArray(res.bookings)) {
-          const pendingBookings = res.bookings.filter((tenantBooking) => {
-            // console.log('Booking status:', tenantBooking.status);
-            return tenantBooking.status === 'pending';
-          });
+      const res = await response.json();
 
-          // console.log('Tất cả bookings:', res.bookings.length);
-          // console.log('Số lượng bookings pending:', pendingBookings.length);
-          setData(pendingBookings);
-        } else {
-          console.log('Không tìm thấy dữ liệu bookings hợp lệ');
-          setData([]);
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching bookings:', error);
+      if (res.bookings && Array.isArray(res.bookings)) {
+        const pendingBookings = res.bookings.filter((tenantBooking) => {
+          return tenantBooking.status === 'pending';
+        });
+
+        setData(pendingBookings);
+      } else {
+        console.log('Không tìm thấy dữ liệu bookings hợp lệ');
         setData([]);
-      })
-      .finally(() => setLoad(false));
+      }
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      setData([]);
+    } finally {
+      setLoad(false);
+      setRefreshing(false);
+    }
   }, [userToken, idUser]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, [fetchData]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+  }, [fetchData]);
 
   const RenderItems = ({item}: {item: TranSactionProps}) => {
     const {userToken} = useContext(AuthContext);
@@ -174,7 +189,6 @@ const Confirm = () => {
                 : null,
           }}
           style={styles.images}
-          // defaultSource={require('@/assets/Images/no-image.png')}
         />
 
         <View style={styles.cardContent}>
@@ -201,7 +215,16 @@ const Confirm = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={['#8BC83F']}
+        />
+      }
+    >
       <View>
         <Text style={styles.textTitle}>
           {data.length} {t('transactions')}
@@ -224,7 +247,7 @@ const Confirm = () => {
               {data.map((item: TranSactionProps, index: number) => (
                 <RenderItems
                   item={item}
-                  key={index}
+                  key={item._id || index}
                 />
               ))}
             </View>

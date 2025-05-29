@@ -289,7 +289,7 @@ const AddEstateInfo = ({route}: any) => {
         </View>
         {priceRecommendation && (
           <View style={styles.recommendationContainer}>
-            <Text style={styles.recommendationTitle}>{t('price_recommendation')}</Text>
+            <Text style={styles.recommendationTitle}>{t('Đề xuất giá')}</Text>
             {priceRecommendation.success ? (
               <>
                 <Text style={styles.recommendationText}>
@@ -345,7 +345,7 @@ const AddEstateInfo = ({route}: any) => {
                   push({name: 'HomeScreen'});
                 }}
               >
-                <Text style={styles.txtCancel}>{t('go_home')}</Text>
+                <Text style={styles.txtCancel}>{t('Về trang chủ')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.btnDone}
@@ -354,7 +354,7 @@ const AddEstateInfo = ({route}: any) => {
                   push({name: 'CreateEstate'});
                 }}
               >
-                <Text style={styles.txtDone}>{t('add_another')}</Text>
+                <Text style={styles.txtDone}>{t('Thêm')}</Text>
               </TouchableOpacity>
             </View>
           </View>

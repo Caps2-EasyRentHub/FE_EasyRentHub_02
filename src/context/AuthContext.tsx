@@ -93,7 +93,9 @@ export const AuthProvider = ({children}: any) => {
       // Store user data in AsyncStorage
       await Promise.all([
         AsyncStorage.setItem('access_token', response.data.access_token),
-        AsyncStorage.setItem('idUser', response.data.user._id),
+        AsyncStorage.setItem('userId', response.data.user._id),
+        AsyncStorage.setItem('id', response.data.user._id),
+        AsyncStorage.setItem('user_id', response.data.user._id),
         AsyncStorage.setItem('avatarUser', response.data.user.avatar),
         AsyncStorage.setItem('full_name', response.data.user.full_name),
         AsyncStorage.setItem('lat', response.data.user.address.lat),
@@ -140,7 +142,9 @@ export const AuthProvider = ({children}: any) => {
   const logout = () => {
     setUserToken(null);
     AsyncStorage.removeItem('access_token');
-    AsyncStorage.removeItem('idUser');
+    AsyncStorage.removeItem('userId');
+    AsyncStorage.removeItem('id');
+    AsyncStorage.removeItem('user_id');
     AsyncStorage.removeItem('avatarUser');
     AsyncStorage.removeItem('full_name');
     AsyncStorage.removeItem('lat');
@@ -156,7 +160,7 @@ export const AuthProvider = ({children}: any) => {
     try {
       setIsLoading(true);
       const userToken = await AsyncStorage.getItem('access_token');
-      const idUser = await AsyncStorage.getItem('idUser');
+      const idUser = await AsyncStorage.getItem('userId');
       const avatar = await AsyncStorage.getItem('avatarUser');
       const fullName = await AsyncStorage.getItem('full_name');
       const lat = await AsyncStorage.getItem('lat');

@@ -1,4 +1,16 @@
 {
   "name": "zentro",
-  "displayName": "Easy Rent Hub"
+  "displayName": "Easy Rent Hub",
+  "expo": {
+  "plugins": [
+    [
+      "expo-font",
+      {
+        "fonts": [
+          "node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"
+        ]
+      }
+    ]
+  ]
+}
 }

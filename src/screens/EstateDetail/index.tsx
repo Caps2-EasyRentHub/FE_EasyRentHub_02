@@ -24,6 +24,8 @@ import {push} from '@/navigation/NavigationUtils';
 import {AuthContext} from '@/context/AuthContext';
 import {Config} from '@/config';
 import Splash from '../../components/Splash';
+import { chatService } from '@/services/chatService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
   const {t} = useTranslation();
@@ -58,6 +60,46 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
       })
       .finally(() => setLoad(false));
   }, []);
+
+  const handleChatWithOwner = async () => {
+    if (!data || !data.user || !idUser) {
+      console.error('Missing data for chat initialization');
+      return;
+    }
+
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        if (userToken) {
+          await AsyncStorage.setItem('token', userToken);
+        }
+      }
+
+      await AsyncStorage.setItem('userId', idUser);
+
+      const messageData = {
+        senderId: idUser,
+        receiverId: data.user._id,
+        text: `Xin chào, tôi quan tâm đến "${data.name}". Vui lòng cho tôi biết thêm thông tin.`
+      };
+
+      const result = await chatService.sendMessage(messageData);
+      console.log('Message sent result:', result);
+
+      push({
+        name: 'Chat',
+        params: {
+          conversationId: result.conversationId,
+          otherUserId: data.user._id,
+          otherUserName: data.user.full_name,
+          otherUserAvatar: data.user.avatar
+        }
+      });
+    } catch (error) {
+      console.error('Error initiating chat:', error);
+      alert('Không thể kết nối chat. Vui lòng thử lại sau.');
+    }
+  };
 
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
   const AnimatedHeader = Animated.createAnimatedComponent(View);
@@ -124,7 +166,6 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
             <Text style={styles.nameStyle}>{data.name}</Text>
             <View>
               <Text style={styles.priceStyle}>{data.price}đ/tháng</Text>
-              {/* <Text style={styles.perText}>{t('month')}</Text> */}
             </View>
           </View>
 
@@ -169,7 +210,9 @@ const EstateDetail: React.FC<Featured> = ({route, navigation}) => {
                 />
                 <Text style={styles.username}>{data.user.full_name}</Text>
               </View>
-              <Chat_Icon />
+              <TouchableOpacity onPress={handleChatWithOwner}>
+                <Chat_Icon />
+              </TouchableOpacity>
             </View>
           )}
 

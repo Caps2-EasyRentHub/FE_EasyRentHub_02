@@ -5,8 +5,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  RefreshControl,
 } from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import {useTranslation} from 'react-i18next';
 import {format} from 'date-fns';
 import FavoriteButton from '@/components/FavoriteButton';
@@ -68,6 +69,7 @@ const RenderItems = ({item}: {item: TranSactionProps}) => {
       })
       .finally(() => setLoad(false));
   }, [item?.estate?._id, userToken]);
+
   const getStatus = (status: string) => {
     switch (status) {
       case 'pending':
@@ -168,38 +170,73 @@ const Transaction = () => {
     null,
   );
   const [load, setLoad] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    setLoad(true);
+  const fetchTransactions = useCallback(async () => {
+    if (!idUser || !userToken) {
+      console.log('Missing user ID or token');
+      setLoad(false);
+      return;
+    }
 
-    fetch(`${Config.API_URL}/api/rental/tenant-bookings/${idUser}`, {
-      method: 'GET',
-      headers: {Authorization: userToken},
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
-      })
-      .then(async (res) => {
-        if (res.bookings && Array.isArray(res.bookings)) {
-          setFilteredData(res.bookings);
-        } else {
-          console.error('Invalid bookings data:', res);
-          setFilteredData([]);
-        }
-        setLoad(false);
-      })
-      .catch((error) => {
-        console.error('Error fetching bookings:', error);
+    try {
+      const response = await fetch(
+        `${Config.API_URL}/api/rental/tenant-bookings/${idUser}`,
+        {
+          method: 'GET',
+          headers: {Authorization: userToken},
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const res = await response.json();
+
+      if (res.bookings && Array.isArray(res.bookings)) {
+        setFilteredData(res.bookings);
+      } else {
+        console.error('Invalid bookings data:', res);
         setFilteredData([]);
-        setLoad(false);
-      });
+      }
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      setFilteredData([]);
+    } finally {
+      setLoad(false);
+      setRefreshing(false);
+    }
   }, [idUser, userToken]);
 
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchTransactions();
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, [fetchTransactions]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchTransactions();
+  }, [fetchTransactions]);
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={['#8BC83F']}
+        />
+      }
+    >
       <View>
         <Text style={styles.textTitle}>
           {t('transactions')} {filteredData && filteredData.length} {t('phòng')}
@@ -213,7 +250,7 @@ const Transaction = () => {
               return (
                 <RenderItems
                   item={item}
-                  key={index}
+                  key={item._id || index}
                 />
               );
             })

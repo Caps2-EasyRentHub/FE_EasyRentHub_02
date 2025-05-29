@@ -98,7 +98,7 @@ const Favorite = () => {
                     color={'#234F68'}
                     size={12}
                   />
-                  <Text style={styles.location}>
+                  <Text style={styles.location} numberOfLines={2} ellipsizeMode="tail">
                     {item.address.road}, {item.address.city}
                   </Text>
                 </View>

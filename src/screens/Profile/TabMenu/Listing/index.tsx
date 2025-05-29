@@ -1,5 +1,3 @@
-// Thêm vào file src/screens/Profile/TabMenu/Listing/index.tsx
-
 import {
   Image,
   RefreshControl,
@@ -31,8 +29,8 @@ const Listing = () => {
   const {userToken, idUser} = useContext(AuthContext);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
-  // Modal states
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [resultModalVisible, setResultModalVisible] = useState(false);
   const [selectedEstateId, setSelectedEstateId] = useState('');
@@ -40,46 +38,69 @@ const Listing = () => {
   const [operationSuccess, setOperationSuccess] = useState(false);
   const [resultMessage, setResultMessage] = useState('');
 
-  useEffect(() => {
-    const loadPosts = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `${Config.API_URL}/api/user_estates/${idUser}?limit=100`,
-          {
-            method: 'GET',
-            headers: {Authorization: userToken},
-          },
-        );
-        const res = await response.json();
+  const loadPosts = useCallback(async () => {
+    if (!idUser || !userToken) {
+      console.log('Missing user ID or token');
+      return;
+    }
 
-        if (res.estates && Array.isArray(res.estates)) {
-          setData(res.estates);
-        } else {
-          console.log('Invalid estates data format:', res);
-        }
-      } catch (error) {
-        console.error('Error loading estates:', error);
-      } finally {
-        setLoading(false);
+    if (!refreshing) {
+      setLoading(true);
+    }
+
+    try {
+      const response = await fetch(
+        `${Config.API_URL}/api/user_estates/${idUser}?limit=100`,
+        {
+          method: 'GET',
+          headers: {Authorization: userToken},
+        },
+      );
+      const res = await response.json();
+
+      if (res.estates && Array.isArray(res.estates)) {
+        setData(res.estates);
+      } else {
+        console.log('Invalid estates data format:', res);
       }
-    };
+    } catch (error) {
+      console.error('Error loading estates:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [idUser, userToken, refreshing]);
+
+  useEffect(() => {
     if (idUser && userToken) {
       loadPosts();
     }
-  }, [idUser, userToken]);
+  }, [idUser, userToken, loadPosts]);
 
-  // Khởi động quá trình xóa
+  useEffect(() => {
+    if (!idUser || !userToken) return;
+
+    const intervalId = setInterval(() => {
+      setRefreshing(false);
+      loadPosts();
+    }, 15000);
+
+    return () => clearInterval(intervalId);
+  }, [idUser, userToken, loadPosts]);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    loadPosts();
+  }, [loadPosts]);
+
   const initiateDeleteListing = (estateId: string) => {
     setSelectedEstateId(estateId);
     setConfirmModalVisible(true);
   };
 
-  // Hàm xử lý xóa
   const handleDeleteListing = async () => {
-    // Đóng modal xác nhận
     setConfirmModalVisible(false);
-    // Bắt đầu quá trình xóa
+
     setIsDeleting(true);
 
     try {
@@ -99,12 +120,10 @@ const Listing = () => {
       );
 
       if (response.ok) {
-        // Xóa thành công
         setData(data.filter((item) => item._id !== selectedEstateId));
         setOperationSuccess(true);
         setResultMessage(t('Xóa phòng trọ thành công'));
       } else {
-        // Xóa thất bại
         const errorData = await response.json();
         setOperationSuccess(false);
         setResultMessage(errorData.message || t('Không thể xóa phòng trọ'));
@@ -119,7 +138,6 @@ const Listing = () => {
     }
   };
 
-  // Modal xác nhận xóa
   const ConfirmDeleteModal = () => (
     <Modal
       animationType="fade"
@@ -134,9 +152,7 @@ const Listing = () => {
           </View>
 
           <Text style={styles.modalMessage}>
-            {t(
-              'Bạn có chắc chắn muốn xóa phòng trọ này?',
-            )}
+            {t('Bạn có chắc chắn muốn xóa phòng trọ này?')}
           </Text>
 
           <View style={styles.modalButtonsContainer}>
@@ -159,7 +175,6 @@ const Listing = () => {
     </Modal>
   );
 
-  // Modal hiển thị kết quả
   const ResultModal = () => (
     <Modal
       animationType="fade"
@@ -217,7 +232,6 @@ const Listing = () => {
     </Modal>
   );
 
-  // Processing Modal khi đang xóa
   const ProcessingModal = () => (
     <Modal
       animationType="fade"
@@ -263,7 +277,6 @@ const Listing = () => {
           </View>
         </View>
 
-        {/* Nút sửa */}
         <TouchableOpacity
           style={styles.editButton}
           onPress={() =>
@@ -276,7 +289,6 @@ const Listing = () => {
           />
         </TouchableOpacity>
 
-        {/* Nút xóa */}
         <TouchableOpacity
           style={styles.deleteButton}
           onPress={() => initiateDeleteListing(item._id)}
@@ -317,7 +329,11 @@ const Listing = () => {
                 color={'#234F68'}
                 size={9}
               />
-              <Text style={styles.location}>
+              <Text
+                style={styles.location}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
                 {' '}
                 {item.address && item.address.road
                   ? item.address.road
@@ -337,6 +353,14 @@ const Listing = () => {
         paddingHorizontal: 10,
         paddingBottom: 20,
       }}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={['#8BC83F']}
+          tintColor="#8BC83F"
+        />
+      }
     >
       <View>
         <View style={styles.viewTitle}>
@@ -354,11 +378,19 @@ const Listing = () => {
             />
           </TouchableOpacity>
         </View>
-        {loading ? (
-          <Text style={{textAlign: 'center', marginTop: 20}}>Loading...</Text>
+        {loading && !refreshing ? (
+          <View style={{alignItems: 'center', marginTop: 20}}>
+            <ActivityIndicator
+              size="large"
+              color="#8BC83F"
+            />
+            <Text style={{textAlign: 'center', marginTop: 10}}>
+              Đang tải...
+            </Text>
+          </View>
         ) : data.length === 0 ? (
           <Text style={{textAlign: 'center', marginTop: 20}}>
-            No listings found
+            Không tìm thấy phòng trọ nào
           </Text>
         ) : (
           <View style={styles.viewRender}>
@@ -366,7 +398,7 @@ const Listing = () => {
               return (
                 <RenderItems
                   item={item}
-                  key={index}
+                  key={item._id || index}
                 />
               );
             })}
@@ -603,7 +635,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 
-  // Processing modal
   processingContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
@@ -618,7 +649,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  // Result modal styles
   resultIconContainer: {
     width: 80,
     height: 80,

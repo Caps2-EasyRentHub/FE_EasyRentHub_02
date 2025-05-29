@@ -16,7 +16,7 @@ import {screenWidth} from '@/themes/Responsive';
 import {push} from '@/navigation/NavigationUtils';
 import {AuthContext} from '@/context/AuthContext';
 import Splash from '@/components/Splash';
-import { Config } from '@/config';
+import {Config} from '@/config';
 
 const Recommendations = () => {
   const {t} = useTranslation();
@@ -27,32 +27,34 @@ const Recommendations = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       setLoad(true);
-      
+
       try {
         const requestOptions = {
-          method: "GET",
+          method: 'GET',
           headers: {
-            'Authorization': userToken,
-            'Content-Type': 'application/json'
+            Authorization: userToken,
+            'Content-Type': 'application/json',
           },
-          redirect: "follow" as RequestRedirect,
+          redirect: 'follow' as RequestRedirect,
         };
 
         const response = await fetch(
           `${Config.API_URL}/api/recommendations/content-based`,
-          requestOptions
+          requestOptions,
         );
 
         const result = await response.json();
 
-        if (result.msg === "Success!" && Array.isArray(result.recommendations)) {
+        if (
+          result.msg === 'Success!' &&
+          Array.isArray(result.recommendations)
+        ) {
           setData(result.recommendations);
         } else {
           console.error('Unexpected data structure:', result);
           setData([]);
         }
       } catch (error) {
-        console.error('API Error:', error);
         setData([]);
       } finally {
         setLoad(false);
@@ -65,65 +67,67 @@ const Recommendations = () => {
   }, [userToken]);
 
   const RenderItems = ({item}: {item: EstateItems}) => {
-    return item.status === 'available' && (
-      <View style={styles.cardItem}>
-        <View style={styles.btnFavorite}>
-          <FavoriteButton
-            favorite={
-              item.likes.find((like: any) => like === idUser) ? true : false
-            }
-            id={item._id}
+    return (
+      item.status === 'available' && (
+        <View style={styles.cardItem}>
+          <View style={styles.btnFavorite}>
+            <FavoriteButton
+              favorite={
+                item.likes.find((like: any) => like === idUser) ? true : false
+              }
+              id={item._id}
+            />
+          </View>
+
+          <View style={styles.priceView}>
+            <View style={styles.priceContent}>
+              <Text style={styles.price}>$ </Text>
+              <Text style={styles.price}>{item.price}</Text>
+              <Text style={styles.stay}> /</Text>
+              <Text style={styles.stay}>tháng</Text>
+            </View>
+          </View>
+
+          <Image
+            source={{uri: item.images[0]}}
+            style={styles.images}
           />
-        </View>
 
-        <View style={styles.priceView}>
-          <View style={styles.priceContent}>
-            <Text style={styles.price}>$ </Text>
-            <Text style={styles.price}>{item.price}</Text>
-            <Text style={styles.stay}> /</Text>
-            <Text style={styles.stay}>tháng</Text>
-          </View>
-        </View>
-
-        <Image
-          source={{uri: item.images[0]}}
-          style={styles.images}
-        />
-
-        <TouchableOpacity
-          style={styles.cardContent}
-          onPress={() =>
-            push({
-              name: 'EstateDetail',
-              params: {id: item._id, nearby: true},
-            })
-          }
-        >
-          <Text style={styles.cardName}>{item.name}</Text>
-          <View style={{flexDirection: 'row'}}>
-            <View style={styles.ratingView}>
-              <Entypo
-                name="star"
-                color={'#FFC42D'}
-                size={10}
-              />
-              <Text style={styles.rating}>
-                {item.reviews ? item.reviews.length : 0}
-              </Text>
+          <TouchableOpacity
+            style={styles.cardContent}
+            onPress={() =>
+              push({
+                name: 'EstateDetail',
+                params: {id: item._id, nearby: true},
+              })
+            }
+          >
+            <Text style={styles.cardName}>{item.name}</Text>
+            <View style={{flexDirection: 'row'}}>
+              <View style={styles.ratingView}>
+                <Entypo
+                  name="star"
+                  color={'#FFC42D'}
+                  size={10}
+                />
+                <Text style={styles.rating}>
+                  {item.reviews ? item.reviews.length : 0}
+                </Text>
+              </View>
+              <View style={styles.locationView}>
+                <FontAwesome6
+                  name="location-dot"
+                  color={'#234F68'}
+                  size={9}
+                />
+                <Text style={styles.location}>
+                  {item.address.road}, {item.address.city}
+                </Text>
+              </View>
             </View>
-            <View style={styles.locationView}>
-              <FontAwesome6
-                name="location-dot"
-                color={'#234F68'}
-                size={9}
-              />
-              <Text style={styles.location}>
-                {item.address.road}, {item.address.city}
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </View>
+          </TouchableOpacity>
+        </View>
+      )
     );
   };
 

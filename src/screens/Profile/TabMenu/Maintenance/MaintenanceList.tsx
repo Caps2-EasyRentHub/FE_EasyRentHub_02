@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useCallback} from 'react';
 import {
   View,
   Text,
@@ -60,7 +60,6 @@ const StatusBadge = ({status}) => {
   );
 };
 
-// Priority badge component
 const PriorityBadge = ({priority}) => {
   let backgroundColor = '#E5E7EB';
   let textColor = '#4B5563';
@@ -101,31 +100,37 @@ const MaintenanceList = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
   const [isLandlord, setIsLandlord] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Check if the user is a landlord
-  useEffect(() => {
-    const checkIfLandlord = async () => {
-      try {
-        const response = await fetch(`${Config.API_URL}/api/user/${idUser}`, {
-          method: 'GET',
-          headers: {Authorization: userToken},
-        });
-        const data = await response.json();
-        const userIsLandlord = data?.user?.role === 'Landlord';
-        setIsLandlord(userIsLandlord);
-      } catch (error) {
-        console.error('Error checking landlord status:', error);
-        setIsLandlord(false);
-      }
-    };
-
-    checkIfLandlord();
+  const checkIfLandlord = useCallback(async () => {
+    try {
+      const response = await fetch(`${Config.API_URL}/api/user/${idUser}`, {
+        method: 'GET',
+        headers: {Authorization: userToken},
+      });
+      const data = await response.json();
+      const userIsLandlord = data?.user?.role === 'Landlord';
+      setIsLandlord(userIsLandlord);
+      setIsInitialized(true);
+    } catch (error) {
+      console.error('Error checking landlord status:', error);
+      setIsLandlord(false);
+      setIsInitialized(true);
+    }
   }, [idUser, userToken]);
 
-  const fetchMaintenanceRequests = async () => {
+  useEffect(() => {
+    checkIfLandlord();
+  }, [checkIfLandlord]);
+
+  const fetchMaintenanceRequests = useCallback(async () => {
+    if (!isInitialized) return;
+
     try {
-      setLoading(true);
       setError('');
+      if (!refreshing) {
+        setLoading(true);
+      }
 
       const myHeaders = new Headers();
       myHeaders.append('Authorization', userToken);
@@ -136,7 +141,6 @@ const MaintenanceList = () => {
         redirect: 'follow',
       };
 
-      // Use different endpoints based on user role
       const endpoint = isLandlord
         ? `${Config.API_URL}/api/maintenance/landlord`
         : `${Config.API_URL}/api/maintenance/tenant`;
@@ -158,19 +162,28 @@ const MaintenanceList = () => {
       setLoading(false);
       setRefreshing(false);
     }
-  };
+  }, [isInitialized, isLandlord, refreshing, userToken]);
 
   useEffect(() => {
-    // Only fetch data after we've determined the user role
-    if (isLandlord !== null) {
+    if (isInitialized) {
       fetchMaintenanceRequests();
     }
-  }, [isLandlord, userToken]);
+  }, [isInitialized, fetchMaintenanceRequests]);
 
-  const onRefresh = () => {
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const intervalId = setInterval(() => {
+      fetchMaintenanceRequests();
+    }, 15000);
+
+    return () => clearInterval(intervalId);
+  }, [isInitialized, fetchMaintenanceRequests]);
+
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchMaintenanceRequests();
-  };
+  }, [fetchMaintenanceRequests]);
 
   const handlePressRequest = (requestId) => {
     if (isLandlord) {

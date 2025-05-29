@@ -19,7 +19,7 @@ export interface Chat {
   participant: ChatParticipant;
   lastMessage: Message;
   unreadCount: number;
-  estateId?: string; // Optional: link to the estate being discussed
+  estateId?: string;
 }
 
 export interface ChatState {
@@ -28,4 +28,4 @@ export interface ChatState {
   messages: Message[];
   loading: boolean;
   error: string | null;
-} 
+}

@@ -22,6 +22,7 @@ import FaceCapture from '@/components/FaceCapture';
 import {useFaceAuth, FaceAuthPurpose} from '@/hooks/useFaceAuth';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { formatDate } from '@/utils/format';
 
 const CreateEstate = () => {
   const {t} = useTranslation();
@@ -162,14 +163,14 @@ const CreateEstate = () => {
             
             {subscription.planType === PlanType.WEEKLY && subscription.endDate && (
               <Text style={styles.expiryDateText}>
-                {t('expires_on', {date: new Date(subscription.endDate).toLocaleDateString()})}
+                Hết hạn ngày {formatDate(subscription.endDate)}
               </Text>
             )}
           </View>
           
           <View style={styles.postsCountContainer}>
             <Text style={[styles.postsCount, {color: textColor}]}>
-              {remainingPosts}
+            {remainingPosts === 'Unlimited' ? 'Không giới hạn' : remainingPosts}
             </Text>
             <Text style={styles.postsLabel}>
               {t('bài viết còn lại')}
@@ -319,7 +320,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   postsCount: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
   },
   postsLabel: {
